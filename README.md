@@ -7,7 +7,7 @@
 
 [![Build Status](https://travis-ci.org/mailjet/mailjet-apiv3-go.svg?branch=master)](https://travis-ci.org/mailjet/mailjet-apiv3-go)
 
-# Mailjet-apiv3-go
+# Mailjet Go Client
 
 This GO library is a client for version 3 of the [Mailjet API][doc].
 
