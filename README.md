@@ -3,9 +3,11 @@
 [issues]: https://github.com/mailjet/mailjet-apiv3-go/issues
 [go_documentation]:http://dev.mailjet.com/guides/?go
 
+![alt text](http://cdn.appstorm.net/web.appstorm.net/files/2012/02/mailjet_logo_200x200.png "Mailjet")
+
 # Mailjet-apiv3-go
 
-This GO library provides client functionality for version 3 of the [Mailjet API][doc].
+This GO library is a client for version 3 of the [Mailjet API][doc].
 
 ## Getting Started
 
@@ -13,12 +15,12 @@ Every code examples can be find on the [Mailjet Documentation][go_documentation]
 
 ### Prerequisites
 
-Make sure to have the following requirements:
+Make sure you have the following requirements:
 * A Mailjet API Key
 * A Mailjet API Secret Key
 * A Go installation (v. >= 1.3)
 
-API key and an API secret can be found [here][api_credential].
+Both API key and an API secret can be found [here][api_credential].
 
 Get cosy with Mailjet and save your credentials in your environment:
 ```
@@ -258,7 +260,7 @@ func main() {
 
 We welcome any contribution.
 
-Please make sure you follow this step by step guide before contributing :
+Please make sure you follow this step-by-step guide before contributing :
 
 * Fork the project.
 * Create a topic branch.
@@ -267,5 +269,5 @@ Please make sure you follow this step by step guide before contributing :
 * Commit and push your changes.
 * Submit a pull request
 
-Submit yours issues, [here][issues]!.
+Submit your issues [here][issues]!.
 
