@@ -1,11 +1,15 @@
 [doc]: http://dev.mailjet.com/
 [api_credential]: https://app.mailjet.com/account/api_keys
 [issues]: https://github.com/mailjet/mailjet-apiv3-go/issues
+[go_documentation]:http://dev.mailjet.com/guides/?go
+
 # Mailjet-apiv3-go
 
 This GO library provides client functionality for version 3 of the [Mailjet API][doc].
 
 ## Getting Started
+
+Every code examples can be find on the [Mailjet Documentation][go_documentation]
 
 ### Prerequisites
 
