@@ -161,10 +161,17 @@ func TestDelete(t *testing.T) {
 func TestSendMail(t *testing.T) {
 	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 
-	DebugLevel = LevelDebugFull
+	var data []resources.Sender
+	count, _, err := m.List("sender", &data)
+	if err != nil {
+		t.Fatal("Unexpected error:", err)
+	}
+	if count < 1 || data == nil {
+		t.Fatal("At least one sender expected in the test account!")
+	}
 
 	param := &MailjetSendMail{
-		FromEmail: "gbadi@student.42.fr",
+		FromEmail: data[0].Email,
 		FromName:  "Guillaume",
 		Recipients: []MailjetRecipient{
 			MailjetRecipient{
