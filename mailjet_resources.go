@@ -82,7 +82,7 @@ type MailjetSendMail struct {
 	MjCustomID            string              `json:"Mj-CustomID"`
 	MjEventPayload        string              `json:"Mj-EventPayLoad"`
 	MjTemplateID          string              `json:"Mj-Template-ID"`
-	Headers               interface{}         `json:",omitempty"`
+	Headers               map[string]string   `json:",omitempty"`
 	Vars                  interface{}
 	Messages              []MailjetSendMail
 }

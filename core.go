@@ -112,7 +112,7 @@ func addFieldToMap(onlyField bool, fieldType reflect.StructField,
 			name = fieldType.Name
 		}
 		if !onlyField && second == "omitempty" &&
-			fieldValue.Interface() == reflect.Zero(fieldValue.Type()).Interface() {
+			fieldValue.IsValid() {
 			return
 		}
 		res[name] = fieldValue.Interface()
