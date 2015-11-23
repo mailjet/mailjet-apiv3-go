@@ -135,14 +135,14 @@ func TestPut(t *testing.T) {
 func TestDelete(t *testing.T) {
 	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 
-	var data []resources.Listrecipient
-	resource := "listrecipient"
+	var data []resources.Contact
+	resource := "contact"
 	count, _, err := m.List(resource, &data)
 	if err != nil {
 		t.Fatal("Unexpected error:", err)
 	}
 	if count < 1 {
-		t.Fatal("At least one listrecipient expected !")
+		t.Fatal("At least one contact expected !")
 	}
 	if data == nil {
 		t.Fatal("Empty result")
@@ -160,6 +160,8 @@ func TestDelete(t *testing.T) {
 
 func TestSendMail(t *testing.T) {
 	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+
+	DebugLevel = LevelDebugFull
 
 	param := &MailjetSendMail{
 		FromEmail: "gbadi@student.42.fr",
