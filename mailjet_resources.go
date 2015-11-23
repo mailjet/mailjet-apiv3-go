@@ -81,8 +81,8 @@ type MailjetSendMail struct {
 	MjDeduplicateCampaign bool                `json:"Mj-deduplicatecampaign"`
 	MjCustomID            string              `json:"Mj-CustomID"`
 	MjEventPayload        string              `json:"Mj-EventPayLoad"`
-	MjTemplateID	      string		  `json:"Mj-Template-ID"`
-	Headers               map[string]string
+	MjTemplateID          string              `json:"Mj-Template-ID"`
+	Headers               interface{}         `json:",omitempty"`
 	Vars                  interface{}
 	Messages              []MailjetSendMail
 }
