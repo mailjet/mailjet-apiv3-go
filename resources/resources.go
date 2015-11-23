@@ -487,19 +487,12 @@ type Dns struct {
 }
 
 type DnsCheck struct {
-	DKIMErrors	   	string           `mailjet:"read_only"`
+	DKIMErrors	   	[]string	 `mailjet:"read_only"`
+	DKIMStatus		string		 `mailjet:"read_only"`
 	DKIMRecordCurrentValue  string           `mailjet:"read_only"`
 	SPFRecordCurrentValue   string           `mailjet:"read_only"`
 	SPFErrors		[]string	 `mailjet:"read_only"`
 	SPFStatus         	string           `mailjet:"read_only"`
-	DKIMStatus      	string           `mailjet:"read_only"`
-	Domain           	string           `mailjet:"read_only"`
-	ID              	int64            `mailjet:"read_only"`
-	IsCheckInProgress	bool             `mailjet:"read_only"`
-	LastCheckAt      	*RFC3339DateTime `mailjet:"read_only"`
-	OwnerShipToken   	string           `mailjet:"read_only"`
-	SPFRecordValue   	string           `mailjet:"read_only"`
-	
 }
 
 // Domainstatistics: View Campaign/Message/Click statistics grouped per domain.
