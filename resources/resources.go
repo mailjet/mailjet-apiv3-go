@@ -486,6 +486,15 @@ type Dns struct {
 	SPFStatus         string           `mailjet:"read_only"`
 }
 
+type DnsCheck struct {
+	DKIMErrors	   	[]string	 `mailjet:"read_only"`
+	DKIMStatus		string		 `mailjet:"read_only"`
+	DKIMRecordCurrentValue  string           `mailjet:"read_only"`
+	SPFRecordCurrentValue   string           `mailjet:"read_only"`
+	SPFErrors		[]string	 `mailjet:"read_only"`
+	SPFStatus         	string           `mailjet:"read_only"`
+}
+
 // Domainstatistics: View Campaign/Message/Click statistics grouped per domain.
 type Domainstatistics struct {
 	BlockedCount       int64  `mailjet:"read_only"`
