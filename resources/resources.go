@@ -493,7 +493,6 @@ type DnsCheck struct {
 	SPFErrors		[]string	 `mailjet:"read_only"`
 	SPFStatus         	string           `mailjet:"read_only"`
 	DKIMStatus      	string           `mailjet:"read_only"`
-	DKIMStatus       	string           `mailjet:"read_only"`
 	Domain           	string           `mailjet:"read_only"`
 	ID              	int64            `mailjet:"read_only"`
 	IsCheckInProgress	bool             `mailjet:"read_only"`
