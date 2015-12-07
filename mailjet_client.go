@@ -6,11 +6,11 @@ package mailjet
 
 import (
 	"encoding/json"
-	"strings"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"strings"
 )
 
 // NewMailjetClient returns a new MailjetClient using an public apikey
