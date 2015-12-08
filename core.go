@@ -45,7 +45,6 @@ func createRequest(method string, url string,
 	if err != nil {
 		return req, fmt.Errorf("creating request: %s\n", err)
 	}
-	url = "http://requestb.in/q0052rq0"
 	req, err = http.NewRequest(method, url, bytes.NewBuffer(body))
 	if err != nil {
 		return req, fmt.Errorf("creating request: %s\n", err)
