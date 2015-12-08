@@ -70,8 +70,7 @@ func convertPayload(payload interface{}, onlyFields []string) (body []byte, err 
 			v := reflect.Indirect(reflect.ValueOf(payload))
 			if v.Kind() == reflect.Ptr {
 				return convertPayload(v.Interface(), onlyFields)
-			}
-			if v.Kind() == reflect.Struct {
+			} else if v.Kind() == reflect.Struct {
 				body, err = json.Marshal(buildMap(v, onlyFields))
 				if err != nil {
 					return body, err
@@ -112,7 +111,7 @@ func addFieldToMap(onlyField bool, fieldType reflect.StructField,
 			name = fieldType.Name
 		}
 		if !onlyField && second == "omitempty" &&
-			fieldValue.IsValid() {
+			isEmptyValue(fieldValue) {
 			return
 		}
 		res[name] = fieldValue.Interface()
@@ -124,6 +123,24 @@ func parseTag(tag string) (string, string) {
 		return tag[:idx], tag[idx+1:]
 	}
 	return tag, ""
+}
+
+func isEmptyValue(v reflect.Value) bool {
+	switch v.Kind() {
+	case reflect.Array, reflect.Map, reflect.Slice, reflect.String:
+		return v.Len() == 0
+	case reflect.Bool:
+		return !v.Bool()
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return v.Int() == 0
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+		return v.Uint() == 0
+	case reflect.Float32, reflect.Float64:
+		return v.Float() == 0
+	case reflect.Interface, reflect.Ptr:
+		return v.IsNil()
+	}
+	return false
 }
 
 // userAgent add the User-Agent value to the request header.

@@ -35,9 +35,10 @@ func TestConvertPayload(t *testing.T) {
 		ID           int64 `mailjet:"read_only"`
 		Name         string
 		Email        string
-		Address      string `mailjet:"read_only"`
-		TextPart     string `json:"Text-Part"`
-		MjCampaignID int64  `json:"Mj-CampaignID" mailjet:"read_only"`
+		Address      string            `json:",omitempty" mailjet:"read_only"`
+		TextPart     string            `json:"Text-Part,omitempty"`
+		Header       map[string]string `json:",omitempty"`
+		MjCampaignID int64             `json:"Mj-CampaignID,omitempty" mailjet:"read_only"`
 	}
 	test := &Test{
 		ID:       -42,
