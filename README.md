@@ -275,5 +275,5 @@ Please make sure you follow this step-by-step guide before contributing :
 * Commit and push your changes.
 * Submit a pull request
 
-Submit your issues [here][issues]!.
+Submit your issues [here][issues].
 

@@ -66,31 +66,30 @@ type MailjetError struct {
 type MailjetSendMail struct {
 	FromEmail             string
 	FromName              string
-	Sender                string
-	Recipients            []MailjetRecipient
-	To                    []string
-	Cc                    []string
-	Bcc                   []string
+	Sender                string             `json:",omitempty"`
+	Recipients            []MailjetRecipient `json:",omitempty"`
+	To                    []string           `json:",omitempty"`
+	Cc                    []string           `json:",omitempty"`
+	Bcc                   []string           `json:",omitempty"`
 	Subject               string
-	TextPart              string `json:"Text-part"`
-	HtmlPart              string `json:"Html-part"`
-	Attachments           []MailjetAttachment
-	InlineAttachments     []MailjetAttachment `json:"Inline_attachments"`
-	MjPrio                int                 `json:"Mj-prio"`
-	MjCampaign            string              `json:"Mj-campaign"`
-	MjDeduplicateCampaign bool                `json:"Mj-deduplicatecampaign"`
-	MjCustomID            string              `json:"Mj-CustomID"`
-	MjEventPayload        string              `json:"Mj-EventPayLoad"`
-	MjTemplateID          string              `json:"Mj-Template-ID"`
+	TextPart              string              `json:"Text-part,omitempty"`
+	HtmlPart              string              `json:"Html-part,omitempty"`
+	Attachments           []MailjetAttachment `json:",omitempty"`
+	InlineAttachments     []MailjetAttachment `json:"Inline_attachments,omitempty"`
+	MjPrio                int                 `json:"Mj-prio,omitempty"`
+	MjCampaign            string              `json:"Mj-campaign,omitempty"`
+	MjDeduplicateCampaign bool                `json:"Mj-deduplicatecampaign,omitempty"`
+	MjCustomID            string              `json:"Mj-CustomID,omitempty"`
+	MjEventPayLoad        string              `json:"Mj-EventPayLoad,omitempty"`
 	Headers               map[string]string   `json:",omitempty"`
-	Vars                  interface{}
-	Messages              []MailjetSendMail
+	Vars                  interface{}         `json:",omitempty"`
+	Messages              []MailjetSendMail   `json:",omitempty"`
 }
 
 type MailjetRecipient struct {
 	Email string
 	Name  string
-	Vars  interface{}
+	Vars  interface{} `json:",omitempty"`
 }
 
 type MailjetAttachment struct {
