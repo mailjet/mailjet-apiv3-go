@@ -15,19 +15,20 @@ import (
 )
 
 // DebugLevel defines the verbosity of the debug
+var DebugLevel int
+
 //		LevelNone: No debug
 //		LevelDebug: Debug without body
 //		LevelDebugFull: Debug with body
-var DebugLevel int
-
-// NbAttempt defines the number of attempt for a request as long as StatusCode == 500
-var NbAttempt = 5
-
 const (
 	LevelNone = iota
 	LevelDebug
 	LevelDebugFull
 )
+// NbAttempt defines the number of attempt for a request as long as StatusCode == 500
+var NbAttempt = 5
+
+
 
 var debugOut io.Writer = os.Stderr
 
@@ -156,7 +157,7 @@ func userAgent(req *http.Request) {
 	req.Header.Add("User-Agent", ua)
 }
 
-func buildUrl(info *MailjetRequest) string {
+func buildURL(info *MailjetRequest) string {
 	tokens := []string{apiBase, apiPath, info.Resource}
 	if info.ID != 0 {
 		id := strconv.FormatInt(info.ID, 10)
@@ -174,7 +175,7 @@ func buildUrl(info *MailjetRequest) string {
 	return strings.Join(tokens, "/")
 }
 
-func buildDataUrl(info *MailjetDataRequest) string {
+func buildDataURL(info *MailjetDataRequest) string {
 	tokens := []string{apiBase, dataPath, info.SourceType}
 	if info.SourceTypeID != 0 {
 		id := strconv.FormatInt(info.SourceTypeID, 10)
@@ -197,7 +198,7 @@ func buildDataUrl(info *MailjetDataRequest) string {
 
 // readJsonResult decodes the API response, returns Count and Total values
 // and stores the Data in the value pointed to by data.
-func readJsonResult(r io.Reader, data interface{}) (int, int, error) {
+func readJSONResult(r io.Reader, data interface{}) (int, int, error) {
 	if DebugLevel == LevelDebugFull {
 		r = io.TeeReader(r, debugOut)
 		log.Print("Body: ")
@@ -235,14 +236,13 @@ func (m *MailjetClient) doRequest(req *http.Request) (resp *http.Response, err e
 // checkResponseError returns response error if the statuscode is < 200 or >= 400.
 func checkResponseError(resp *http.Response) error {
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
-		var mailjet_err MailjetError
-		err := json.NewDecoder(resp.Body).Decode(&mailjet_err)
+		var mailjetErr MailjetError
+		err := json.NewDecoder(resp.Body).Decode(&mailjetErr)
 		if err != nil {
 			return fmt.Errorf("Unexpected server response code: %d: %s", resp.StatusCode, err)
-		} else {
-			return fmt.Errorf("Unexpected server response code: %d: %s (%s)",
-				resp.StatusCode, mailjet_err.ErrorMessage, mailjet_err.ErrorInfo)
 		}
+		return fmt.Errorf("Unexpected server response code: %d: %s (%s)",
+			resp.StatusCode, mailjetErr.ErrorMessage, mailjetErr.ErrorInfo)
 	}
 	return nil
 }

@@ -27,13 +27,13 @@ func TestSendMailSmtp(t *testing.T) {
 	header.Add("Subject", "SMTP testing")
 	header.Add("X-Mailjet-Campaign", "test")
 	content := []byte("SendMailSmtp is working !")
-	info := &MailjetSmtp{
+	info := &MailjetSMTP{
 		From:       email,
 		Recipients: header["To"],
 		Header:     header,
 		Content:    content,
 	}
-	err = mj.SendMailSmtp(info)
+	err = mj.SendMailSMTP(info)
 	if err != nil {
 		t.Fatal("Unexpected error:", err)
 	}

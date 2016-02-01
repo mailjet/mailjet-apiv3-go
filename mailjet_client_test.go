@@ -26,12 +26,12 @@ func TestNewMailjetClient(t *testing.T) {
 	sk := os.Getenv("MJ_APIKEY_PRIVATE")
 	m := NewMailjetClient(ak, sk)
 
-	if ak != m.ApiKeyPublic() {
-		t.Fatal("Wrong public key:", m.ApiKeyPublic())
+	if ak != m.APIKeyPublic() {
+		t.Fatal("Wrong public key:", m.APIKeyPublic())
 	}
 
-	if sk != m.ApiKeyPrivate() {
-		t.Fatal("Wrong secret key:", m.ApiKeyPrivate())
+	if sk != m.APIKeyPrivate() {
+		t.Fatal("Wrong secret key:", m.APIKeyPrivate())
 	}
 
 	if http.DefaultClient != m.Client() {

@@ -1,4 +1,4 @@
-// The Mailjet Package provides methods for interacting with the last version of the Mailjet API.
+// Package mailjet provides methods for interacting with the last version of the Mailjet API.
 // The goal of this component is to simplify the usage of the MailJet API for GO developers.
 //
 // For more details, see the full API Documentation at http://dev.mailjet.com/
@@ -24,13 +24,13 @@ func NewMailjetClient(apiKeyPublic, apiKeyPrivate string) *MailjetClient {
 	return mj
 }
 
-// ApikeyPublic returns the public key.
-func (mj *MailjetClient) ApiKeyPublic() string {
+// APIKeyPublic returns the public key.
+func (mj *MailjetClient) APIKeyPublic() string {
 	return mj.apiKeyPublic
 }
 
-// ApikeyPrivate returns the secret key.
-func (mj *MailjetClient) ApiKeyPrivate() string {
+// APIKeyPrivate returns the secret key.
+func (mj *MailjetClient) APIKeyPrivate() string {
 	return mj.apiKeyPrivate
 }
 
@@ -76,8 +76,7 @@ func Sort(value string, order SortOrder) MailjetOptions {
 // and stores the result in the value pointed to by res.
 // Filters can be add via functional options.
 func (mj *MailjetClient) List(resource string, res interface{}, options ...MailjetOptions) (count, total int, err error) {
-
-	url := buildUrl(&MailjetRequest{Resource: resource})
+	url := buildURL(&MailjetRequest{Resource: resource})
 	req, err := createRequest("GET", url, nil, nil, options...)
 	if err != nil {
 		return count, total, err
@@ -90,7 +89,7 @@ func (mj *MailjetClient) List(resource string, res interface{}, options ...Mailj
 	}
 	defer resp.Body.Close()
 
-	return readJsonResult(resp.Body, res)
+	return readJSONResult(resp.Body, res)
 }
 
 // Get issues a GET to view a resource specifying an id
@@ -98,8 +97,7 @@ func (mj *MailjetClient) List(resource string, res interface{}, options ...Mailj
 // Filters can be add via functional options.
 // Without an specified ID in MailjetRequest, it is the same as List.
 func (mj *MailjetClient) Get(mr *MailjetRequest, res interface{}, options ...MailjetOptions) (err error) {
-
-	url := buildUrl(mr)
+	url := buildURL(mr)
 	req, err := createRequest("GET", url, nil, nil, options...)
 	if err != nil {
 		return err
@@ -112,7 +110,7 @@ func (mj *MailjetClient) Get(mr *MailjetRequest, res interface{}, options ...Mai
 	}
 	defer resp.Body.Close()
 
-	_, _, err = readJsonResult(resp.Body, res)
+	_, _, err = readJSONResult(resp.Body, res)
 	return err
 }
 
@@ -120,7 +118,7 @@ func (mj *MailjetClient) Get(mr *MailjetRequest, res interface{}, options ...Mai
 // and stores the result in the value pointed to by res.
 // Filters can be add via functional options.
 func (mj *MailjetClient) Post(fmr *FullMailjetRequest, res interface{}, options ...MailjetOptions) (err error) {
-	url := buildUrl(fmr.Info)
+	url := buildURL(fmr.Info)
 	req, err := createRequest("POST", url, fmr.Payload, nil, options...)
 	if err != nil {
 		return err
@@ -134,7 +132,7 @@ func (mj *MailjetClient) Post(fmr *FullMailjetRequest, res interface{}, options 
 	}
 	defer resp.Body.Close()
 
-	_, _, err = readJsonResult(resp.Body, res)
+	_, _, err = readJSONResult(resp.Body, res)
 	return err
 }
 
@@ -143,7 +141,7 @@ func (mj *MailjetClient) Post(fmr *FullMailjetRequest, res interface{}, options 
 // If onlyFields is nil, all fields except these with the tag read_only, are updated.
 // Filters can be add via functional options.
 func (mj *MailjetClient) Put(fmr *FullMailjetRequest, onlyFields []string, options ...MailjetOptions) (err error) {
-	url := buildUrl(fmr.Info)
+	url := buildURL(fmr.Info)
 	req, err := createRequest("PUT", url, fmr.Payload, onlyFields, options...)
 	if err != nil {
 		return err
@@ -159,7 +157,7 @@ func (mj *MailjetClient) Put(fmr *FullMailjetRequest, onlyFields []string, optio
 
 // Delete is used to delete a resource.
 func (mj *MailjetClient) Delete(mr *MailjetRequest) (err error) {
-	url := buildUrl(mr)
+	url := buildURL(mr)
 	r, err := createRequest("DELETE", url, nil, nil)
 	if err != nil {
 		return err
@@ -172,7 +170,7 @@ func (mj *MailjetClient) Delete(mr *MailjetRequest) (err error) {
 	return err
 }
 
-// SendMailApi send mail via API.
+// SendMail send mail via API.
 func (mj *MailjetClient) SendMail(data *MailjetSendMail) (res *MailjetSentResult, err error) {
 	url := apiBase + "/send/message"
 	req, err := createRequest("POST", url, data, nil)

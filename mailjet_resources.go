@@ -73,7 +73,7 @@ type MailjetSendMail struct {
 	Bcc                      []string           `json:",omitempty"`
 	Subject                  string
 	TextPart                 string              `json:"Text-part,omitempty"`
-	HtmlPart                 string              `json:"Html-part,omitempty"`
+	HTMLPart                 string              `json:"Html-part,omitempty"`
 	Attachments              []MailjetAttachment `json:",omitempty"`
 	InlineAttachments        []MailjetAttachment `json:"Inline_attachments,omitempty"`
 	MjPrio                   int                 `json:"Mj-prio,omitempty"`
