@@ -218,8 +218,11 @@ func readJsonResult(r io.Reader, data interface{}) (int, int, error) {
 func (m *MailjetClient) doRequest(req *http.Request) (resp *http.Response, err error) {
 	debugRequest(req) //DEBUG
 	req.SetBasicAuth(m.apiKeyPublic, m.apiKeyPrivate)
-	for attempt := 0; err == nil && resp.StatusCode == 500 && attempt < NbAttempt; attempt++ {
+	for attempt := 0; attempt < NbAttempt; attempt++ {
 		resp, err = m.client.Do(req)
+		if err != nil || (resp != nil && resp.StatusCode != 500) {
+			break
+		}
 	}
 	defer debugResponse(resp) //DEBUG
 	if err != nil {
