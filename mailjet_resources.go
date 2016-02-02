@@ -64,26 +64,30 @@ type MailjetError struct {
 //
 
 type MailjetSendMail struct {
-	FromEmail             string
-	FromName              string
-	Sender                string             `json:",omitempty"`
-	Recipients            []MailjetRecipient `json:",omitempty"`
-	To                    []string           `json:",omitempty"`
-	Cc                    []string           `json:",omitempty"`
-	Bcc                   []string           `json:",omitempty"`
-	Subject               string
-	TextPart              string              `json:"Text-part,omitempty"`
-	HtmlPart              string              `json:"Html-part,omitempty"`
-	Attachments           []MailjetAttachment `json:",omitempty"`
-	InlineAttachments     []MailjetAttachment `json:"Inline_attachments,omitempty"`
-	MjPrio                int                 `json:"Mj-prio,omitempty"`
-	MjCampaign            string              `json:"Mj-campaign,omitempty"`
-	MjDeduplicateCampaign bool                `json:"Mj-deduplicatecampaign,omitempty"`
-	MjCustomID            string              `json:"Mj-CustomID,omitempty"`
-	MjEventPayLoad        string              `json:"Mj-EventPayLoad,omitempty"`
-	Headers               map[string]string   `json:",omitempty"`
-	Vars                  interface{}         `json:",omitempty"`
-	Messages              []MailjetSendMail   `json:",omitempty"`
+	FromEmail                string
+	FromName                 string
+	Sender                   string             `json:",omitempty"`
+	Recipients               []MailjetRecipient `json:",omitempty"`
+	To                       []string           `json:",omitempty"`
+	Cc                       []string           `json:",omitempty"`
+	Bcc                      []string           `json:",omitempty"`
+	Subject                  string
+	TextPart                 string              `json:"Text-part,omitempty"`
+	HtmlPart                 string              `json:"Html-part,omitempty"`
+	Attachments              []MailjetAttachment `json:",omitempty"`
+	InlineAttachments        []MailjetAttachment `json:"Inline_attachments,omitempty"`
+	MjPrio                   int                 `json:"Mj-prio,omitempty"`
+	MjCampaign               string              `json:"Mj-campaign,omitempty"`
+	MjDeduplicateCampaign    bool                `json:"Mj-deduplicatecampaign,omitempty"`
+	MjCustomID               string              `json:"Mj-CustomID,omitempty"`
+	MjTemplateID             string              `json:"Mj-TemplateID,omitempty"`
+	MjTemplateErrorReporting string              `json:"MJ-TemplateErrorReporting,omitempty"`
+	MjTemplateLanguage       string              `json:"Mj-TemplateLanguage,omitempty"`
+	MjTemplateErrorDeliver   string              `json:"MJ-TemplateErrorDeliver,omitempty"`
+	MjEventPayLoad           string              `json:"Mj-EventPayLoad,omitempty"`
+	Headers                  map[string]string   `json:",omitempty"`
+	Vars                     interface{}         `json:",omitempty"`
+	Messages                 []MailjetSendMail   `json:",omitempty"`
 }
 
 type MailjetRecipient struct {

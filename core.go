@@ -14,11 +14,14 @@ import (
 	"strings"
 )
 
-// DebugLevel define the verbosity of the debug
+// DebugLevel defines the verbosity of the debug
 //		LevelNone: No debug
 //		LevelDebug: Debug without body
 //		LevelDebugFull: Debug with body
 var DebugLevel int
+
+// NbAttempt defines the number of attempt for a request as long as StatusCode == 500
+var NbAttempt = 5
 
 const (
 	LevelNone = iota
@@ -215,7 +218,12 @@ func readJsonResult(r io.Reader, data interface{}) (int, int, error) {
 func (m *MailjetClient) doRequest(req *http.Request) (resp *http.Response, err error) {
 	debugRequest(req) //DEBUG
 	req.SetBasicAuth(m.apiKeyPublic, m.apiKeyPrivate)
-	resp, err = m.client.Do(req)
+	for attempt := 0; attempt < NbAttempt; attempt++ {
+		resp, err = m.client.Do(req)
+		if err != nil || (resp != nil && resp.StatusCode != 500) {
+			break
+		}
+	}
 	defer debugResponse(resp) //DEBUG
 	if err != nil {
 		return nil, fmt.Errorf("Error getting %s: %s", req.URL, err)
