@@ -4,16 +4,20 @@ import (
 	"net/http"
 )
 
-// MailjetClient bundles data needed by a large number
+/*
+** API structures
+*/
+
+// Client bundles data needed by a large number
 // of methods in order to interact with the Mailjet API.
-type MailjetClient struct {
+type Client struct {
 	apiKeyPublic  string
 	apiKeyPrivate string
 	client        *http.Client
 }
 
-// MailjetRequest bundles data needed to build the URL.
-type MailjetRequest struct {
+// Request bundles data needed to build the URL.
+type Request struct {
 	Resource string
 	ID       int64
 	AltID    string
@@ -21,8 +25,8 @@ type MailjetRequest struct {
 	ActionID int64
 }
 
-// MailjetDataRequest bundles data needed to build the DATA URL.
-type MailjetDataRequest struct {
+// DataRequest bundles data needed to build the DATA URL.
+type DataRequest struct {
 	SourceType   string
 	SourceTypeID int64
 	DataType     string
@@ -31,51 +35,53 @@ type MailjetDataRequest struct {
 	LastID       bool
 }
 
-// FullMailjetRequest is the same as a MailjetRequest but with a payload.
-type FullMailjetRequest struct {
-	Info    *MailjetRequest
+// FullRequest is the same as a Request but with a payload.
+type FullRequest struct {
+	Info    *Request
 	Payload interface{}
 }
 
-// FullMailjetDataRequest is the same as a MailjetDataRequest but with a payload.
-type FullMailjetDataRequest struct {
-	Info    *MailjetDataRequest
+// FullDataRequest is the same as a DataRequest but with a payload.
+type FullDataRequest struct {
+	Info    *DataRequest
 	Payload interface{}
 }
 
-type MailjetOptions func(*http.Request)
+// RequestOptions are functional options that modify the specified request.
+type RequestOptions func(*http.Request)
 
-// MailjetResult is the JSON result sent by the API.
-type MailjetResult struct {
+// RequestResult is the JSON result sent by the API.
+type RequestResult struct {
 	Count int
 	Data  interface{}
 	Total int
 }
 
-// MailjetError is the error returned by the API.
-type MailjetError struct {
+// RequestError is the error returned by the API.
+type RequestError struct {
 	ErrorInfo    string
 	ErrorMessage string
 	StatusCode   int
 }
 
-//
-// Send API structures
-//
+/*
+** Send API structures
+*/
 
-type MailjetSendMail struct {
+// InfoSendMail bundles data used by the Send API.
+type InfoSendMail struct {
 	FromEmail                string
 	FromName                 string
 	Sender                   string             `json:",omitempty"`
-	Recipients               []MailjetRecipient `json:",omitempty"`
+	Recipients               []Recipient `json:",omitempty"`
 	To                       []string           `json:",omitempty"`
 	Cc                       []string           `json:",omitempty"`
 	Bcc                      []string           `json:",omitempty"`
 	Subject                  string
 	TextPart                 string              `json:"Text-part,omitempty"`
 	HTMLPart                 string              `json:"Html-part,omitempty"`
-	Attachments              []MailjetAttachment `json:",omitempty"`
-	InlineAttachments        []MailjetAttachment `json:"Inline_attachments,omitempty"`
+	Attachments              []Attachment `json:",omitempty"`
+	InlineAttachments        []Attachment `json:"Inline_attachments,omitempty"`
 	MjPrio                   int                 `json:"Mj-prio,omitempty"`
 	MjCampaign               string              `json:"Mj-campaign,omitempty"`
 	MjDeduplicateCampaign    bool                `json:"Mj-deduplicatecampaign,omitempty"`
@@ -87,26 +93,27 @@ type MailjetSendMail struct {
 	MjEventPayLoad           string              `json:"Mj-EventPayLoad,omitempty"`
 	Headers                  map[string]string   `json:",omitempty"`
 	Vars                     interface{}         `json:",omitempty"`
-	Messages                 []MailjetSendMail   `json:",omitempty"`
+	Messages                 []InfoSendMail   `json:",omitempty"`
 }
 
-type MailjetRecipient struct {
+// Recipient bundles data on the target of the mail.
+type Recipient struct {
 	Email string
 	Name  string
 	Vars  interface{} `json:",omitempty"`
 }
 
-type MailjetAttachment struct {
+// Attachment bundles data on the file attached to the mail.
+type Attachment struct {
 	ContentType string `json:"Content-Type"`
 	Content     string
 	Filename    string
 }
 
-type MailjetSent struct {
-	Email     string
-	MessageID int
-}
-
-type MailjetSentResult struct {
-	Sent []MailjetSent
+// SentResult is the JSON result sent by the Send API.
+type SentResult struct {
+	Sent []struct {
+		Email     string
+		MessageID int
+	}
 }

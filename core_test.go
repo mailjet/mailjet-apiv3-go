@@ -69,7 +69,7 @@ func TestConvertPayload(t *testing.T) {
 }
 
 func TestBuildUrl(t *testing.T) {
-	info := &MailjetRequest{
+	info := &Request{
 		Resource: "contactslist",
 		ID:       1,
 		Action:   "managemanycontacts",

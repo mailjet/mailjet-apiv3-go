@@ -73,7 +73,7 @@ func TestGet(t *testing.T) {
 		t.Fatal("Empty result")
 	}
 
-	mr := &MailjetRequest{Resource: resource, ID: data[0].ID}
+	mr := &Request{Resource: resource, ID: data[0].ID}
 	data = make([]resources.User, 0)
 	err = m.Get(mr, &data)
 	if err != nil {
@@ -88,8 +88,8 @@ func TestPost(t *testing.T) {
 	var data []resources.Contact
 	rstr := randSeq(10)
 	fmt.Printf("Create new contact: \"%s@mailjet.com\"\n", rstr)
-	fmr := &FullMailjetRequest{
-		Info:    &MailjetRequest{Resource: "contact"},
+	fmr := &FullRequest{
+		Info:    &Request{Resource: "contact"},
 		Payload: &resources.Contact{Name: rstr, Email: rstr + "@mailjet.com"},
 	}
 	err := m.Post(fmr, &data)
@@ -121,8 +121,8 @@ func TestPut(t *testing.T) {
 	rstr := randSeq(10)
 	fmt.Printf("Update name of the contact list: %s -> %s\n", data[0].Name, rstr)
 	data[0].Name = randSeq(10)
-	fmr := &FullMailjetRequest{
-		Info:    &MailjetRequest{Resource: resource, AltID: data[0].Address},
+	fmr := &FullRequest{
+		Info:    &Request{Resource: resource, AltID: data[0].Address},
 		Payload: data[0],
 	}
 	err = m.Put(fmr, []string{"Name"})
@@ -148,7 +148,7 @@ func TestDelete(t *testing.T) {
 		t.Fatal("Empty result")
 	}
 
-	mr := &MailjetRequest{
+	mr := &Request{
 		ID:       data[0].ID,
 		Resource: resource,
 	}
@@ -170,11 +170,11 @@ func TestSendMail(t *testing.T) {
 		t.Fatal("At least one sender expected in the test account!")
 	}
 
-	param := &MailjetSendMail{
+	param := &InfoSendMail{
 		FromEmail: data[0].Email,
 		FromName:  data[0].Name,
-		Recipients: []MailjetRecipient{
-			MailjetRecipient{
+		Recipients: []Recipient{
+			Recipient{
 				Email: data[0].Email,
 			},
 		},

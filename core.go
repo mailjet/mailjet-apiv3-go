@@ -7,43 +7,38 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"reflect"
 	"runtime"
 	"strconv"
 	"strings"
 )
 
-// DebugLevel defines the verbosity of the debug
+// DebugLevel defines the verbosity of the debug.
 var DebugLevel int
 
-//		LevelNone: No debug
-//		LevelDebug: Debug without body
-//		LevelDebugFull: Debug with body
+// These are the different level of debug.
 const (
-	LevelNone = iota
-	LevelDebug
-	LevelDebugFull
+	LevelNone      = iota // No debug.
+	LevelDebug            // Debug without body.
+	LevelDebugFull        // Debug with body.
 )
-// NbAttempt defines the number of attempt for a request as long as StatusCode == 500
-var NbAttempt = 5
 
-
-
-var debugOut io.Writer = os.Stderr
+// User-Agent is formated as "UserAgentBase/UserAgentVersion;runtime.Version()".
+const (
+	UserAgentBase    = "mailjet-api-v3-go"
+	UserAgentVersion = "2.0.0"
+)
 
 const (
-	apiBase                 = "https://api.mailjet.com/v3"
-	apiPath                 = "REST"
-	dataPath                = "DATA"
-	MailjetUserAgentBase    = "mailjet-api-v3-go"
-	MailjetUserAgentVersion = "1.0.0"
+	apiBase  = "https://api.mailjet.com/v3"
+	apiPath  = "REST"
+	dataPath = "DATA"
 )
 
 // createRequest is the main core function.
 func createRequest(method string, url string,
 	payload interface{}, onlyFields []string,
-	options ...MailjetOptions) (req *http.Request, err error) {
+	options ...RequestOptions) (req *http.Request, err error) {
 
 	body, err := convertPayload(payload, onlyFields)
 	if err != nil {
@@ -150,14 +145,14 @@ func isEmptyValue(v reflect.Value) bool {
 // userAgent add the User-Agent value to the request header.
 func userAgent(req *http.Request) {
 	ua := fmt.Sprintf("%s/%s;%s",
-		MailjetUserAgentBase,
-		MailjetUserAgentVersion,
+		UserAgentBase,
+		UserAgentVersion,
 		runtime.Version(),
 	)
 	req.Header.Add("User-Agent", ua)
 }
 
-func buildURL(info *MailjetRequest) string {
+func buildURL(info *Request) string {
 	tokens := []string{apiBase, apiPath, info.Resource}
 	if info.ID != 0 {
 		id := strconv.FormatInt(info.ID, 10)
@@ -175,7 +170,7 @@ func buildURL(info *MailjetRequest) string {
 	return strings.Join(tokens, "/")
 }
 
-func buildDataURL(info *MailjetDataRequest) string {
+func buildDataURL(info *DataRequest) string {
 	tokens := []string{apiBase, dataPath, info.SourceType}
 	if info.SourceTypeID != 0 {
 		id := strconv.FormatInt(info.SourceTypeID, 10)
@@ -205,7 +200,7 @@ func readJSONResult(r io.Reader, data interface{}) (int, int, error) {
 		defer fmt.Fprintln(debugOut)
 	}
 
-	var res MailjetResult
+	var res RequestResult
 	res.Data = &data
 	err := json.NewDecoder(r).Decode(&res)
 	if err != nil {
@@ -214,9 +209,13 @@ func readJSONResult(r io.Reader, data interface{}) (int, int, error) {
 	return res.Count, res.Total, nil
 }
 
+// NbAttempt defines the number of attempt
+// for a request as long as StatusCode == 500.
+var NbAttempt = 5
+
 // doRequest is called to execute the request. Authentification is set
 // with the public key and the secret key specified in MailjetClient.
-func (m *MailjetClient) doRequest(req *http.Request) (resp *http.Response, err error) {
+func (m *Client) doRequest(req *http.Request) (resp *http.Response, err error) {
 	debugRequest(req) //DEBUG
 	req.SetBasicAuth(m.apiKeyPublic, m.apiKeyPrivate)
 	for attempt := 0; attempt < NbAttempt; attempt++ {
@@ -236,7 +235,7 @@ func (m *MailjetClient) doRequest(req *http.Request) (resp *http.Response, err e
 // checkResponseError returns response error if the statuscode is < 200 or >= 400.
 func checkResponseError(resp *http.Response) error {
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
-		var mailjetErr MailjetError
+		var mailjetErr RequestError
 		err := json.NewDecoder(resp.Body).Decode(&mailjetErr)
 		if err != nil {
 			return fmt.Errorf("Unexpected server response code: %d: %s", resp.StatusCode, err)
