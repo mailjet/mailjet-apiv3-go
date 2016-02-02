@@ -114,8 +114,8 @@ func main() {
 	mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
 	var senders []resources.Sender
-	fmr := &FullMailjetRequest{
-		Info:    &MailjetRequest{Resource: "sender"},
+	fmr := &FullRequest{
+		Info:    &Request{Resource: "sender"},
 		Payload: &resources.Sender{Name: "Default", Email: "qwe@qwe.com"},
 	}
 	err := mj.Post(fmr, &senders)
@@ -146,8 +146,8 @@ func main() {
 
 	mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
-	fmr := &FullMailjetRequest{
-		Info:    &MailjetRequest{Resource: "sender", AltID: "qwe@qwe.com"},
+	fmr := &FullRequest{
+		Info:    &Request{Resource: "sender", AltID: "qwe@qwe.com"},
 		Payload: &resources.Sender{Name: "Bob", IsDefaultSender: true},
 	}
 	err := mj.Put(fmr, []string{"Name", "IsDefaultSender"})
@@ -178,7 +178,7 @@ func main() {
 	mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
 	var senders []resources.Sender
-	info := &MailjetRequest {
+	info := &Request {
 		Resource: "sender",
 		AltID:    "qwe@qwe.com",
 	}
@@ -210,7 +210,7 @@ func main() {
 
 	mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
-	info := &MailjetRequest{
+	info := &Request{
 		Resource: "sender",
 		AltID:    "qwe@qwe.com",
 	}
@@ -241,11 +241,11 @@ func main() {
 
 	mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
-	param := &mailjet.MailjetSendMail{
+	param := &mailjet.InfoSendMail{
 		FromEmail: "qwe@qwe.com",
 		FromName: "Bob Patrick",
-		Recipients: []mailjet.MailjetRecipient{
-			mailjet.MailjetRecipient{
+		Recipients: []mailjet.Recipient{
+			mailjet.Recipient{
 				Email: "qwe@qwe.com",
 			},
 		},

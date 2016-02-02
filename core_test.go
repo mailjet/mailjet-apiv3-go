@@ -21,8 +21,8 @@ func TestCreateRequest(t *testing.T) {
 		t.Fatal("Wrong URL:", req.URL.String())
 	}
 	ua := fmt.Sprintf("%s/%s;%s",
-		MailjetUserAgentBase,
-		MailjetUserAgentVersion,
+		UserAgentBase,
+		UserAgentVersion,
 		runtime.Version(),
 	)
 	if req.Header["User-Agent"] == nil || req.Header["User-Agent"][0] != ua {
@@ -69,14 +69,14 @@ func TestConvertPayload(t *testing.T) {
 }
 
 func TestBuildUrl(t *testing.T) {
-	info := &MailjetRequest{
+	info := &Request{
 		Resource: "contactslist",
 		ID:       1,
 		Action:   "managemanycontacts",
 		ActionID: 5,
 	}
 	expected := "https://api.mailjet.com/v3/REST/contactslist/1/managemanycontacts/5"
-	res := buildUrl(info)
+	res := buildURL(info)
 	if res != expected {
 		t.Fatal("Fail to build URL:", res)
 	}
@@ -88,7 +88,7 @@ func TestReadJsonResult(t *testing.T) {
 	}
 	var data []TestStruct
 	body := `{"Count":2,"Data":[{"Email":"qwe@qwe.com"},{"Email":"aze@aze.com"}],"Total":1}`
-	count, total, err := readJsonResult(strings.NewReader(body), &data)
+	count, total, err := readJSONResult(strings.NewReader(body), &data)
 	if err != nil {
 		t.Fatal("Unexpected error:", err)
 	}

@@ -1,4 +1,4 @@
-// The Resources package provides mailjet resources properties. This is an helper and
+// Package resources provides mailjet resources properties. This is an helper and
 // not a mandatory package.
 package resources
 

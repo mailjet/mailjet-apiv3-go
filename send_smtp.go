@@ -8,29 +8,30 @@ import (
 	"strings"
 )
 
-// MailjetSmtp contains mandatory informations to send a mail via SMTP.
-type MailjetSmtp struct {
+// InfoSMTP contains mandatory informations to send a mail via SMTP.
+type InfoSMTP struct {
 	From       string
 	Recipients []string
 	Header     textproto.MIMEHeader
 	Content    []byte
 }
 
+// Hostname and port for the SMTP client.
 const (
-	MailjetHostSmtp = "in-v3.mailjet.com"
-	MailjetPortSmtp = 587
+	HostSMTP = "in-v3.mailjet.com"
+	PortSMTP = 587
 )
 
-// SendMailSmtp send mail via SMTP.
-func (mj *MailjetClient) SendMailSmtp(info *MailjetSmtp) (err error) {
+// SendMailSMTP send mail via SMTP.
+func (mj *Client) SendMailSMTP(info *InfoSMTP) (err error) {
 	auth := smtp.PlainAuth(
 		"",
 		mj.apiKeyPublic,
 		mj.apiKeyPrivate,
-		MailjetHostSmtp,
+		HostSMTP,
 	)
 
-	host := fmt.Sprintf("%s:%d", MailjetHostSmtp, MailjetPortSmtp)
+	host := fmt.Sprintf("%s:%d", HostSMTP, PortSMTP)
 	err = smtp.SendMail(
 		host,
 		auth,

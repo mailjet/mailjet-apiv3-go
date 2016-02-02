@@ -1,4 +1,4 @@
-// The Mailjet Package provides methods for interacting with the last version of the Mailjet API.
+// Package mailjet provides methods for interacting with the last version of the Mailjet API.
 // The goal of this component is to simplify the usage of the MailJet API for GO developers.
 //
 // For more details, see the full API Documentation at http://dev.mailjet.com/
@@ -10,13 +10,14 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 )
 
 // NewMailjetClient returns a new MailjetClient using an public apikey
 // and an secret apikey to be used when authenticating to API.
-func NewMailjetClient(apiKeyPublic, apiKeyPrivate string) *MailjetClient {
-	mj := &MailjetClient{
+func NewMailjetClient(apiKeyPublic, apiKeyPrivate string) *Client {
+	mj := &Client{
 		apiKeyPublic:  apiKeyPublic,
 		apiKeyPrivate: apiKeyPrivate,
 		client:        http.DefaultClient,
@@ -24,25 +25,27 @@ func NewMailjetClient(apiKeyPublic, apiKeyPrivate string) *MailjetClient {
 	return mj
 }
 
-// ApikeyPublic returns the public key.
-func (mj *MailjetClient) ApiKeyPublic() string {
+// APIKeyPublic returns the public key.
+func (mj *Client) APIKeyPublic() string {
 	return mj.apiKeyPublic
 }
 
-// ApikeyPrivate returns the secret key.
-func (mj *MailjetClient) ApiKeyPrivate() string {
+// APIKeyPrivate returns the secret key.
+func (mj *Client) APIKeyPrivate() string {
 	return mj.apiKeyPrivate
 }
 
 // Client returns the http client used by the wrapper.
-func (mj *MailjetClient) Client() *http.Client {
+func (mj *Client) Client() *http.Client {
 	return mj.client
 }
 
 // SetClient allows to customize http client.
-func (mj *MailjetClient) SetClient(c *http.Client) {
+func (mj *Client) SetClient(c *http.Client) {
 	mj.client = c
 }
+
+var debugOut io.Writer = os.Stderr
 
 // SetDebugOutput sets the output destination for the debug.
 func SetDebugOutput(w io.Writer) {
@@ -50,7 +53,8 @@ func SetDebugOutput(w io.Writer) {
 	log.SetOutput(w)
 }
 
-func Filter(key, value string) MailjetOptions {
+// Filter applies a filter with the defined key and value.
+func Filter(key, value string) RequestOptions {
 	return func(req *http.Request) {
 		q := req.URL.Query()
 		q.Add(key, value)
@@ -58,14 +62,17 @@ func Filter(key, value string) MailjetOptions {
 	}
 }
 
+// SortOrder defines the order of the result.
 type SortOrder int
 
+// These are the two possible order.
 const (
 	SortDesc = SortOrder(iota)
 	SortAsc
 )
 
-func Sort(value string, order SortOrder) MailjetOptions {
+// Sort applies the Sort filter to the request.
+func Sort(value string, order SortOrder) RequestOptions {
 	if order == SortDesc {
 		value = value + "+DESC"
 	}
@@ -75,9 +82,8 @@ func Sort(value string, order SortOrder) MailjetOptions {
 // List issues a GET to list the specified resource
 // and stores the result in the value pointed to by res.
 // Filters can be add via functional options.
-func (mj *MailjetClient) List(resource string, res interface{}, options ...MailjetOptions) (count, total int, err error) {
-
-	url := buildUrl(&MailjetRequest{Resource: resource})
+func (mj *Client) List(resource string, res interface{}, options ...RequestOptions) (count, total int, err error) {
+	url := buildURL(&Request{Resource: resource})
 	req, err := createRequest("GET", url, nil, nil, options...)
 	if err != nil {
 		return count, total, err
@@ -90,16 +96,15 @@ func (mj *MailjetClient) List(resource string, res interface{}, options ...Mailj
 	}
 	defer resp.Body.Close()
 
-	return readJsonResult(resp.Body, res)
+	return readJSONResult(resp.Body, res)
 }
 
 // Get issues a GET to view a resource specifying an id
 // and stores the result in the value pointed to by res.
 // Filters can be add via functional options.
 // Without an specified ID in MailjetRequest, it is the same as List.
-func (mj *MailjetClient) Get(mr *MailjetRequest, res interface{}, options ...MailjetOptions) (err error) {
-
-	url := buildUrl(mr)
+func (mj *Client) Get(mr *Request, res interface{}, options ...RequestOptions) (err error) {
+	url := buildURL(mr)
 	req, err := createRequest("GET", url, nil, nil, options...)
 	if err != nil {
 		return err
@@ -112,15 +117,15 @@ func (mj *MailjetClient) Get(mr *MailjetRequest, res interface{}, options ...Mai
 	}
 	defer resp.Body.Close()
 
-	_, _, err = readJsonResult(resp.Body, res)
+	_, _, err = readJSONResult(resp.Body, res)
 	return err
 }
 
 // Post issues a POST to create a new resource
 // and stores the result in the value pointed to by res.
 // Filters can be add via functional options.
-func (mj *MailjetClient) Post(fmr *FullMailjetRequest, res interface{}, options ...MailjetOptions) (err error) {
-	url := buildUrl(fmr.Info)
+func (mj *Client) Post(fmr *FullRequest, res interface{}, options ...RequestOptions) (err error) {
+	url := buildURL(fmr.Info)
 	req, err := createRequest("POST", url, fmr.Payload, nil, options...)
 	if err != nil {
 		return err
@@ -134,7 +139,7 @@ func (mj *MailjetClient) Post(fmr *FullMailjetRequest, res interface{}, options 
 	}
 	defer resp.Body.Close()
 
-	_, _, err = readJsonResult(resp.Body, res)
+	_, _, err = readJSONResult(resp.Body, res)
 	return err
 }
 
@@ -142,8 +147,8 @@ func (mj *MailjetClient) Post(fmr *FullMailjetRequest, res interface{}, options 
 // Fields to be updated must be specified by the string array onlyFields.
 // If onlyFields is nil, all fields except these with the tag read_only, are updated.
 // Filters can be add via functional options.
-func (mj *MailjetClient) Put(fmr *FullMailjetRequest, onlyFields []string, options ...MailjetOptions) (err error) {
-	url := buildUrl(fmr.Info)
+func (mj *Client) Put(fmr *FullRequest, onlyFields []string, options ...RequestOptions) (err error) {
+	url := buildURL(fmr.Info)
 	req, err := createRequest("PUT", url, fmr.Payload, onlyFields, options...)
 	if err != nil {
 		return err
@@ -158,8 +163,8 @@ func (mj *MailjetClient) Put(fmr *FullMailjetRequest, onlyFields []string, optio
 }
 
 // Delete is used to delete a resource.
-func (mj *MailjetClient) Delete(mr *MailjetRequest) (err error) {
-	url := buildUrl(mr)
+func (mj *Client) Delete(mr *Request) (err error) {
+	url := buildURL(mr)
 	r, err := createRequest("DELETE", url, nil, nil)
 	if err != nil {
 		return err
@@ -172,8 +177,8 @@ func (mj *MailjetClient) Delete(mr *MailjetRequest) (err error) {
 	return err
 }
 
-// SendMailApi send mail via API.
-func (mj *MailjetClient) SendMail(data *MailjetSendMail) (res *MailjetSentResult, err error) {
+// SendMail send mail via API.
+func (mj *Client) SendMail(data *InfoSendMail) (res *SentResult, err error) {
 	url := apiBase + "/send/message"
 	req, err := createRequest("POST", url, data, nil)
 	if err != nil {
