@@ -21,8 +21,8 @@ func TestCreateRequest(t *testing.T) {
 		t.Fatal("Wrong URL:", req.URL.String())
 	}
 	ua := fmt.Sprintf("%s/%s;%s",
-		MailjetUserAgentBase,
-		MailjetUserAgentVersion,
+		UserAgentBase,
+		UserAgentVersion,
 		runtime.Version(),
 	)
 	if req.Header["User-Agent"] == nil || req.Header["User-Agent"][0] != ua {

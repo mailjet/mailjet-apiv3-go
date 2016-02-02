@@ -145,7 +145,7 @@ func ExampleMailjetClient_SendMailSmtp() {
 	header.Add("Subject", "Hello World!")
 	header.Add("X-Mailjet-Campaign", "test")
 	content := []byte("Hi there !")
-	info := &MailjetSMTP{
+	info := &InfoSMTP{
 		From:       "qwe@qwe.com",
 		Recipients: header["To"],
 		Header:     header,

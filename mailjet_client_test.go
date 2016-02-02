@@ -142,7 +142,7 @@ func TestDelete(t *testing.T) {
 		t.Fatal("Unexpected error:", err)
 	}
 	if count < 1 {
-		t.Fatal("At least one listrecipient expected !")
+		return
 	}
 	if data == nil {
 		t.Fatal("Empty result")

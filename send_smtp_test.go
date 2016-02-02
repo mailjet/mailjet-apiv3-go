@@ -27,7 +27,7 @@ func TestSendMailSmtp(t *testing.T) {
 	header.Add("Subject", "SMTP testing")
 	header.Add("X-Mailjet-Campaign", "test")
 	content := []byte("SendMailSmtp is working !")
-	info := &MailjetSMTP{
+	info := &InfoSMTP{
 		From:       email,
 		Recipients: header["To"],
 		Header:     header,
