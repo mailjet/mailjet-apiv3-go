@@ -6,7 +6,7 @@ import (
 
 /*
 ** API structures
-*/
+ */
 
 // Client bundles data needed by a large number
 // of methods in order to interact with the Mailjet API.
@@ -66,34 +66,34 @@ type RequestError struct {
 
 /*
 ** Send API structures
-*/
+ */
 
 // InfoSendMail bundles data used by the Send API.
 type InfoSendMail struct {
 	FromEmail                string
 	FromName                 string
-	Sender                   string             `json:",omitempty"`
+	Sender                   string      `json:",omitempty"`
 	Recipients               []Recipient `json:",omitempty"`
-	To                       []string           `json:",omitempty"`
-	Cc                       []string           `json:",omitempty"`
-	Bcc                      []string           `json:",omitempty"`
+	To                       []string    `json:",omitempty"`
+	Cc                       []string    `json:",omitempty"`
+	Bcc                      []string    `json:",omitempty"`
 	Subject                  string
-	TextPart                 string              `json:"Text-part,omitempty"`
-	HTMLPart                 string              `json:"Html-part,omitempty"`
-	Attachments              []Attachment `json:",omitempty"`
-	InlineAttachments        []Attachment `json:"Inline_attachments,omitempty"`
-	MjPrio                   int                 `json:"Mj-prio,omitempty"`
-	MjCampaign               string              `json:"Mj-campaign,omitempty"`
-	MjDeduplicateCampaign    bool                `json:"Mj-deduplicatecampaign,omitempty"`
-	MjCustomID               string              `json:"Mj-CustomID,omitempty"`
-	MjTemplateID             string              `json:"Mj-TemplateID,omitempty"`
-	MjTemplateErrorReporting string              `json:"MJ-TemplateErrorReporting,omitempty"`
-	MjTemplateLanguage       string              `json:"Mj-TemplateLanguage,omitempty"`
-	MjTemplateErrorDeliver   string              `json:"MJ-TemplateErrorDeliver,omitempty"`
-	MjEventPayLoad           string              `json:"Mj-EventPayLoad,omitempty"`
-	Headers                  map[string]string   `json:",omitempty"`
-	Vars                     interface{}         `json:",omitempty"`
-	Messages                 []InfoSendMail   `json:",omitempty"`
+	TextPart                 string            `json:"Text-part,omitempty"`
+	HTMLPart                 string            `json:"Html-part,omitempty"`
+	Attachments              []Attachment      `json:",omitempty"`
+	InlineAttachments        []Attachment      `json:"Inline_attachments,omitempty"`
+	MjPrio                   int               `json:"Mj-prio,omitempty"`
+	MjCampaign               string            `json:"Mj-campaign,omitempty"`
+	MjDeduplicateCampaign    bool              `json:"Mj-deduplicatecampaign,omitempty"`
+	MjCustomID               string            `json:"Mj-CustomID,omitempty"`
+	MjTemplateID             string            `json:"Mj-TemplateID,omitempty"`
+	MjTemplateErrorReporting string            `json:"MJ-TemplateErrorReporting,omitempty"`
+	MjTemplateLanguage       string            `json:"Mj-TemplateLanguage,omitempty"`
+	MjTemplateErrorDeliver   string            `json:"MJ-TemplateErrorDeliver,omitempty"`
+	MjEventPayLoad           string            `json:"Mj-EventPayLoad,omitempty"`
+	Headers                  map[string]string `json:",omitempty"`
+	Vars                     interface{}       `json:",omitempty"`
+	Messages                 []InfoSendMail    `json:",omitempty"`
 }
 
 // Recipient bundles data on the target of the mail.
