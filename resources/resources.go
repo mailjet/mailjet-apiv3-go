@@ -474,16 +474,17 @@ type Csvimport struct {
 
 // Dns: Sender Domain properties.
 type Dns struct {
-	DKIMRecordName    string           `mailjet:"read_only"`
-	DKIMRecordValue   string           `mailjet:"read_only"`
-	DKIMStatus        string           `mailjet:"read_only"`
-	Domain            string           `mailjet:"read_only"`
-	ID                int64            `mailjet:"read_only"`
-	IsCheckInProgress bool             `mailjet:"read_only"`
-	LastCheckAt       *RFC3339DateTime `mailjet:"read_only"`
-	OwnerShipToken    string           `mailjet:"read_only"`
-	SPFRecordValue    string           `mailjet:"read_only"`
-	SPFStatus         string           `mailjet:"read_only"`
+	DKIMRecordName           string           `mailjet:"read_only"`
+	DKIMRecordValue          string           `mailjet:"read_only"`
+	DKIMStatus               string           `mailjet:"read_only"`
+	Domain                   string           `mailjet:"read_only"`
+	ID                       int64            `mailjet:"read_only"`
+	IsCheckInProgress        bool             `mailjet:"read_only"`
+	LastCheckAt              *RFC3339DateTime `mailjet:"read_only"`
+	OwnerShipToken           string           `mailjet:"read_only"`
+	OwnerShipTokenRecordName string           `mailjet:"read_only"`
+	SPFRecordValue           string           `mailjet:"read_only"`
+	SPFStatus                string           `mailjet:"read_only"`
 }
 
 type DnsCheck struct {
