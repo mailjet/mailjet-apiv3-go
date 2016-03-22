@@ -961,6 +961,13 @@ type Senderstatistics struct {
 	UnsubscribedCount  int64            `mailjet:"read_only"`
 }
 
+// SenderValidate: validation result for a sender or domain
+type SenderValidate struct {
+       Errors           map[string]string `mailjet:"read_only"`
+       ValidationMethod string            `mailjet:"read_only"`
+       GlobalError      string            `mailjet:"read_only"`
+}
+
 // Template: template description
 type Template struct {
 	Author      string   `json:",omitempty"`
