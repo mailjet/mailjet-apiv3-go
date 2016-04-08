@@ -74,9 +74,9 @@ type InfoSendMail struct {
 	FromName                 string
 	Sender                   string      `json:",omitempty"`
 	Recipients               []Recipient `json:",omitempty"`
-	To                       []string    `json:",omitempty"`
-	Cc                       []string    `json:",omitempty"`
-	Bcc                      []string    `json:",omitempty"`
+	To                       string      `json:",omitempty"`
+	Cc                       string      `json:",omitempty"`
+	Bcc                      string      `json:",omitempty"`
 	Subject                  string
 	TextPart                 string            `json:"Text-part,omitempty"`
 	HTMLPart                 string            `json:"Html-part,omitempty"`
