@@ -155,7 +155,7 @@ func (mj *Client) Put(fmr *FullRequest, onlyFields []string, options ...RequestO
 	}
 	req.Header.Add("Content-Type", "application/json")
 	resp, err := mj.doRequest(req)
-	if resp != nil {
+	if resp != nil && err == nil {
 		resp.Body.Close()
 	}
 
@@ -170,7 +170,7 @@ func (mj *Client) Delete(mr *Request) (err error) {
 		return err
 	}
 	resp, err := mj.doRequest(r)
-	if resp != nil {
+	if resp != nil && err == nil {
 		resp.Body.Close()
 	}
 
