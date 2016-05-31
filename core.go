@@ -219,6 +219,9 @@ func (m *Client) doRequest(req *http.Request) (resp *http.Response, err error) {
 	debugRequest(req) //DEBUG
 	req.SetBasicAuth(m.apiKeyPublic, m.apiKeyPrivate)
 	for attempt := 0; attempt < NbAttempt; attempt++ {
+		if resp != nil {
+			resp.Body.Close()
+		}
 		resp, err = m.client.Do(req)
 		if err != nil || (resp != nil && resp.StatusCode != 500) {
 			break
@@ -226,6 +229,9 @@ func (m *Client) doRequest(req *http.Request) (resp *http.Response, err error) {
 	}
 	defer debugResponse(resp) //DEBUG
 	if err != nil {
+		if resp != nil {
+			resp.Body.Close()
+		}
 		return nil, fmt.Errorf("Error getting %s: %s", req.URL, err)
 	}
 	err = checkResponseError(resp)
@@ -237,6 +243,7 @@ func checkResponseError(resp *http.Response) error {
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
 		var mailjetErr RequestError
 		err := json.NewDecoder(resp.Body).Decode(&mailjetErr)
+		resp.Body.Close()
 		if err != nil {
 			return fmt.Errorf("Unexpected server response code: %d: %s", resp.StatusCode, err)
 		}
