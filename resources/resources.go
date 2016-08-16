@@ -916,7 +916,7 @@ type Preferences struct {
 	Value   string `json:",omitempty"`
 }
 
-// Preset: The preset object contains global and user defined presets (styles) independant from templates or newsletters.
+// Preset: The preset object contains global and user defined presets (styles) independent from templates or newsletters.
 // Access is similar to template and depends on OwnerType, Owner. No versioning is done. Presets are never referenced by their ID.
 // The preset value is copied into the template or newsletter.
 type Preset struct {
