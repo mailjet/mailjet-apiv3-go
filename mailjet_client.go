@@ -89,12 +89,14 @@ func (mj *Client) List(resource string, res interface{}, options ...RequestOptio
 		return count, total, err
 	}
 	resp, err := mj.doRequest(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
 	if err != nil {
 		return count, total, err
 	} else if resp == nil {
 		return count, total, fmt.Errorf("empty response")
 	}
-	defer resp.Body.Close()
 
 	return readJSONResult(resp.Body, res)
 }
@@ -110,12 +112,14 @@ func (mj *Client) Get(mr *Request, res interface{}, options ...RequestOptions) (
 		return err
 	}
 	resp, err := mj.doRequest(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
 	if err != nil {
 		return err
 	} else if resp == nil {
 		return fmt.Errorf("empty response")
 	}
-	defer resp.Body.Close()
 
 	_, _, err = readJSONResult(resp.Body, res)
 	return err
@@ -132,12 +136,14 @@ func (mj *Client) Post(fmr *FullRequest, res interface{}, options ...RequestOpti
 	}
 	req.Header.Add("Content-Type", "application/json")
 	resp, err := mj.doRequest(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
 	if err != nil {
 		return err
 	} else if resp == nil {
 		return fmt.Errorf("empty response")
 	}
-	defer resp.Body.Close()
 
 	_, _, err = readJSONResult(resp.Body, res)
 	return err
@@ -186,12 +192,14 @@ func (mj *Client) SendMail(data *InfoSendMail) (res *SentResult, err error) {
 	}
 	req.Header.Add("Content-Type", "application/json")
 	resp, err := mj.doRequest(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
 	if err != nil {
 		return res, err
 	} else if resp == nil {
 		return res, fmt.Errorf("empty response")
 	}
-	defer resp.Body.Close()
 
 	err = json.NewDecoder(resp.Body).Decode(&res)
 	return res, err

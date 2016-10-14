@@ -17,12 +17,14 @@ func (mj *Client) ListData(resource string, res interface{}, options ...RequestO
 		return count, total, err
 	}
 	resp, err := mj.doRequest(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
 	if err != nil {
 		return count, total, err
 	} else if resp == nil {
 		return count, total, fmt.Errorf("empty response")
 	}
-	defer resp.Body.Close()
 
 	return readJSONResult(resp.Body, res)
 }
@@ -38,12 +40,14 @@ func (mj *Client) GetData(mdr *DataRequest, res interface{}, options ...RequestO
 		return err
 	}
 	resp, err := mj.doRequest(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
 	if err != nil {
 		return err
 	} else if resp == nil {
 		return fmt.Errorf("empty response")
 	}
-	defer resp.Body.Close()
 
 	if resp.Header["Content-Type"] != nil {
 		contentType := resp.Header["Content-Type"][0]
@@ -72,12 +76,14 @@ func (mj *Client) PostData(fmdr *FullDataRequest, res interface{}, options ...Re
 		req.Header.Add("Content-Type", "application/json")
 	}
 	resp, err := mj.doRequest(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
 	if err != nil {
 		return err
 	} else if resp == nil {
 		return fmt.Errorf("empty response")
 	}
-	defer resp.Body.Close()
 
 	return json.NewDecoder(resp.Body).Decode(&res)
 }
