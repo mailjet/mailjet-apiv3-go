@@ -26,8 +26,8 @@ const (
 func (mj *Client) SendMailSMTP(info *InfoSMTP) (err error) {
 	auth := smtp.PlainAuth(
 		"",
-		mj.apiKeyPublic,
-		mj.apiKeyPrivate,
+		mj.APIKeyPublic(),
+		mj.APIKeyPrivate(),
 		HostSMTP,
 	)
 

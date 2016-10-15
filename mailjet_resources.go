@@ -1,8 +1,6 @@
 package mailjet
 
-import (
-	"net/http"
-)
+import "net/http"
 
 /*
 ** API structures
@@ -11,9 +9,7 @@ import (
 // Client bundles data needed by a large number
 // of methods in order to interact with the Mailjet API.
 type Client struct {
-	apiKeyPublic  string
-	apiKeyPrivate string
-	client        *http.Client
+	client        *httpClient
 }
 
 // Request bundles data needed to build the URL.

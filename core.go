@@ -215,14 +215,14 @@ var NbAttempt = 5
 
 // doRequest is called to execute the request. Authentification is set
 // with the public key and the secret key specified in MailjetClient.
-func (m *Client) doRequest(req *http.Request) (resp *http.Response, err error) {
+func (c *httpClient) doRequest(req *http.Request) (resp *http.Response, err error) {
 	debugRequest(req) //DEBUG
-	req.SetBasicAuth(m.apiKeyPublic, m.apiKeyPrivate)
+	req.SetBasicAuth(c.apiKeyPublic, c.apiKeyPrivate)
 	for attempt := 0; attempt < NbAttempt; attempt++ {
 		if resp != nil {
 			resp.Body.Close()
 		}
-		resp, err = m.client.Do(req)
+		resp, err = http.DefaultClient.Do(req)
 		if err != nil || (resp != nil && resp.StatusCode != 500) {
 			break
 		}
