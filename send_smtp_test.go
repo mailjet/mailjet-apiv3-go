@@ -1,10 +1,11 @@
 package mailjet
 
 import (
-	"github.com/mailjet/mailjet-apiv3-go/resources"
 	"net/textproto"
 	"os"
 	"testing"
+
+	"github.com/mailjet/mailjet-apiv3-go/resources"
 )
 
 func TestSendMailSmtp(t *testing.T) {

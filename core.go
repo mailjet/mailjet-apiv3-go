@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"reflect"
@@ -194,17 +195,26 @@ func buildDataURL(info *DataRequest) string {
 // readJsonResult decodes the API response, returns Count and Total values
 // and stores the Data in the value pointed to by data.
 func readJSONResult(r io.Reader, data interface{}) (int, int, error) {
-	if DebugLevel == LevelDebugFull {
-		r = io.TeeReader(r, debugOut)
-		log.Print("Body: ")
-		defer fmt.Fprintln(debugOut)
-	}
-
 	var res RequestResult
 	res.Data = &data
-	err := json.NewDecoder(r).Decode(&res)
+
+	jsonBlob, err := ioutil.ReadAll(r) // ReadAll and store in jsonBlob (mandatory if we want to unmarshal two times)
+	if err != nil {
+		return 0, 0, fmt.Errorf("Error reading API response: %s", err)
+	}
+	if DebugLevel == LevelDebugFull {
+		log.Println("Body: ", string(jsonBlob)) // DEBUG
+	}
+
+	err = json.Unmarshal(jsonBlob, &res) // First try with the RequestResult struct
 	if err != nil {
 		return 0, 0, fmt.Errorf("Error decoding API response: %s", err)
+	} else if res.Total == 0  { // No result
+		err = json.Unmarshal(jsonBlob, &data) // Trying directly with struct specified in parameter
+		if err != nil {
+			return 0, 0, fmt.Errorf("Error decoding API response: %s", err)
+		}
+		return 0, 0, nil // Count and Total are undetermined
 	}
 	return res.Count, res.Total, nil
 }
@@ -215,24 +225,21 @@ var NbAttempt = 5
 
 // doRequest is called to execute the request. Authentification is set
 // with the public key and the secret key specified in MailjetClient.
-func (m *Client) doRequest(req *http.Request) (resp *http.Response, err error) {
+func (c *httpClient) doRequest(req *http.Request) (resp *http.Response, err error) {
 	debugRequest(req) //DEBUG
-	req.SetBasicAuth(m.apiKeyPublic, m.apiKeyPrivate)
+	req.SetBasicAuth(c.apiKeyPublic, c.apiKeyPrivate)
 	for attempt := 0; attempt < NbAttempt; attempt++ {
 		if resp != nil {
 			resp.Body.Close()
 		}
-		resp, err = m.client.Do(req)
+		resp, err = c.client.Do(req)
 		if err != nil || (resp != nil && resp.StatusCode != 500) {
 			break
 		}
 	}
 	defer debugResponse(resp) //DEBUG
 	if err != nil {
-		if resp != nil {
-			resp.Body.Close()
-		}
-		return nil, fmt.Errorf("Error getting %s: %s", req.URL, err)
+		return resp, fmt.Errorf("Error getting %s: %s", req.URL, err)
 	}
 	err = checkResponseError(resp)
 	return resp, err
@@ -243,7 +250,7 @@ func checkResponseError(resp *http.Response) error {
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
 		var mailjetErr RequestError
 		err := json.NewDecoder(resp.Body).Decode(&mailjetErr)
-		resp.Body.Close()
+
 		if err != nil {
 			return fmt.Errorf("Unexpected server response code: %d: %s", resp.StatusCode, err)
 		}

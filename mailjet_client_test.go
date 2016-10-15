@@ -2,12 +2,12 @@ package mailjet
 
 import (
 	"fmt"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
 	"math/rand"
-	"net/http"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/mailjet/mailjet-apiv3-go/resources"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -32,15 +32,6 @@ func TestNewMailjetClient(t *testing.T) {
 
 	if sk != m.APIKeyPrivate() {
 		t.Fatal("Wrong secret key:", m.APIKeyPrivate())
-	}
-
-	if http.DefaultClient != m.Client() {
-		t.Fatal("HTTP client not default!")
-	}
-	client := new(http.Client)
-	m.SetClient(client)
-	if client != m.Client() {
-		t.Fatal("HTTP client not equal!")
 	}
 }
 
@@ -134,6 +125,7 @@ func TestPut(t *testing.T) {
 
 func TestDelete(t *testing.T) {
 	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+
 
 	var data []resources.Listrecipient
 	resource := "listrecipient"
