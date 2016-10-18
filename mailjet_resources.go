@@ -114,6 +114,6 @@ type Attachment struct {
 type SentResult struct {
 	Sent []struct {
 		Email     string
-		MessageID int
+		MessageID int64
 	}
 }
