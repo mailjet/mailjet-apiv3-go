@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"reflect"
@@ -194,17 +195,26 @@ func buildDataURL(info *DataRequest) string {
 // readJsonResult decodes the API response, returns Count and Total values
 // and stores the Data in the value pointed to by data.
 func readJSONResult(r io.Reader, data interface{}) (int, int, error) {
-	if DebugLevel == LevelDebugFull {
-		r = io.TeeReader(r, debugOut)
-		log.Print("Body: ")
-		defer fmt.Fprintln(debugOut)
-	}
-
 	var res RequestResult
 	res.Data = &data
-	err := json.NewDecoder(r).Decode(&res)
+
+	jsonBlob, err := ioutil.ReadAll(r) // ReadAll and store in jsonBlob (mandatory if we want to unmarshal two times)
+	if err != nil {
+		return 0, 0, fmt.Errorf("Error reading API response: %s", err)
+	}
+	if DebugLevel == LevelDebugFull {
+		log.Println("Body: ", string(jsonBlob)) // DEBUG
+	}
+
+	err = json.Unmarshal(jsonBlob, &res) // First try with the RequestResult struct
 	if err != nil {
 		return 0, 0, fmt.Errorf("Error decoding API response: %s", err)
+	} else if res.Total == 0  { // No result
+		err = json.Unmarshal(jsonBlob, &data) // Trying directly with struct specified in parameter
+		if err != nil {
+			return 0, 0, fmt.Errorf("Error decoding API response: %s", err)
+		}
+		return 0, 0, nil // Count and Total are undetermined
 	}
 	return res.Count, res.Total, nil
 }
