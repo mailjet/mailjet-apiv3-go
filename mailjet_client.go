@@ -29,6 +29,10 @@ func (c *Client) APIKeyPrivate() string {
 	return c.client.APIKeyPrivate()
 }
 
+// SetClient allows to customize http client.
+func (c *Client) SetClient(client *http.Client) {
+	c.client.SetClient(client)
+}
 
 // Filter applies a filter with the defined key and value.
 func Filter(key, value string) RequestOptions {

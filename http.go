@@ -7,11 +7,12 @@ import (
 )
 
 type httpClient struct {
+	defaultClient http.DefaultClient
 	apiKeyPublic  string
 	apiKeyPrivate string
-	headers map[string]string
-	request  *http.Request
-	response interface{}
+	headers       map[string]string
+	request       *http.Request
+	response      interface{}
 }
 
 // APIKeyPublic returns the public key.
@@ -22,6 +23,10 @@ func (c *httpClient) APIKeyPublic() string {
 // APIKeyPrivate returns the secret key.
 func (c *httpClient) APIKeyPrivate() string {
 	return c.apiKeyPrivate
+}
+
+func (c *httpClient) SetClient(client *http.Client) {
+	c.defaultClient = client
 }
 
 func (c *httpClient) Send(req *http.Request) *httpClient {
