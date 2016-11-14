@@ -239,10 +239,7 @@ func (c *httpClient) doRequest(req *http.Request) (resp *http.Response, err erro
 	}
 	defer debugResponse(resp) //DEBUG
 	if err != nil {
-		if resp != nil {
-			resp.Body.Close()
-		}
-		return nil, fmt.Errorf("Error getting %s: %s", req.URL, err)
+		return resp, fmt.Errorf("Error getting %s: %s", req.URL, err)
 	}
 	err = checkResponseError(resp)
 	return resp, err
@@ -253,7 +250,7 @@ func checkResponseError(resp *http.Response) error {
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
 		var mailjetErr RequestError
 		err := json.NewDecoder(resp.Body).Decode(&mailjetErr)
-		resp.Body.Close()
+
 		if err != nil {
 			return fmt.Errorf("Unexpected server response code: %d: %s", resp.StatusCode, err)
 		}
