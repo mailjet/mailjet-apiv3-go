@@ -222,7 +222,7 @@ func (c *httpClient) doRequest(req *http.Request) (resp *http.Response, err erro
 		if resp != nil {
 			resp.Body.Close()
 		}
-		resp, err = c.defaultClient.Do(req)
+		resp, err = c.client.Do(req)
 		if err != nil || (resp != nil && resp.StatusCode != 500) {
 			break
 		}

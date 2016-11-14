@@ -15,8 +15,12 @@ import (
 // NewMailjetClient returns a new MailjetClient using an public apikey
 // and an secret apikey to be used when authenticating to API.
 func NewMailjetClient(apiKeyPublic, apiKeyPrivate string) *Client {
-	client := &httpClient{apiKeyPublic: apiKeyPublic, apiKeyPrivate: apiKeyPrivate}
-	return &Client{client: client}
+	mj := &httpClient{
+		apiKeyPublic: apiKeyPublic,
+		apiKeyPrivate: apiKeyPrivate,
+		client: http.DefaultClient,
+	}
+	return &Client{client: mj}
 }
 
 // APIKeyPublic returns the public key.

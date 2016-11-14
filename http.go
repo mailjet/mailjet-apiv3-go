@@ -7,7 +7,7 @@ import (
 )
 
 type httpClient struct {
-	defaultClient http.DefaultClient
+	client        *http.Client
 	apiKeyPublic  string
 	apiKeyPrivate string
 	headers       map[string]string
@@ -26,7 +26,7 @@ func (c *httpClient) APIKeyPrivate() string {
 }
 
 func (c *httpClient) SetClient(client *http.Client) {
-	c.defaultClient = client
+	c.client = client
 }
 
 func (c *httpClient) Send(req *http.Request) *httpClient {
@@ -45,6 +45,7 @@ func (c *httpClient) Read(response interface{}) *httpClient {
 }
 
 func (c *httpClient) Call() (count, total int, err error) {
+	defer c.reset()
 	for key, value := range c.headers {
 		c.request.Header.Add(key, value)
 	}
@@ -72,4 +73,10 @@ func (c *httpClient) Call() (count, total int, err error) {
 	}
 
 	return count, total, err
+}
+
+func (c *httpClient) reset() {
+	c.headers = make(map[string]string)
+	c.request = nil
+	c.response = nil
 }
