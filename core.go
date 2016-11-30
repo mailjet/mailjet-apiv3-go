@@ -152,8 +152,8 @@ func userAgent(req *http.Request) {
 	req.Header.Add("User-Agent", ua)
 }
 
-func buildURL(info *Request) string {
-	tokens := []string{apiBase, apiPath, info.Resource}
+func buildURL(baseURL string, info *Request) string {
+	tokens := []string{baseURL, apiPath, info.Resource}
 	if info.ID != 0 {
 		id := strconv.FormatInt(info.ID, 10)
 		tokens = append(tokens, id)
@@ -170,8 +170,8 @@ func buildURL(info *Request) string {
 	return strings.Join(tokens, "/")
 }
 
-func buildDataURL(info *DataRequest) string {
-	tokens := []string{apiBase, dataPath, info.SourceType}
+func buildDataURL(baseURL string, info *DataRequest) string {
+	tokens := []string{baseURL, dataPath, info.SourceType}
 	if info.SourceTypeID != 0 {
 		id := strconv.FormatInt(info.SourceTypeID, 10)
 		tokens = append(tokens, id)

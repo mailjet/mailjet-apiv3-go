@@ -13,6 +13,7 @@ import (
 type Client struct {
 	apiKeyPublic  string
 	apiKeyPrivate string
+	apiBase       string
 	client        *http.Client
 }
 
