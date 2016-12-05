@@ -2,12 +2,13 @@ package mailjet
 
 import (
 	"fmt"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
 	"math/rand"
 	"net/http"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/mailjet/mailjet-apiv3-go/resources"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")

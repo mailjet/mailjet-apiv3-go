@@ -76,7 +76,7 @@ func TestBuildUrl(t *testing.T) {
 		ActionID: 5,
 	}
 	expected := "https://api.mailjet.com/v3/REST/contactslist/1/managemanycontacts/5"
-	res := buildURL(info)
+	res := buildURL(apiBase, info)
 	if res != expected {
 		t.Fatal("Fail to build URL:", res)
 	}

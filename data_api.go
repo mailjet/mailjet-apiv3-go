@@ -11,7 +11,7 @@ import (
 // and stores the result in the value pointed to by res.
 // Filters can be add via functional options.
 func (mj *Client) ListData(resource string, res interface{}, options ...RequestOptions) (count, total int, err error) {
-	url := buildDataURL(&DataRequest{SourceType: resource})
+	url := buildDataURL(mj.apiBase, &DataRequest{SourceType: resource})
 	req, err := createRequest("GET", url, nil, nil, options...)
 	if err != nil {
 		return count, total, err
@@ -32,7 +32,7 @@ func (mj *Client) ListData(resource string, res interface{}, options ...RequestO
 // Filters can be add via functional options.
 // Without an specified SourceTypeID in MailjetDataRequest, it is the same as ListData.
 func (mj *Client) GetData(mdr *DataRequest, res interface{}, options ...RequestOptions) (err error) {
-	url := buildDataURL(mdr)
+	url := buildDataURL(mj.apiBase, mdr)
 	req, err := createRequest("GET", url, nil, nil, options...)
 	if err != nil {
 		return err
@@ -60,7 +60,7 @@ func (mj *Client) GetData(mdr *DataRequest, res interface{}, options ...RequestO
 // and stores the result in the value pointed to by res.
 // Filters can be add via functional options.
 func (mj *Client) PostData(fmdr *FullDataRequest, res interface{}, options ...RequestOptions) (err error) {
-	url := buildDataURL(fmdr.Info)
+	url := buildDataURL(mj.apiBase, fmdr.Info)
 	req, err := createRequest("POST", url, fmdr.Payload, nil, options...)
 	if err != nil {
 		return err
@@ -87,7 +87,7 @@ func (mj *Client) PostData(fmdr *FullDataRequest, res interface{}, options ...Re
 // If onlyFields is nil, all fields except these with the tag read_only, are updated.
 // Filters can be add via functional options.
 func (mj *Client) PutData(fmr *FullDataRequest, onlyFields []string, options ...RequestOptions) (err error) {
-	url := buildDataURL(fmr.Info)
+	url := buildDataURL(mj.apiBase, fmr.Info)
 	req, err := createRequest("PUT", url, fmr.Payload, onlyFields, options...)
 	if err != nil {
 		return err
@@ -103,7 +103,7 @@ func (mj *Client) PutData(fmr *FullDataRequest, onlyFields []string, options ...
 
 // DeleteData is used to delete a data resource.
 func (mj *Client) DeleteData(mdr *DataRequest) (err error) {
-	url := buildDataURL(mdr)
+	url := buildDataURL(mj.apiBase, mdr)
 	r, err := createRequest("DELETE", url, nil, nil)
 	if err != nil {
 		return err

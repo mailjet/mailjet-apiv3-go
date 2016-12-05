@@ -16,13 +16,17 @@ import (
 
 // NewMailjetClient returns a new MailjetClient using an public apikey
 // and an secret apikey to be used when authenticating to API.
-func NewMailjetClient(apiKeyPublic, apiKeyPrivate string) *Client {
-	mj := &Client{
-		apiKeyPublic:  apiKeyPublic,
-		apiKeyPrivate: apiKeyPrivate,
-		client:        http.DefaultClient,
+func NewMailjetClient(apiKeyPublic, apiKeyPrivate string, baseUrl ...string) *Client {
+	var mj Client
+	if len(baseUrl) > 0 {
+		mj.apiBase = baseUrl[0]
+	} else {
+		mj.apiBase = apiBase
 	}
-	return mj
+	mj.apiKeyPublic = apiKeyPublic
+	mj.apiKeyPrivate = apiKeyPrivate
+	mj.client = http.DefaultClient
+	return &mj
 }
 
 // APIKeyPublic returns the public key.
@@ -83,7 +87,7 @@ func Sort(value string, order SortOrder) RequestOptions {
 // and stores the result in the value pointed to by res.
 // Filters can be add via functional options.
 func (mj *Client) List(resource string, res interface{}, options ...RequestOptions) (count, total int, err error) {
-	url := buildURL(&Request{Resource: resource})
+	url := buildURL(mj.apiBase, &Request{Resource: resource})
 	req, err := createRequest("GET", url, nil, nil, options...)
 	if err != nil {
 		return count, total, err
@@ -104,7 +108,7 @@ func (mj *Client) List(resource string, res interface{}, options ...RequestOptio
 // Filters can be add via functional options.
 // Without an specified ID in MailjetRequest, it is the same as List.
 func (mj *Client) Get(mr *Request, res interface{}, options ...RequestOptions) (err error) {
-	url := buildURL(mr)
+	url := buildURL(mj.apiBase, mr)
 	req, err := createRequest("GET", url, nil, nil, options...)
 	if err != nil {
 		return err
@@ -125,7 +129,7 @@ func (mj *Client) Get(mr *Request, res interface{}, options ...RequestOptions) (
 // and stores the result in the value pointed to by res.
 // Filters can be add via functional options.
 func (mj *Client) Post(fmr *FullRequest, res interface{}, options ...RequestOptions) (err error) {
-	url := buildURL(fmr.Info)
+	url := buildURL(mj.apiBase, fmr.Info)
 	req, err := createRequest("POST", url, fmr.Payload, nil, options...)
 	if err != nil {
 		return err
@@ -148,7 +152,7 @@ func (mj *Client) Post(fmr *FullRequest, res interface{}, options ...RequestOpti
 // If onlyFields is nil, all fields except these with the tag read_only, are updated.
 // Filters can be add via functional options.
 func (mj *Client) Put(fmr *FullRequest, onlyFields []string, options ...RequestOptions) (err error) {
-	url := buildURL(fmr.Info)
+	url := buildURL(mj.apiBase, fmr.Info)
 	req, err := createRequest("PUT", url, fmr.Payload, onlyFields, options...)
 	if err != nil {
 		return err
@@ -164,7 +168,7 @@ func (mj *Client) Put(fmr *FullRequest, onlyFields []string, options ...RequestO
 
 // Delete is used to delete a resource.
 func (mj *Client) Delete(mr *Request) (err error) {
-	url := buildURL(mr)
+	url := buildURL(mj.apiBase, mr)
 	r, err := createRequest("DELETE", url, nil, nil)
 	if err != nil {
 		return err
@@ -179,7 +183,7 @@ func (mj *Client) Delete(mr *Request) (err error) {
 
 // SendMail send mail via API.
 func (mj *Client) SendMail(data *InfoSendMail) (res *SentResult, err error) {
-	url := apiBase + "/send/message"
+	url := mj.apiBase + "/send/message"
 	req, err := createRequest("POST", url, data, nil)
 	if err != nil {
 		return res, err
