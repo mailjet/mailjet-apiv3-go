@@ -2,7 +2,10 @@
 // not a mandatory package.
 package resources
 
-import "time"
+import (
+	"encoding/json"
+	"time"
+)
 
 //
 // Resources Properties
@@ -1162,16 +1165,17 @@ type RFC3339DateTime struct {
 }
 
 func (dt *RFC3339DateTime) UnmarshalJSON(b []byte) (err error) {
-	if b[0] == '"' && b[len(b)-1] == '"' {
-		b = b[1 : len(b)-1]
+	var timestamp string
+	if err := json.Unmarshal(b, &timestamp); err != nil {
+		return err
 	}
-	if len(b) < 1 {
-		return nil
-	}
-	dt.Time, err = time.Parse(time.RFC3339, string(b))
+
+	dt.Time, err = time.Parse(time.RFC3339, timestamp)
+
 	return err
 }
 
 func (dt *RFC3339DateTime) MarshalJSON() ([]byte, error) {
-	return []byte(dt.Time.Format(time.RFC3339)), nil
+	timestamp := dt.Format(time.RFC3339)
+	return json.Marshal(timestamp)
 }
