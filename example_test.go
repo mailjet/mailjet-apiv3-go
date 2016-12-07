@@ -2,9 +2,10 @@ package mailjet
 
 import (
 	"fmt"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
 	"net/textproto"
 	"os"
+
+	"github.com/mailjet/mailjet-apiv3-go/resources"
 )
 
 func ExampleMailjetClient_List() {
