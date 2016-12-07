@@ -21,11 +21,9 @@ func NewMailjetClient(apiKeyPublic, apiKeyPrivate string, baseUrl ...string) *Cl
     client: http.DefaultClient,
   }
   if len(baseUrl) > 0 {
-    mj.apiBase = baseUrl[0]
-  } else {
-    mj.apiBase = apiBase
+    return &Client{client: mj, apiBase:baseUrl[0]}
   }
-  return &Client{client: mj}
+  return &Client{client: mj, apiBase:apiBase}
 }
 
 // APIKeyPublic returns the public key.

@@ -8,7 +8,7 @@ import "net/http"
 
 // Client bundles data needed by a large number
 // of methods in order to interact with the Mailjet API.
-type Client struct 
+type Client struct {
   apiBase       string
   client        *httpClient
 }
