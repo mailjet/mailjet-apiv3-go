@@ -3,7 +3,7 @@
 package resources
 
 import (
-	"encoding/json"
+	"bytes"
 	"time"
 )
 
@@ -1165,17 +1165,16 @@ type RFC3339DateTime struct {
 }
 
 func (dt *RFC3339DateTime) UnmarshalJSON(b []byte) (err error) {
-	var timestamp string
-	if err := json.Unmarshal(b, &timestamp); err != nil {
-		return err
+	b = bytes.Trim(b, `" `)
+	if b == nil {
+	   return nil
 	}
 
-	dt.Time, err = time.Parse(time.RFC3339, timestamp)
+	dt.Time, err = time.Parse(time.RFC3339, string(b))
 
 	return err
 }
 
 func (dt *RFC3339DateTime) MarshalJSON() ([]byte, error) {
-	timestamp := dt.Format(time.RFC3339)
-	return json.Marshal(timestamp)
+	return []byte(dt.Format(`"`+time.RFC3339+`"`)), nil
 }

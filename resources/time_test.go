@@ -38,6 +38,22 @@ func TestUnmarshalJSON(t *testing.T) {
 	}
 }
 
+func TestUnmarshalEmptyJSON(t *testing.T) {
+	var data []byte
+	var dt RFC3339DateTime
+
+	err := dt.UnmarshalJSON(data)
+	if err != nil {
+	   t.Error("unexpected error:", err)
+	}
+
+	data = []byte{34, 34}
+	err = dt.UnmarshalJSON(data)
+	if err != nil {
+	   t.Error("unexpected error:", err)
+	}
+}
+
 func TestUnmarshalBrokenJSON(t *testing.T) {
 	data := []byte{1, 1}
 	var dt RFC3339DateTime
