@@ -196,7 +196,7 @@ func buildDataURL(baseURL string, info *DataRequest) string {
 // and stores the Data in the value pointed to by data.
 func readJSONResult(r io.Reader, data interface{}) (int, int, error) {
 	var res RequestResult
-	res.Data = &data
+	res.Data = data
 
 	jsonBlob, err := ioutil.ReadAll(r) // ReadAll and store in jsonBlob (mandatory if we want to unmarshal two times)
 	if err != nil {
@@ -209,8 +209,8 @@ func readJSONResult(r io.Reader, data interface{}) (int, int, error) {
 	err = json.Unmarshal(jsonBlob, &res) // First try with the RequestResult struct
 	if err != nil {
 		return 0, 0, fmt.Errorf("Error decoding API response: %s", err)
-	} else if res.Total == 0  { // No result
-		err = json.Unmarshal(jsonBlob, &data) // Trying directly with struct specified in parameter
+	} else if _, ok := data.(**SentResult); ok { // Send API case
+		err = json.Unmarshal(jsonBlob, data) // Trying directly with struct specified in parameter
 		if err != nil {
 			return 0, 0, fmt.Errorf("Error decoding API response: %s", err)
 		}

@@ -82,6 +82,18 @@ func TestBuildUrl(t *testing.T) {
 	}
 }
 
+func TestReadJsonEmptyResult(t *testing.T) {
+	type TestStruct struct {
+		Email string
+	}
+	var data []TestStruct
+	body := `{"Count":0,"Data":[],"Total":0}`
+	_, _, err := readJSONResult(strings.NewReader(body), &data)
+	if err != nil {
+		t.Fatal("Unexpected error:", err)
+	}
+}
+
 func TestReadJsonResult(t *testing.T) {
 	type TestStruct struct {
 		Email string
