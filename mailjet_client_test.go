@@ -1,16 +1,18 @@
-package mailjet
+package mailjet_test
 
 import (
 	"fmt"
 	"math/rand"
-	"os"
 	"testing"
 	"time"
 
+	mailjet "github.com/HT808s/mailjet-apiv3-go"
 	"github.com/mailjet/mailjet-apiv3-go/resources"
 )
 
-var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+var (
+	letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+)
 
 func randSeq(n int) string {
 	rand.Seed(time.Now().UnixNano())
@@ -21,22 +23,8 @@ func randSeq(n int) string {
 	return string(b)
 }
 
-func TestNewMailjetClient(t *testing.T) {
-	ak := os.Getenv("MJ_APIKEY_PUBLIC")
-	sk := os.Getenv("MJ_APIKEY_PRIVATE")
-	m := NewMailjetClient(ak, sk)
-
-	if ak != m.APIKeyPublic() {
-		t.Fatal("Wrong public key:", m.APIKeyPublic())
-	}
-
-	if sk != m.APIKeyPrivate() {
-		t.Fatal("Wrong secret key:", m.APIKeyPrivate())
-	}
-}
-
 func TestList(t *testing.T) {
-	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	m := mailjet.NewMockedMailjetClient()
 
 	var data []resources.Sender
 	count, _, err := m.List("sender", &data)
@@ -49,7 +37,7 @@ func TestList(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	m := mailjet.NewMockedMailjetClient()
 
 	var data []resources.User
 	resource := "user"
@@ -64,7 +52,7 @@ func TestGet(t *testing.T) {
 		t.Fatal("Empty result")
 	}
 
-	mr := &Request{Resource: resource, ID: data[0].ID}
+	mr := &mailjet.Request{Resource: resource, ID: data[0].ID}
 	data = make([]resources.User, 0)
 	err = m.Get(mr, &data)
 	if err != nil {
@@ -74,13 +62,13 @@ func TestGet(t *testing.T) {
 }
 
 func TestPost(t *testing.T) {
-	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	m := mailjet.NewMockedMailjetClient()
 
 	var data []resources.Contact
 	rstr := randSeq(10)
 	fmt.Printf("Create new contact: \"%s@mailjet.com\"\n", rstr)
-	fmr := &FullRequest{
-		Info:    &Request{Resource: "contact"},
+	fmr := &mailjet.FullRequest{
+		Info:    &mailjet.Request{Resource: "contact"},
 		Payload: &resources.Contact{Name: rstr, Email: rstr + "@mailjet.com"},
 	}
 	err := m.Post(fmr, &data)
@@ -94,7 +82,7 @@ func TestPost(t *testing.T) {
 }
 
 func TestPut(t *testing.T) {
-	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	m := mailjet.NewMockedMailjetClient()
 
 	var data []resources.Contactslist
 	resource := "contactslist"
@@ -112,8 +100,8 @@ func TestPut(t *testing.T) {
 	rstr := randSeq(10)
 	fmt.Printf("Update name of the contact list: %s -> %s\n", data[0].Name, rstr)
 	data[0].Name = randSeq(10)
-	fmr := &FullRequest{
-		Info:    &Request{Resource: resource, AltID: data[0].Address},
+	fmr := &mailjet.FullRequest{
+		Info:    &mailjet.Request{Resource: resource, AltID: data[0].Address},
 		Payload: data[0],
 	}
 	err = m.Put(fmr, []string{"Name"})
@@ -124,8 +112,7 @@ func TestPut(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
-
+	m := mailjet.NewMockedMailjetClient()
 
 	var data []resources.Listrecipient
 	resource := "listrecipient"
@@ -140,7 +127,7 @@ func TestDelete(t *testing.T) {
 		t.Fatal("Empty result")
 	}
 
-	mr := &Request{
+	mr := &mailjet.Request{
 		ID:       data[0].ID,
 		Resource: resource,
 	}
@@ -151,7 +138,7 @@ func TestDelete(t *testing.T) {
 }
 
 func TestSendMail(t *testing.T) {
-	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	m := mailjet.NewMockedMailjetClient()
 
 	var data []resources.Sender
 	count, _, err := m.List("sender", &data)
@@ -162,11 +149,11 @@ func TestSendMail(t *testing.T) {
 		t.Fatal("At least one sender expected in the test account!")
 	}
 
-	param := &InfoSendMail{
+	param := &mailjet.InfoSendMail{
 		FromEmail: data[0].Email,
 		FromName:  data[0].Name,
-		Recipients: []Recipient{
-			Recipient{
+		Recipients: []mailjet.Recipient{
+			mailjet.Recipient{
 				Email: data[0].Email,
 			},
 		},

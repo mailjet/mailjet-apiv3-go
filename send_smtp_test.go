@@ -1,15 +1,15 @@
-package mailjet
+package mailjet_test
 
 import (
 	"net/textproto"
-	"os"
 	"testing"
 
+	mailjet "github.com/HT808s/mailjet-apiv3-go"
 	"github.com/mailjet/mailjet-apiv3-go/resources"
 )
 
 func TestSendMailSmtp(t *testing.T) {
-	mj := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	mj := mailjet.NewMockedMailjetClient()
 
 	var data []resources.Sender
 	count, _, err := mj.List("sender", &data)
@@ -28,7 +28,7 @@ func TestSendMailSmtp(t *testing.T) {
 	header.Add("Subject", "SMTP testing")
 	header.Add("X-Mailjet-Campaign", "test")
 	content := []byte("SendMailSmtp is working !")
-	info := &InfoSMTP{
+	info := &mailjet.InfoSMTP{
 		From:       email,
 		Recipients: header["To"],
 		Header:     header,

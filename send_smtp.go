@@ -32,15 +32,8 @@ func (mj *Client) SendMailSMTP(info *InfoSMTP) (err error) {
 	)
 
 	host := fmt.Sprintf("%s:%d", HostSMTP, PortSMTP)
-	err = smtp.SendMail(
-		host,
-		auth,
-		info.From,
-		info.Recipients,
-		buildMessage(info.Header, info.Content),
-	)
 
-	return err
+	return mj.smtp.SendMail(host, auth, info.From, info.Recipients, buildMessage(info.Header, info.Content))
 }
 
 func buildMessage(header textproto.MIMEHeader, content []byte) []byte {
