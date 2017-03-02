@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	mailjet "github.com/HT808s/mailjet-apiv3-go"
+	mailjet "github.com/mailjet/mailjet-apiv3-go"
 	"github.com/mailjet/mailjet-apiv3-go/resources"
 )
 

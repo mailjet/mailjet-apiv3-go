@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/HT808s/mailjet-apiv3-go/fixtures"
+	"github.com/mailjet/mailjet-apiv3-go/fixtures"
 )
 
 // HTTPClientMock definition
