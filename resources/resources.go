@@ -491,12 +491,12 @@ type Dns struct {
 }
 
 type DnsCheck struct {
-	DKIMErrors	   	[]string	 `mailjet:"read_only"`
-	DKIMStatus		string		 `mailjet:"read_only"`
-	DKIMRecordCurrentValue  string           `mailjet:"read_only"`
-	SPFRecordCurrentValue   string           `mailjet:"read_only"`
-	SPFErrors		[]string	 `mailjet:"read_only"`
-	SPFStatus         	string           `mailjet:"read_only"`
+	DKIMErrors             []string `mailjet:"read_only"`
+	DKIMStatus             string   `mailjet:"read_only"`
+	DKIMRecordCurrentValue string   `mailjet:"read_only"`
+	SPFRecordCurrentValue  string   `mailjet:"read_only"`
+	SPFErrors              []string `mailjet:"read_only"`
+	SPFStatus              string   `mailjet:"read_only"`
 }
 
 // Domainstatistics: View Campaign/Message/Click statistics grouped per domain.
@@ -680,14 +680,14 @@ type Messagesentstatistics struct {
 	Unsub          bool             `mailjet:"read_only"`
 }
 
-// Messagestate: Message state reference.
+// Messagestate Message state reference.
 type Messagestate struct {
 	ID        int64  `mailjet:"read_only"`
 	RelatedTo string `json:",omitempty"`
 	State     string
 }
 
-// MessageStatistics: API key Campaign/Message statistics.
+// MessageStatistics API key Campaign/Message statistics.
 type MessageStatistics struct {
 	AverageClickDelay   float64 `mailjet:"read_only"`
 	AverageClickedCount float64 `mailjet:"read_only"`
@@ -706,7 +706,7 @@ type MessageStatistics struct {
 	UnsubscribedCount   int64   `mailjet:"read_only"`
 }
 
-// Metadata: Mailjet API meta data.
+// Metadata Mailjet API meta data.
 type Metadata struct {
 	APIVersion       string             `mailjet:"read_only"`
 	Actions          []ResourceAction   `mailjet:"read_only"`
@@ -723,6 +723,7 @@ type Metadata struct {
 	UniqueKey string `mailjet:"read_only"`
 }
 
+// ResourceAction data
 type ResourceAction struct {
 	Description      string             `mailjet:"read_only"`
 	IsGlobalAction   bool               `mailjet:"read_only"`
@@ -732,6 +733,7 @@ type ResourceAction struct {
 	PublicOperations string             `mailjet:"read_only"`
 }
 
+// ResourceFilter data
 type ResourceFilter struct {
 	DataType     string `mailjet:"read_only"`
 	DefaultValue string `mailjet:"read_only"`
@@ -741,6 +743,7 @@ type ResourceFilter struct {
 	ReadOnly     bool   `mailjet:"read_only"`
 }
 
+// ResourceProperty data
 type ResourceProperty struct {
 	DataType     string `mailjet:"read_only"`
 	DefaultValue string `mailjet:"read_only"`
@@ -750,7 +753,7 @@ type ResourceProperty struct {
 	ReadOnly     bool   `mailjet:"read_only"`
 }
 
-// Metasender: Management of domains used for sending messages.
+// Metasender Management of domains used for sending messages.
 // A domain or address must be registered and validated before being used.
 // See the related Sender object if you wish to register a given e-mail address.
 type Metasender struct {
@@ -762,7 +765,7 @@ type Metasender struct {
 	IsEnabled   bool   `json:",omitempty"`
 }
 
-// Myprofile: Manage user profile data such as address, payment information etc.
+// Myprofile Manage user profile data such as address, payment information etc.
 type Myprofile struct {
 	AddressCity           string           `json:",omitempty"`
 	AddressCountry        string           `json:",omitempty"`
@@ -788,7 +791,7 @@ type Myprofile struct {
 	Website               string           `json:",omitempty"`
 }
 
-// Newsletter: Newsletter data.
+// Newsletter Newsletter data.
 type Newsletter struct {
 	AXFraction           float64          `json:",omitempty"`
 	AXFractionName       string           `json:",omitempty"`
@@ -966,9 +969,9 @@ type Senderstatistics struct {
 
 // SenderValidate: validation result for a sender or domain
 type SenderValidate struct {
-       Errors           map[string]string `mailjet:"read_only"`
-       ValidationMethod string            `mailjet:"read_only"`
-       GlobalError      string            `mailjet:"read_only"`
+	Errors           map[string]string `mailjet:"read_only"`
+	ValidationMethod string            `mailjet:"read_only"`
+	GlobalError      string            `mailjet:"read_only"`
 }
 
 // Template: template description
@@ -1167,7 +1170,7 @@ type RFC3339DateTime struct {
 func (dt *RFC3339DateTime) UnmarshalJSON(b []byte) (err error) {
 	b = bytes.Trim(b, `" `)
 	if b == nil {
-	   return nil
+		return nil
 	}
 
 	dt.Time, err = time.Parse(time.RFC3339, string(b))
@@ -1176,5 +1179,5 @@ func (dt *RFC3339DateTime) UnmarshalJSON(b []byte) (err error) {
 }
 
 func (dt *RFC3339DateTime) MarshalJSON() ([]byte, error) {
-	return []byte(dt.Format(`"`+time.RFC3339+`"`)), nil
+	return []byte(dt.Format(`"` + time.RFC3339 + `"`)), nil
 }
