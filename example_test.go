@@ -121,7 +121,7 @@ func exampleMailjetClientSendMail() {
 		FromEmail: "qwe@qwe.com",
 		FromName:  "Bob Patrick",
 		Recipients: []mailjet.Recipient{
-			mailjet.Recipient{
+			{
 				Email: "qwe@qwe.com",
 			},
 		},
