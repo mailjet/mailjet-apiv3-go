@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"net/http"
+	"sync"
 )
 
 // HTTPClient is a wrapper arround http.Client
@@ -14,6 +15,7 @@ type HTTPClient struct {
 	headers       map[string]string
 	request       *http.Request
 	response      interface{}
+	mutex         *sync.Mutex
 }
 
 // NewHTTPClient returns a new HTTPClient
@@ -22,6 +24,7 @@ func NewHTTPClient(apiKeyPublic, apiKeyPrivate string) *HTTPClient {
 		apiKeyPublic:  apiKeyPublic,
 		apiKeyPrivate: apiKeyPrivate,
 		client:        http.DefaultClient,
+		mutex:         new(sync.Mutex),
 	}
 }
 
@@ -47,6 +50,7 @@ func (c *HTTPClient) SetClient(client *http.Client) {
 
 // Send binds the request to the underlying http client
 func (c *HTTPClient) Send(req *http.Request) HTTPClientInterface {
+	c.mutex.Lock()
 	c.request = req
 	return c
 }
@@ -66,6 +70,7 @@ func (c *HTTPClient) Read(response interface{}) HTTPClientInterface {
 // Call execute the HTTP call to the API
 func (c *HTTPClient) Call() (count, total int, err error) {
 	defer c.reset()
+	defer c.mutex.Unlock()
 	for key, value := range c.headers {
 		c.request.Header.Add(key, value)
 	}

@@ -3,6 +3,7 @@ package mailjet
 import (
 	"errors"
 	"net/http"
+	"sync"
 
 	"github.com/mailjet/mailjet-apiv3-go/fixtures"
 )
@@ -17,6 +18,7 @@ type HTTPClientMock struct {
 	response      interface{}
 	validCreds    bool
 	f             *fixtures.Fixtures
+	mutex         *sync.Mutex
 }
 
 // NewhttpClientMock instanciate new httpClientMock
@@ -28,6 +30,7 @@ func NewhttpClientMock(apiKeyPublic, apiKeyPrivate string) *HTTPClientMock {
 		client:        http.DefaultClient,
 		validCreds:    true,
 		f:             fixtures.New(),
+		mutex:         new(sync.Mutex),
 	}
 }
 
@@ -53,6 +56,7 @@ func (c *HTTPClientMock) SetClient(client *http.Client) {
 
 // Send data through HTTP with the current configuration
 func (c *HTTPClientMock) Send(req *http.Request) HTTPClientInterface {
+	c.mutex.Lock()
 	c.request = req
 	return c
 }
@@ -71,6 +75,7 @@ func (c *HTTPClientMock) Read(response interface{}) HTTPClientInterface {
 
 // Call the mailjet API
 func (c *HTTPClientMock) Call() (int, int, error) {
+	defer c.mutex.Unlock()
 	if c.validCreds == true {
 		return 1, 1, nil
 	}
