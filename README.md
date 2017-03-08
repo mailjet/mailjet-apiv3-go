@@ -8,6 +8,7 @@
 
 [![Build Status](https://travis-ci.org/mailjet/mailjet-apiv3-go.svg?branch=master)](https://travis-ci.org/mailjet/mailjet-apiv3-go)
 [![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://godoc.org/github.com/mailjet/mailjet-apiv3-go)
+[![Go Report Card](https://goreportcard.com/badge/mailjet/mailjet-apiv3-go)](https://goreportcard.com/report/mailjet/mailjet-apiv3-go)
 
 # Mailjet Go Client
 
@@ -22,6 +23,7 @@ Every code examples can be find on the [Mailjet Documentation][go_documentation]
 ### Prerequisites
 
 Make sure you have the following requirements:
+
 * A Mailjet API Key
 * A Mailjet API Secret Key
 * A Go installation (v. >= 1.3)
@@ -262,6 +264,65 @@ func main() {
 }
 ```
 
+### Send a mail through a proxy
+``` go
+package main
+
+import (
+	"github.com/mailjet/mailjet-apiv3-go"
+	"github.com/mailjet/mailjet-apiv3-go/resources"
+
+	"fmt"
+	"log"
+	"net/url"
+	"os"
+)
+
+// Set the http client with the given proxy url
+func setupProxy(url string) *http.Client {
+	proxyURL, err := url.Parse(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	tr := &http.Transport{Proxy: http.ProxyURL(proxyURL)}
+	client := &http.Client{}
+	client.Transport = tr
+
+	return client
+}
+
+func main() {
+	publicKey := os.Getenv("MJ_APIKEY_PUBLIC")
+	secretKey := os.Getenv("MJ_APIKEY_PRIVATE")
+	proxyURL  := os.Getenv("HTTP_PROXY")
+
+	mj := mailjet.NewMailjetClient(publicKey, secretKey)
+
+	// Here we inject our http client configured with our proxy
+	client := setupProxy(proxyURL)
+	mj.SetClient(client)
+
+	param := &mailjet.InfoSendMail{
+		FromEmail: "qwe@qwe.com",
+		FromName: "Bob Patrick",
+		Recipients: []mailjet.Recipient{
+			mailjet.Recipient{
+				Email: "qwe@qwe.com",
+			},
+		},
+		Subject: "Hello World!",
+		TextPart: "Hi there !",
+	}
+	res, err := mj.SendMail(param)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println("Success")
+		fmt.Println(res)
+	}
+}
+```
+
 ## Contribute
 
 We welcome any contribution.
@@ -276,4 +337,3 @@ Please make sure you follow this step-by-step guide before contributing :
 * Submit a pull request
 
 Submit your issues [here][issues].
-
