@@ -126,7 +126,6 @@ func TestPut(t *testing.T) {
 func TestDelete(t *testing.T) {
 	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 
-
 	var data []resources.Listrecipient
 	resource := "listrecipient"
 	count, _, err := m.List(resource, &data)
