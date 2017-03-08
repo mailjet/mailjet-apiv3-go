@@ -491,12 +491,12 @@ type Dns struct {
 }
 
 type DnsCheck struct {
-	DKIMErrors	   	[]string	 `mailjet:"read_only"`
-	DKIMStatus		string		 `mailjet:"read_only"`
-	DKIMRecordCurrentValue  string           `mailjet:"read_only"`
-	SPFRecordCurrentValue   string           `mailjet:"read_only"`
-	SPFErrors		[]string	 `mailjet:"read_only"`
-	SPFStatus         	string           `mailjet:"read_only"`
+	DKIMErrors             []string `mailjet:"read_only"`
+	DKIMStatus             string   `mailjet:"read_only"`
+	DKIMRecordCurrentValue string   `mailjet:"read_only"`
+	SPFRecordCurrentValue  string   `mailjet:"read_only"`
+	SPFErrors              []string `mailjet:"read_only"`
+	SPFStatus              string   `mailjet:"read_only"`
 }
 
 // Domainstatistics: View Campaign/Message/Click statistics grouped per domain.
@@ -650,6 +650,65 @@ type Messageinformation struct {
 	SentCount         int64              `mailjet:"read_only"`
 	SpamAssassinRules []SpamAssassinRule `mailjet:"read_only"`
 	SpamAssassinScore float64            `mailjet:"read_only"`
+}
+
+// Email struct handle users input
+type Email struct {
+	Email string
+	Name  string
+}
+
+// Emails is a collection of emails
+type Emails []Email
+
+// Attachment struct represent a content attachment
+type Attachment struct {
+	ContentType   string `json:"ContentType"`
+	Base64Content string `json:"Base64Content"`
+	Filename      string `json:"Filename"`
+}
+
+// Attachments collection
+type Attachments []Attachment
+
+// InlinedAttachments collection
+type InlinedAttachments []InlineAttachment
+
+// InlineAttachment struct represent the content of an inline attachement
+type InlineAttachment struct {
+	Attachment
+	ContentID string `json:"ContentID"`
+}
+
+// MessagesInput represents the payload input taken by send API v3.1
+type MessagesInput struct {
+	Attachments            Attachments
+	InlinedAttachments     InlinedAttachments
+	From                   Email
+	ReplyTo                *Email
+	To                     Emails
+	Cc                     Emails
+	Bcc                    Emails
+	Sender                 *Email
+	Subject                string
+	TextPart               string
+	HTMLPart               string
+	Priority               *int
+	CustomCampaign         string
+	MonitoringCategory     string
+	MonitoringCategoryID   int64
+	DeduplicateCampaign    bool
+	TrackClicks            string
+	TrackOpens             string
+	CustomID               string
+	Variables              map[string]interface{}
+	EventPayload           string
+	TemplateID             interface{}
+	TemplateHasContent     bool `json:"-"` // True if tmpl contains Html or Txt
+	TemplateLanguage       *bool
+	TemplateErrorReporting *Email
+	TemplateErrorDeliver   *bool
+	Headers                map[string]interface{}
 }
 
 // Messagesentstatistics: API Key Statistical campaign/message data.
@@ -966,9 +1025,9 @@ type Senderstatistics struct {
 
 // SenderValidate: validation result for a sender or domain
 type SenderValidate struct {
-       Errors           map[string]string `mailjet:"read_only"`
-       ValidationMethod string            `mailjet:"read_only"`
-       GlobalError      string            `mailjet:"read_only"`
+	Errors           map[string]string `mailjet:"read_only"`
+	ValidationMethod string            `mailjet:"read_only"`
+	GlobalError      string            `mailjet:"read_only"`
 }
 
 // Template: template description
@@ -1167,7 +1226,7 @@ type RFC3339DateTime struct {
 func (dt *RFC3339DateTime) UnmarshalJSON(b []byte) (err error) {
 	b = bytes.Trim(b, `" `)
 	if b == nil {
-	   return nil
+		return nil
 	}
 
 	dt.Time, err = time.Parse(time.RFC3339, string(b))
@@ -1176,5 +1235,5 @@ func (dt *RFC3339DateTime) UnmarshalJSON(b []byte) (err error) {
 }
 
 func (dt *RFC3339DateTime) MarshalJSON() ([]byte, error) {
-	return []byte(dt.Format(`"`+time.RFC3339+`"`)), nil
+	return []byte(dt.Format(`"` + time.RFC3339 + `"`)), nil
 }
