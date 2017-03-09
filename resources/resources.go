@@ -491,12 +491,12 @@ type Dns struct {
 }
 
 type DnsCheck struct {
-	DKIMErrors	   	[]string	 `mailjet:"read_only"`
-	DKIMStatus		string		 `mailjet:"read_only"`
-	DKIMRecordCurrentValue  string           `mailjet:"read_only"`
-	SPFRecordCurrentValue   string           `mailjet:"read_only"`
-	SPFErrors		[]string	 `mailjet:"read_only"`
-	SPFStatus         	string           `mailjet:"read_only"`
+	DKIMErrors             []string `mailjet:"read_only"`
+	DKIMStatus             string   `mailjet:"read_only"`
+	DKIMRecordCurrentValue string   `mailjet:"read_only"`
+	SPFRecordCurrentValue  string   `mailjet:"read_only"`
+	SPFErrors              []string `mailjet:"read_only"`
+	SPFStatus              string   `mailjet:"read_only"`
 }
 
 // Domainstatistics: View Campaign/Message/Click statistics grouped per domain.
@@ -966,9 +966,9 @@ type Senderstatistics struct {
 
 // SenderValidate: validation result for a sender or domain
 type SenderValidate struct {
-       Errors           map[string]string `mailjet:"read_only"`
-       ValidationMethod string            `mailjet:"read_only"`
-       GlobalError      string            `mailjet:"read_only"`
+	Errors           map[string]string `mailjet:"read_only"`
+	ValidationMethod string            `mailjet:"read_only"`
+	GlobalError      string            `mailjet:"read_only"`
 }
 
 // Template: template description
@@ -1167,7 +1167,7 @@ type RFC3339DateTime struct {
 func (dt *RFC3339DateTime) UnmarshalJSON(b []byte) (err error) {
 	b = bytes.Trim(b, `" `)
 	if b == nil {
-	   return nil
+		return nil
 	}
 
 	dt.Time, err = time.Parse(time.RFC3339, string(b))
@@ -1176,5 +1176,5 @@ func (dt *RFC3339DateTime) UnmarshalJSON(b []byte) (err error) {
 }
 
 func (dt *RFC3339DateTime) MarshalJSON() ([]byte, error) {
-	return []byte(dt.Format(`"`+time.RFC3339+`"`)), nil
+	return []byte(dt.Format(`"` + time.RFC3339 + `"`)), nil
 }

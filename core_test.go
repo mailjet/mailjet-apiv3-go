@@ -52,7 +52,7 @@ func TestConvertPayload(t *testing.T) {
 	if err != nil {
 		t.Fatal("Unexpected error:", err)
 	}
-	res, err := json.Marshal(resMap)
+	res, _ := json.Marshal(resMap)
 	if !bytes.Equal(body, res) {
 		t.Fatal("Wrong body:", string(body), string(res))
 	}
@@ -62,7 +62,7 @@ func TestConvertPayload(t *testing.T) {
 	if err != nil {
 		t.Fatal("Unexpected error:", err)
 	}
-	res, err = json.Marshal(resMap)
+	res, _ = json.Marshal(resMap)
 	if !bytes.Equal(body, res) {
 		t.Fatal("Wrong body:", string(body), string(res))
 	}
