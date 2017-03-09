@@ -1,18 +1,21 @@
-package mailjet
+package mailjet_test
 
 import (
 	"fmt"
 	"net/textproto"
 	"os"
 
+	mailjet "github.com/mailjet/mailjet-apiv3-go"
 	"github.com/mailjet/mailjet-apiv3-go/resources"
 )
 
-func ExampleMailjetClient_List() {
-	publicKey := os.Getenv("MJ_APIKEY_PUBLIC")
-	secretKey := os.Getenv("MJ_APIKEY_PRIVATE")
+var (
+	publicKey  = os.Getenv("MJ_APIKEY_PUBLIC")
+	privateKey = os.Getenv("MJ_APIKEY_PRIVATE")
+)
 
-	mj := NewMailjetClient(publicKey, secretKey)
+func exampleMailjetClientList() {
+	mj := mailjet.NewMailjetClient(publicKey, privateKey)
 
 	var res []resources.Metadata
 	count, total, err := mj.List("metadata", &res)
@@ -28,14 +31,14 @@ func ExampleMailjetClient_List() {
 	}
 }
 
-func ExampleMailjetClient_Get() {
+func exampleMailjetClientGet() {
 	publicKey := os.Getenv("MJ_APIKEY_PUBLIC")
 	secretKey := os.Getenv("MJ_APIKEY_PRIVATE")
 
-	mj := NewMailjetClient(publicKey, secretKey)
+	mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
 	var senders []resources.Sender
-	info := &Request{
+	info := &mailjet.Request{
 		Resource: "sender",
 		AltID:    "qwe@qwe.com",
 	}
@@ -49,15 +52,15 @@ func ExampleMailjetClient_Get() {
 	}
 }
 
-func ExampleMailjetClient_Post() {
+func exampleMailjetClientPost() {
 	publicKey := os.Getenv("MJ_APIKEY_PUBLIC")
 	secretKey := os.Getenv("MJ_APIKEY_PRIVATE")
 
-	mj := NewMailjetClient(publicKey, secretKey)
+	mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
 	var senders []resources.Sender
-	fmr := &FullRequest{
-		Info:    &Request{Resource: "sender"},
+	fmr := &mailjet.FullRequest{
+		Info:    &mailjet.Request{Resource: "sender"},
 		Payload: &resources.Sender{Name: "Default", Email: "qwe@qwe.com"},
 	}
 	err := mj.Post(fmr, &senders)
@@ -70,14 +73,14 @@ func ExampleMailjetClient_Post() {
 	}
 }
 
-func ExampleMailjetClient_Put() {
+func exampleMailjetClientPut() {
 	publicKey := os.Getenv("MJ_APIKEY_PUBLIC")
 	secretKey := os.Getenv("MJ_APIKEY_PRIVATE")
 
-	mj := NewMailjetClient(publicKey, secretKey)
+	mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
-	fmr := &FullRequest{
-		Info:    &Request{Resource: "sender", AltID: "qwe@qwe.com"},
+	fmr := &mailjet.FullRequest{
+		Info:    &mailjet.Request{Resource: "sender", AltID: "qwe@qwe.com"},
 		Payload: &resources.Sender{Name: "Bob", IsDefaultSender: true},
 	}
 	err := mj.Put(fmr, []string{"Name", "IsDefaultSender"})
@@ -89,13 +92,13 @@ func ExampleMailjetClient_Put() {
 	}
 }
 
-func ExampleMailjetClient_Delete() {
+func exampleMailjetClientDelete() {
 	publicKey := os.Getenv("MJ_APIKEY_PUBLIC")
 	secretKey := os.Getenv("MJ_APIKEY_PRIVATE")
 
-	mj := NewMailjetClient(publicKey, secretKey)
+	mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
-	info := &Request{
+	info := &mailjet.Request{
 		Resource: "sender",
 		AltID:    "qwe@qwe.com",
 	}
@@ -108,17 +111,17 @@ func ExampleMailjetClient_Delete() {
 	}
 }
 
-func ExampleMailjetClient_SendMail() {
+func exampleMailjetClientSendMail() {
 	publicKey := os.Getenv("MJ_APIKEY_PUBLIC")
 	secretKey := os.Getenv("MJ_APIKEY_PRIVATE")
 
-	mj := NewMailjetClient(publicKey, secretKey)
+	mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
-	param := &InfoSendMail{
+	param := &mailjet.InfoSendMail{
 		FromEmail: "qwe@qwe.com",
 		FromName:  "Bob Patrick",
-		Recipients: []Recipient{
-			Recipient{
+		Recipients: []mailjet.Recipient{
+			{
 				Email: "qwe@qwe.com",
 			},
 		},
@@ -134,11 +137,8 @@ func ExampleMailjetClient_SendMail() {
 	}
 }
 
-func ExampleMailjetClient_SendMailSmtp() {
-	publicKey := os.Getenv("MJ_APIKEY_PUBLIC")
-	secretKey := os.Getenv("MJ_APIKEY_PRIVATE")
-
-	mj := NewMailjetClient(publicKey, secretKey)
+func exampleMailjetClientSendMailSMTP() {
+	mj := mailjet.NewMailjetClient(publicKey, privateKey)
 
 	header := make(textproto.MIMEHeader)
 	header.Add("From", "qwe@qwe.com")
@@ -146,7 +146,7 @@ func ExampleMailjetClient_SendMailSmtp() {
 	header.Add("Subject", "Hello World!")
 	header.Add("X-Mailjet-Campaign", "test")
 	content := []byte("Hi there !")
-	info := &InfoSMTP{
+	info := &mailjet.InfoSMTP{
 		From:       "qwe@qwe.com",
 		Recipients: header["To"],
 		Header:     header,

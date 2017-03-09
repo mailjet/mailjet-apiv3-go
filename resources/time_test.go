@@ -44,13 +44,13 @@ func TestUnmarshalEmptyJSON(t *testing.T) {
 
 	err := dt.UnmarshalJSON(data)
 	if err != nil {
-	   t.Error("unexpected error:", err)
+		t.Error("unexpected error:", err)
 	}
 
 	data = []byte{34, 34}
 	err = dt.UnmarshalJSON(data)
 	if err != nil {
-	   t.Error("unexpected error:", err)
+		t.Error("unexpected error:", err)
 	}
 }
 
