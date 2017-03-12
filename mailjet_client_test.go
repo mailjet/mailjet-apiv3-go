@@ -2,6 +2,7 @@ package mailjet_test
 
 import (
 	"math/rand"
+	"os"
 	"testing"
 	"time"
 
@@ -176,5 +177,46 @@ func TestUnitSendMail(t *testing.T) {
 	_, err = m.SendMail(param)
 	if err != nil {
 		t.Fatal("Unexpected error:", err)
+	}
+}
+
+func TestSendMailV31(t *testing.T) {
+	m := mailjet.NewMailjetClient(
+		os.Getenv("MJ_APIKEY_PUBLIC"),
+		os.Getenv("MJ_APIKEY_PRIVATE"))
+
+	var data []resources.Sender
+	count, _, err := m.List("sender", &data)
+	if err != nil {
+		t.Fatal("Unexpected error:", err)
+	}
+	if count < 1 || data == nil {
+		t.Fatal("At least one sender expected in the test account!")
+	}
+
+	param := []mailjet.InfoMessagesV31{
+		mailjet.InfoMessagesV31{
+			From: &mailjet.RecipientV31{
+				Email: data[0].Email,
+				Name:  data[0].Name,
+			},
+			To: &mailjet.RecipientsV31{
+				mailjet.RecipientV31{
+					Email: data[0].Email,
+				},
+			},
+			Subject:  "Send API testing",
+			TextPart: "SendMail is working !",
+		},
+	}
+
+	messages := mailjet.MessagesV31{Info: param}
+
+	res, err := m.SendMailV31(&messages)
+	if err != nil {
+		t.Fatal("Unexpected error:", err)
+	}
+	if res != nil {
+		t.Logf("Data: %+v\n", res)
 	}
 }

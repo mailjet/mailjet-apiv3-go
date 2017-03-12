@@ -7,6 +7,9 @@ package mailjet
 import (
 	"bytes"
 	"fmt"
+
+	"encoding/json"
+
 	"io"
 	"log"
 	"net/http"
@@ -49,6 +52,11 @@ func NewClient(httpCl HTTPClientInterface, smtpCl SMTPClientInterface, baseURL .
 		client.apiBase = baseURL[0]
 	}
 	return client
+}
+
+// SetBaseURL sets the base URL
+func (c *Client) SetBaseURL(baseURL string) {
+	c.apiBase = baseURL
 }
 
 // APIKeyPublic returns the public key.
@@ -229,4 +237,50 @@ func buildMessage(header textproto.MIMEHeader, content []byte) []byte {
 	buff.Write(content)
 
 	return buff.Bytes()
+}
+
+// SendMailV31 sends a mail to the send API v3.1
+func (c *Client) SendMailV31(data *MessagesV31) (*ResultsV31, error) {
+	url := c.apiBase + ".1/send"
+	req, err := createRequest("POST", url, data, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKeyPublic(), c.APIKeyPrivate())
+
+	r, err := c.httpClient.Client().Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	switch r.StatusCode {
+	case http.StatusOK:
+		var res ResultsV31
+
+		err := json.NewDecoder(r.Body).Decode(&res)
+		if err != nil {
+			return nil, err
+		}
+		return &res, nil
+
+	case http.StatusBadRequest:
+		var apiFeedbackErr APIErrorsV31
+
+		err := json.NewDecoder(r.Body).Decode(&apiFeedbackErr)
+		if err != nil {
+			return nil, err
+		}
+		return nil, &apiFeedbackErr
+
+	default:
+		var errInfo ErrorInfoV31
+
+		err := json.NewDecoder(r.Body).Decode(&errInfo)
+		if err != nil {
+			return nil, err
+		}
+		return nil, &errInfo
+	}
 }

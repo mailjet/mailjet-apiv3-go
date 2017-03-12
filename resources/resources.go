@@ -652,65 +652,6 @@ type Messageinformation struct {
 	SpamAssassinScore float64            `mailjet:"read_only"`
 }
 
-// Email struct handle users input
-type Email struct {
-	Email string
-	Name  string
-}
-
-// Emails is a collection of emails
-type Emails []Email
-
-// Attachment struct represent a content attachment
-type Attachment struct {
-	ContentType   string `json:"ContentType"`
-	Base64Content string `json:"Base64Content"`
-	Filename      string `json:"Filename,omitempty"`
-}
-
-// Attachments collection
-type Attachments []Attachment
-
-// InlinedAttachments collection
-type InlinedAttachments []InlineAttachment
-
-// InlineAttachment struct represent the content of an inline attachement
-type InlineAttachment struct {
-	Attachment
-	ContentID string `json:"ContentID,omitempty"`
-}
-
-// MessagesInput represents the payload input taken by send API v3.1
-type MessagesInput struct {
-	From                     Email
-	To                       Emails
-	ReplyTo                  Email                  `json:",omitempty"`
-	Cc                       Emails                 `json:",omitempty"`
-	Bcc                      Emails                 `json:",omitempty"`
-	Sender                   Email                  `json:",omitempty"`
-	Attachments              Attachments            `json:",omitempty"`
-	InlinedAttachments       InlinedAttachments     `json:",omitempty"`
-	Subject                  string                 `json:",omitempty"`
-	TextPart                 string                 `json:",omitempty"`
-	HTMLPart                 string                 `json:",omitempty"`
-	Priority                 int                    `json:",omitempty"`
-	CustomCampaign           string                 `json:",omitempty"`
-	StatisticsContactsListID int                    `json:",omitempty"`
-	SandBoxMode              bool                   `json:",omitempty"`
-	MonitoringCategory       string                 `json:",omitempty"`
-	DeduplicateCampaign      bool                   `json:",omitempty"`
-	TrackClicks              string                 `json:",omitempty"`
-	TrackOpens               string                 `json:",omitempty"`
-	CustomID                 string                 `json:",omitempty"`
-	Variables                map[string]interface{} `json:",omitempty"`
-	EventPayload             string                 `json:",omitempty"`
-	TemplateID               interface{}            `json:",omitempty"`
-	TemplateLanguage         bool                   `json:",omitempty"`
-	TemplateErrorReporting   Email                  `json:",omitempty"`
-	TemplateErrorDeliver     bool                   `json:",omitempty"`
-	Headers                  map[string]interface{} `json:",omitempty"`
-}
-
 // Messagesentstatistics: API Key Statistical campaign/message data.
 type Messagesentstatistics struct {
 	ArrivalTs      *RFC3339DateTime `mailjet:"read_only"`
