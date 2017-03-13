@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/textproto"
@@ -257,8 +258,8 @@ func (c *Client) SendMailV31(data *MessagesV31) (*ResultsV31, error) {
 
 	switch r.StatusCode {
 	case http.StatusOK:
-		var res ResultsV31
 
+		var res ResultsV31
 		err := json.NewDecoder(r.Body).Decode(&res)
 		if err != nil {
 			return nil, err
@@ -266,17 +267,14 @@ func (c *Client) SendMailV31(data *MessagesV31) (*ResultsV31, error) {
 		return &res, nil
 
 	case http.StatusBadRequest:
-		var apiFeedbackErr APIErrorsV31
 
-		err := json.NewDecoder(r.Body).Decode(&apiFeedbackErr)
-		if err != nil {
-			return nil, err
-		}
-		return nil, &apiFeedbackErr
+		data, _ := ioutil.ReadAll(r.Body)
+		apiFeedbackErr := UnmarshalAPIFeedbackErrorsV31(data)
+		return nil, apiFeedbackErr
 
 	default:
-		var errInfo ErrorInfoV31
 
+		var errInfo ErrorInfoV31
 		err := json.NewDecoder(r.Body).Decode(&errInfo)
 		if err != nil {
 			return nil, err
