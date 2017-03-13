@@ -1,6 +1,9 @@
 package mailjet
 
-import "net/http"
+import (
+	"net/http"
+	"sync"
+)
 
 /*
 ** API structures
@@ -11,6 +14,7 @@ import "net/http"
 type Client struct {
 	apiBase string
 	client  *httpClient
+	mutex   *sync.Mutex
 }
 
 // Request bundles data needed to build the URL.
