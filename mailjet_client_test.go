@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"sync"
 	"testing"
 	"time"
 
@@ -177,4 +178,26 @@ func TestSendMail(t *testing.T) {
 		t.Fatal("Unexpected error:", err)
 	}
 	fmt.Printf("Data: %+v\n", res)
+}
+
+func TestDataRace(t *testing.T) {
+	m := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+
+	var wg sync.WaitGroup
+	wg.Add(5)
+
+	for i := 0; i < 5; i++ {
+		go func() {
+			var data []resources.Sender
+			count, _, err := m.List("sender", &data)
+			if err != nil {
+				t.Fatal("Unexpected error:", err)
+			}
+			if count < 1 || data == nil {
+				t.Fatal("At least one sender expected in the test account!")
+			}
+			wg.Done()
+		}()
+	}
+	wg.Wait()
 }
