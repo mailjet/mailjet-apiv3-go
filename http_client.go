@@ -6,7 +6,8 @@ import (
 	"net/http"
 )
 
-type httpClient struct {
+// HTTPClient is a wrapper arround http.Client
+type HTTPClient struct {
 	client        *http.Client
 	apiKeyPublic  string
 	apiKeyPrivate string
@@ -15,40 +16,55 @@ type httpClient struct {
 	response      interface{}
 }
 
+// NewHTTPClient returns a new httpClient
+func NewHTTPClient(apiKeyPublic, apiKeyPrivate string) *HTTPClient {
+	return &HTTPClient{
+		apiKeyPublic:  apiKeyPublic,
+		apiKeyPrivate: apiKeyPrivate,
+		client:        http.DefaultClient,
+	}
+}
+
 // APIKeyPublic returns the public key.
-func (c *httpClient) APIKeyPublic() string {
+func (c *HTTPClient) APIKeyPublic() string {
 	return c.apiKeyPublic
 }
 
 // APIKeyPrivate returns the secret key.
-func (c *httpClient) APIKeyPrivate() string {
+func (c *HTTPClient) APIKeyPrivate() string {
 	return c.apiKeyPrivate
 }
 
-func (c *httpClient) Client() *http.Client {
+// Client returns the underlying http client
+func (c *HTTPClient) Client() *http.Client {
 	return c.client
 }
 
-func (c *httpClient) SetClient(client *http.Client) {
+// SetClient sets the underlying http client
+func (c *HTTPClient) SetClient(client *http.Client) {
 	c.client = client
 }
 
-func (c *httpClient) Send(req *http.Request) *httpClient {
+// Send binds the request to the underlying http client
+func (c *HTTPClient) Send(req *http.Request) HTTPClientInterface {
 	c.request = req
 	return c
 }
 
-func (c *httpClient) With(headers map[string]string) *httpClient {
+// With binds the header to the underlying http client
+func (c *HTTPClient) With(headers map[string]string) HTTPClientInterface {
 	c.headers = headers
 	return c
 }
 
-func (c *httpClient) Read(response interface{}) *httpClient {
+// Read binds the response to the underlying http client
+func (c *HTTPClient) Read(response interface{}) HTTPClientInterface {
 	c.response = response
 	return c
 }
 
-func (c *httpClient) Call() (count, total int, err error) {
+// Call execute the HTTP call to the API
+func (c *HTTPClient) Call() (count, total int, err error) {
 	defer c.reset()
 	for key, value := range c.headers {
 		c.request.Header.Add(key, value)
@@ -79,7 +95,7 @@ func (c *httpClient) Call() (count, total int, err error) {
 	return count, total, err
 }
 
-func (c *httpClient) reset() {
+func (c *HTTPClient) reset() {
 	c.headers = make(map[string]string)
 	c.request = nil
 	c.response = nil

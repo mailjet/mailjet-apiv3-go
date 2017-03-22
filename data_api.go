@@ -12,7 +12,7 @@ func (mj *Client) ListData(resource string, resp interface{}, options ...Request
 		return count, total, err
 	}
 
-	return mj.client.Send(req).Read(resp).Call()
+	return mj.httpClient.Send(req).Read(resp).Call()
 }
 
 // GetData issues a GET to view a resource specifying an id
@@ -26,7 +26,7 @@ func (mj *Client) GetData(mdr *DataRequest, res interface{}, options ...RequestO
 		return err
 	}
 
-	_, _, err = mj.client.Send(req).Read(res).Call()
+	_, _, err = mj.httpClient.Send(req).Read(res).Call()
 	return err
 }
 
@@ -46,7 +46,7 @@ func (mj *Client) PostData(fmdr *FullDataRequest, res interface{}, options ...Re
 		headers = map[string]string{"Content-Type": contentType}
 	}
 
-	_, _, err = mj.client.Send(req).With(headers).Read(res).Call()
+	_, _, err = mj.httpClient.Send(req).With(headers).Read(res).Call()
 	return err
 }
 
@@ -62,7 +62,7 @@ func (mj *Client) PutData(fmr *FullDataRequest, onlyFields []string, options ...
 	}
 
 	headers := map[string]string{"Content-Type": "application/json"}
-	_, _, err = mj.client.Send(req).With(headers).Call()
+	_, _, err = mj.httpClient.Send(req).With(headers).Call()
 
 	return err
 }
@@ -75,7 +75,7 @@ func (mj *Client) DeleteData(mdr *DataRequest) (err error) {
 		return err
 	}
 
-	_, _, err = mj.client.Send(req).Call()
+	_, _, err = mj.httpClient.Send(req).Call()
 
 	return err
 }
