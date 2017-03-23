@@ -18,59 +18,49 @@ func newMockedMailjetClient() *mailjet.Client {
 }
 
 func TestUnitList(t *testing.T) {
-	t.Run("Successful call", func(t *testing.T) {
-		m := newMockedMailjetClient()
+	m := newMockedMailjetClient()
 
-		var data []resources.Sender
-		count, _, err := m.List("sender", &data)
-		if err != nil {
-			t.Fatal("Unexpected error:", err)
-		}
-		if count < 1 {
-			t.Fatal("At least one sender expected !")
-		}
-	})
-	t.Run("Unsuccessful call", func(t *testing.T) {
-		httpClientMocked := mailjet.NewhttpClientMock(false)
-		smtpClientMocked := mailjet.NewSMTPClientMock(true)
-		m := mailjet.NewClient(httpClientMocked, smtpClientMocked, "custom")
+	var data []resources.Sender
+	count, _, err := m.List("sender", &data)
+	if err != nil {
+		t.Fatal("Unexpected error:", err)
+	}
+	if count < 1 {
+		t.Fatal("At least one sender expected !")
+	}
 
-		var data []resources.Sender
-		_, _, err := m.List("sender", &data)
-		if err == nil {
-			t.Fail()
-		}
-	})
+	httpClientMocked := mailjet.NewhttpClientMock(false)
+	smtpClientMocked := mailjet.NewSMTPClientMock(true)
+	cl := mailjet.NewClient(httpClientMocked, smtpClientMocked, "custom")
+
+	_, _, err = cl.List("sender", &data)
+	if err == nil {
+		t.Fail()
+	}
 }
 
 func TestUnitGet(t *testing.T) {
-	t.Run("Normal usage", func(t *testing.T) {
-		m := newMockedMailjetClient()
+	m := newMockedMailjetClient()
 
-		var data []resources.User
-		resource := "user"
-		count, _, err := m.List(resource, &data)
-		if err != nil {
-			t.Fatal("Unexpected error:", err)
-		}
-		if count < 1 {
-			t.Fatal("At least one user expected !")
-		}
-		if data == nil {
-			t.Fatal("Empty result")
-		}
+	var data []resources.User
+	resource := "user"
+	count, _, err := m.List(resource, &data)
+	if err != nil {
+		t.Fatal("Unexpected error:", err)
+	}
+	if count < 1 {
+		t.Fatal("At least one user expected !")
+	}
+	if data == nil {
+		t.Fatal("Empty result")
+	}
 
-		mr := &mailjet.Request{Resource: resource, ID: data[0].ID}
-		data = make([]resources.User, 0)
-		err = m.Get(mr, &data)
-		if err != nil {
-			t.Fatal("Unexpected error:", err)
-		}
-	})
-	t.Run("", func(t *testing.T) {
-
-	})
-
+	mr := &mailjet.Request{Resource: resource, ID: data[0].ID}
+	data = make([]resources.User, 0)
+	err = m.Get(mr, &data)
+	if err != nil {
+		t.Fatal("Unexpected error:", err)
+	}
 }
 
 func TestUnitPost(t *testing.T) {
