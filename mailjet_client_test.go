@@ -2,11 +2,24 @@ package mailjet_test
 
 import (
 	"fmt"
+	"math/rand"
 	"testing"
+	"time"
 
 	mailjet "github.com/mailjet/mailjet-apiv3-go"
 	"github.com/mailjet/mailjet-apiv3-go/resources"
 )
+
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func randSeq(n int) string {
+	rand.Seed(time.Now().UnixNano())
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
+}
 
 // NewMockedMailjetClient returns an instance of `Client` with mocked http and smtp clients injected
 func newMockedMailjetClient() *mailjet.Client {
