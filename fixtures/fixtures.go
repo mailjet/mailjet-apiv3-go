@@ -52,7 +52,7 @@ func (f *Fixtures) Contact() (*[]resources.Contact, []byte) {
 
 // ContactList fixture info
 func (f *Fixtures) ContactList() (*[]resources.Contactslist, []byte) {
-	return &[]resources.Contactslist{}, []byte(`[{"ID":84, "Address": "contact@mailjet.com", "Name": "Jhon Doe", "SubscriberCount": 1000}]`)
+	return &[]resources.Contactslist{}, []byte(`[{"ID":84, "Address": "contact@mailjet.com", "Name": "John Doe", "SubscriberCount": 1000}]`)
 }
 
 // ListRecipient fixture info

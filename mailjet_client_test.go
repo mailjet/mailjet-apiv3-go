@@ -1,7 +1,6 @@
 package mailjet_test
 
 import (
-	"fmt"
 	"math/rand"
 	"testing"
 	"time"
@@ -81,7 +80,7 @@ func TestUnitPost(t *testing.T) {
 
 	var data []resources.Contact
 	rstr := randSeq(10)
-	fmt.Printf("Create new contact: \"%s@mailjet.com\"\n", rstr)
+	t.Logf("Create new contact: \"%s@mailjet.com\"\n", rstr)
 	fmr := &mailjet.FullRequest{
 		Info:    &mailjet.Request{Resource: "contact"},
 		Payload: &resources.Contact{Name: rstr, Email: rstr + "@mailjet.com"},
@@ -93,7 +92,7 @@ func TestUnitPost(t *testing.T) {
 	if data == nil {
 		t.Fatal("Empty result")
 	}
-	fmt.Printf("Data: %+v\n", data[0])
+	t.Logf("Created contact: %+v\n", data[0])
 }
 
 func TestUnitPut(t *testing.T) {
@@ -113,7 +112,7 @@ func TestUnitPut(t *testing.T) {
 	}
 
 	rstr := randSeq(10)
-	fmt.Printf("Update name of the contact list: %s -> %s\n", data[0].Name, rstr)
+	t.Logf("Update name of the contact list: %s -> %s\n", data[0].Name, rstr)
 	data[0].Name = randSeq(10)
 	fmr := &mailjet.FullRequest{
 		Info:    &mailjet.Request{Resource: resource, AltID: data[0].Address},
@@ -123,7 +122,6 @@ func TestUnitPut(t *testing.T) {
 	if err != nil {
 		t.Fatal("Unexpected error:", err)
 	}
-
 }
 
 func TestUnitDelete(t *testing.T) {
@@ -148,7 +146,7 @@ func TestUnitDelete(t *testing.T) {
 	}
 	err = m.Delete(mr)
 	if err != nil {
-		fmt.Println(err)
+		t.Error(err)
 	}
 }
 
@@ -175,9 +173,8 @@ func TestUnitSendMail(t *testing.T) {
 		Subject:  "Send API testing",
 		TextPart: "SendMail is working !",
 	}
-	res, err := m.SendMail(param)
+	_, err = m.SendMail(param)
 	if err != nil {
 		t.Fatal("Unexpected error:", err)
 	}
-	fmt.Printf("Data: %+v\n", res)
 }
