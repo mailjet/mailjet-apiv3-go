@@ -2,6 +2,7 @@ package mailjet
 
 import (
 	"net/http"
+	"net/textproto"
 	"sync"
 )
 
@@ -12,9 +13,10 @@ import (
 // Client bundles data needed by a large number
 // of methods in order to interact with the Mailjet API.
 type Client struct {
-	apiBase string
-	client  *httpClient
-	mutex   *sync.Mutex
+	apiBase    string
+	httpClient HTTPClientInterface
+	smtpClient SMTPClientInterface
+	mutex      *sync.Mutex
 }
 
 // Request bundles data needed to build the URL.
@@ -117,4 +119,16 @@ type SentResult struct {
 		Email     string
 		MessageID int64
 	}
+}
+
+/*
+** SMTP mail sending structures
+ */
+
+// InfoSMTP contains mandatory informations to send a mail via SMTP.
+type InfoSMTP struct {
+	From       string
+	Recipients []string
+	Header     textproto.MIMEHeader
+	Content    []byte
 }

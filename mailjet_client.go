@@ -5,9 +5,12 @@
 package mailjet
 
 import (
+	"bytes"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"net/textproto"
 	"os"
 	"strings"
 	"sync"
@@ -16,38 +19,59 @@ import (
 // NewMailjetClient returns a new MailjetClient using an public apikey
 // and an secret apikey to be used when authenticating to API.
 func NewMailjetClient(apiKeyPublic, apiKeyPrivate string, baseURL ...string) *Client {
-	mj := &httpClient{
-		apiKeyPublic:  apiKeyPublic,
-		apiKeyPrivate: apiKeyPrivate,
-		client:        http.DefaultClient,
+	httpClient := NewHTTPClient(apiKeyPublic, apiKeyPrivate)
+	smtpClient := NewSMTPClient(apiKeyPublic, apiKeyPrivate)
+
+	client := &Client{
+		httpClient: httpClient,
+		smtpClient: smtpClient,
+		mutex:      new(sync.Mutex),
+		apiBase:    apiBase,
 	}
+
 	if len(baseURL) > 0 {
-		return &Client{client: mj, apiBase: baseURL[0], mutex: new(sync.Mutex)}
+		client.apiBase = baseURL[0]
 	}
-	return &Client{client: mj, apiBase: apiBase, mutex: new(sync.Mutex)}
+	return client
+}
+
+// NewClient function
+func NewClient(httpCl HTTPClientInterface, smtpCl SMTPClientInterface, baseURL ...string) *Client {
+
+	client := &Client{
+		httpClient: httpCl,
+		smtpClient: smtpCl,
+		apiBase:    apiBase,
+		mutex:      new(sync.Mutex),
+	}
+
+	if len(baseURL) > 0 {
+		client.apiBase = baseURL[0]
+	}
+	return client
 }
 
 // APIKeyPublic returns the public key.
 func (c *Client) APIKeyPublic() string {
-	return c.client.APIKeyPublic()
+	return c.httpClient.APIKeyPublic()
 }
 
 // APIKeyPrivate returns the secret key.
 func (c *Client) APIKeyPrivate() string {
-	return c.client.APIKeyPrivate()
+	return c.httpClient.APIKeyPrivate()
 
 }
 
 // Client returns the underlying http client
 func (c *Client) Client() *http.Client {
-	return c.client.Client()
+	return c.httpClient.Client()
 }
 
 // SetClient allows to customize http client.
 func (c *Client) SetClient(client *http.Client) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	c.client.SetClient(client)
+	c.httpClient.SetClient(client)
 }
 
 // Filter applies a filter with the defined key and value.
@@ -96,7 +120,7 @@ func (c *Client) List(resource string, resp interface{}, options ...RequestOptio
 
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	return c.client.Send(req).Read(resp).Call()
+	return c.httpClient.Send(req).Read(resp).Call()
 }
 
 // Get issues a GET to view a resource specifying an id
@@ -112,7 +136,7 @@ func (c *Client) Get(mr *Request, resp interface{}, options ...RequestOptions) (
 
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	_, _, err = c.client.Send(req).Read(resp).Call()
+	_, _, err = c.httpClient.Send(req).Read(resp).Call()
 	return err
 }
 
@@ -129,7 +153,7 @@ func (c *Client) Post(fmr *FullRequest, resp interface{}, options ...RequestOpti
 	headers := map[string]string{"Content-Type": "application/json"}
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	_, _, err = c.client.Send(req).With(headers).Read(resp).Call()
+	_, _, err = c.httpClient.Send(req).With(headers).Read(resp).Call()
 	return err
 }
 
@@ -147,7 +171,7 @@ func (c *Client) Put(fmr *FullRequest, onlyFields []string, options ...RequestOp
 	headers := map[string]string{"Content-Type": "application/json"}
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	_, _, err = c.client.Send(req).With(headers).Call()
+	_, _, err = c.httpClient.Send(req).With(headers).Call()
 	return err
 }
 
@@ -161,7 +185,7 @@ func (c *Client) Delete(mr *Request) (err error) {
 
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	_, _, err = c.client.Send(req).Call()
+	_, _, err = c.httpClient.Send(req).Call()
 	return err
 }
 
@@ -177,6 +201,25 @@ func (c *Client) SendMail(data *InfoSendMail) (res *SentResult, err error) {
 
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	_, _, err = c.client.Send(req).With(headers).Read(&res).Call()
+	_, _, err = c.httpClient.Send(req).With(headers).Read(&res).Call()
 	return res, err
+}
+
+// SendMailSMTP send mail via SMTP.
+func (c *Client) SendMailSMTP(info *InfoSMTP) error {
+	return c.smtpClient.SendMail(
+		info.From,
+		info.Recipients,
+		buildMessage(info.Header, info.Content))
+}
+
+func buildMessage(header textproto.MIMEHeader, content []byte) []byte {
+	buff := bytes.NewBuffer(nil)
+	for key, values := range header {
+		buff.WriteString(fmt.Sprintf("%s: %s\r\n", key, strings.Join(values, ", ")))
+	}
+	buff.WriteString("\r\n")
+	buff.Write(content)
+
+	return buff.Bytes()
 }

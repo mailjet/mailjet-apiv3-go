@@ -27,7 +27,7 @@ const (
 // User-Agent is formated as "UserAgentBase/UserAgentVersion;runtime.Version()".
 const (
 	UserAgentBase    = "mailjet-api-v3-go"
-	UserAgentVersion = "2.2.3"
+	UserAgentVersion = "2.3.3"
 )
 
 const (
@@ -225,7 +225,7 @@ var NbAttempt = 5
 
 // doRequest is called to execute the request. Authentification is set
 // with the public key and the secret key specified in MailjetClient.
-func (c *httpClient) doRequest(req *http.Request) (resp *http.Response, err error) {
+func (c *HTTPClient) doRequest(req *http.Request) (resp *http.Response, err error) {
 	debugRequest(req) //DEBUG
 	req.SetBasicAuth(c.apiKeyPublic, c.apiKeyPrivate)
 	for attempt := 0; attempt < NbAttempt; attempt++ {
