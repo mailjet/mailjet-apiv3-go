@@ -62,6 +62,13 @@ func (c *Client) APIKeyPrivate() string {
 
 }
 
+// SetURL function to set the base url of the wrapper instance
+func (c *Client) SetURL(baseURL string) {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+	c.apiBase = baseURL
+}
+
 // Client returns the underlying http client
 func (c *Client) Client() *http.Client {
 	return c.httpClient.Client()
