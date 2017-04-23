@@ -652,6 +652,65 @@ type Messageinformation struct {
 	SpamAssassinScore float64            `mailjet:"read_only"`
 }
 
+// Email struct handle users input
+type Email struct {
+	Email string
+	Name  string
+}
+
+// Emails is a collection of emails
+type Emails []Email
+
+// Attachment struct represent a content attachment
+type Attachment struct {
+	ContentType   string `json:"ContentType"`
+	Base64Content string `json:"Base64Content"`
+	Filename      string `json:"Filename"`
+}
+
+// Attachments collection
+type Attachments []Attachment
+
+// InlinedAttachments collection
+type InlinedAttachments []InlineAttachment
+
+// InlineAttachment struct represent the content of an inline attachement
+type InlineAttachment struct {
+	Attachment
+	ContentID string `json:"ContentID"`
+}
+
+// MessagesInput represents the payload input taken by send API v3.1
+type MessagesInput struct {
+	Attachments            Attachments
+	InlinedAttachments     InlinedAttachments
+	From                   Email
+	ReplyTo                *Email
+	To                     Emails
+	Cc                     Emails
+	Bcc                    Emails
+	Sender                 *Email
+	Subject                string
+	TextPart               string
+	HTMLPart               string
+	Priority               *int
+	CustomCampaign         string
+	MonitoringCategory     string
+	MonitoringCategoryID   int64
+	DeduplicateCampaign    bool
+	TrackClicks            string
+	TrackOpens             string
+	CustomID               string
+	Variables              map[string]interface{}
+	EventPayload           string
+	TemplateID             interface{}
+	TemplateHasContent     bool `json:"-"` // True if tmpl contains Html or Txt
+	TemplateLanguage       *bool
+	TemplateErrorReporting *Email
+	TemplateErrorDeliver   *bool
+	Headers                map[string]interface{}
+}
+
 // Messagesentstatistics: API Key Statistical campaign/message data.
 type Messagesentstatistics struct {
 	ArrivalTs      *RFC3339DateTime `mailjet:"read_only"`
