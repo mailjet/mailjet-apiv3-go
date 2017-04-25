@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 // HTTPClient is a wrapper arround http.Client
@@ -84,9 +85,9 @@ func (c *HTTPClient) Call() (count, total int, err error) {
 	if c.response != nil {
 		if resp.Header["Content-Type"] != nil {
 			contentType := resp.Header["Content-Type"][0]
-			if contentType == "application/json" {
+			if strings.EqualFold(contentType, "application/json") {
 				return readJSONResult(resp.Body, c.response)
-			} else if contentType == "text/csv" {
+			} else if strings.EqualFold(contentType, "text/csv") {
 				c.response, err = csv.NewReader(resp.Body).ReadAll()
 			}
 		}
