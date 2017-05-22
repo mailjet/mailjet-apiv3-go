@@ -203,13 +203,13 @@ type AttachmentV31 struct {
 type AttachmentsV31 []AttachmentV31
 
 // InlineAttachmentV31 struct represent the content of an inline attachement
-type InlineAttachmentV31 struct {
-	Attachment `json:",omitempty"`
-	ContentID  string `json:"ContentID,omitempty"`
+type InlinedAttachmentV31 struct {
+	AttachmentsV31 `json:",omitempty"`
+	ContentID      string `json:"ContentID,omitempty"`
 }
 
 // InlinedAttachmentsV31 collection
-type InlinedAttachmentsV31 []InlineAttachmentV31
+type InlinedAttachmentsV31 []InlinedAttachmentV31
 
 // ErrorInfoV31 struct
 type ErrorInfoV31 struct {
