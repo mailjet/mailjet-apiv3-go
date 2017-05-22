@@ -57,6 +57,12 @@ func (c *HTTPClient) With(headers map[string]string) HTTPClientInterface {
 	return c
 }
 
+// SendMailV31 simply calls the underlying http client.Do function
+func (c *HTTPClient) SendMailV31(req *http.Request) (*http.Response, error) {
+	res, err := c.Client().Do(req)
+	return res, err
+}
+
 // Read binds the response to the underlying http client
 func (c *HTTPClient) Read(response interface{}) HTTPClientInterface {
 	c.response = response

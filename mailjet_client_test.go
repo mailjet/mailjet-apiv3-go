@@ -1,8 +1,11 @@
 package mailjet_test
 
 import (
+	"bytes"
+	"encoding/json"
+	"io/ioutil"
 	"math/rand"
-	"os"
+	"net/http"
 	"testing"
 	"time"
 
@@ -181,28 +184,41 @@ func TestUnitSendMail(t *testing.T) {
 }
 
 func TestSendMailV31(t *testing.T) {
-	m := mailjet.NewMailjetClient(
-		os.Getenv("MJ_APIKEY_PUBLIC"),
-		os.Getenv("MJ_APIKEY_PRIVATE"))
-
-	var data []resources.Sender
-	count, _, err := m.List("sender", &data)
-	if err != nil {
-		t.Fatal("Unexpected error:", err)
+	// Here we set the behavior of the http mock
+	httpClientMocked := mailjet.NewhttpClientMock(true)
+	httpClientMocked.SendMailV31Func = func(req *http.Request) (*http.Response, error) {
+		data := mailjet.ResultsV31{
+			ResultsV31: []mailjet.ResultV31{
+				{
+					To: []mailjet.GeneratedMessageV31{
+						{
+							Email:       "recipient@company.com",
+							MessageUUID: "ac93d194-1432-4e25-a215-2cb450d4a818",
+							MessageID:   87,
+						},
+					},
+				},
+			},
+		}
+		rawBytes, _ := json.Marshal(data)
+		return &http.Response{
+			Body:       ioutil.NopCloser(bytes.NewBuffer(rawBytes)),
+			StatusCode: http.StatusOK,
+		}, nil
 	}
-	if count < 1 || data == nil {
-		t.Fatal("At least one sender expected in the test account!")
-	}
 
+	m := mailjet.NewClient(httpClientMocked, mailjet.NewSMTPClientMock(true))
+
+	// We define parameters here to pass to SendMailV31
 	param := []mailjet.InfoMessagesV31{
 		mailjet.InfoMessagesV31{
 			From: &mailjet.RecipientV31{
-				Email: data[0].Email,
-				Name:  data[0].Name,
+				Email: "passenger@mailjet.com",
+				Name:  "passenger",
 			},
 			To: &mailjet.RecipientsV31{
 				mailjet.RecipientV31{
-					Email: data[0].Email,
+					Email: "recipient@company.com",
 				},
 			},
 			Subject:  "Send API testing",

@@ -18,7 +18,7 @@ type Client struct {
 	apiBase    string
 	httpClient HTTPClientInterface
 	smtpClient SMTPClientInterface
-	mutex      *sync.Mutex
+	sync.Mutex
 }
 
 // Request bundles data needed to build the URL.
@@ -202,7 +202,7 @@ type AttachmentV31 struct {
 // AttachmentsV31 collection
 type AttachmentsV31 []AttachmentV31
 
-// InlineAttachmentV31 struct represent the content of an inline attachement
+// InlinedAttachmentV31 struct represent the content of an inline attachement
 type InlinedAttachmentV31 struct {
 	AttachmentsV31 `json:",omitempty"`
 	ContentID      string `json:"ContentID,omitempty"`

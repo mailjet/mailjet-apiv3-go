@@ -17,7 +17,6 @@ import (
 	"net/textproto"
 	"os"
 	"strings"
-	"sync"
 )
 
 // NewMailjetClient returns a new MailjetClient using an public apikey
@@ -29,7 +28,6 @@ func NewMailjetClient(apiKeyPublic, apiKeyPrivate string, baseURL ...string) *Cl
 	client := &Client{
 		httpClient: httpClient,
 		smtpClient: smtpClient,
-		mutex:      new(sync.Mutex),
 		apiBase:    apiBase,
 	}
 
@@ -46,7 +44,6 @@ func NewClient(httpCl HTTPClientInterface, smtpCl SMTPClientInterface, baseURL .
 		httpClient: httpCl,
 		smtpClient: smtpCl,
 		apiBase:    apiBase,
-		mutex:      new(sync.Mutex),
 	}
 
 	if len(baseURL) > 0 {
@@ -73,8 +70,8 @@ func (c *Client) APIKeyPrivate() string {
 
 // SetURL function to set the base url of the wrapper instance
 func (c *Client) SetURL(baseURL string) {
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
+	c.Lock()
+	defer c.Unlock()
 	c.apiBase = baseURL
 }
 
@@ -85,8 +82,8 @@ func (c *Client) Client() *http.Client {
 
 // SetClient allows to customize http client.
 func (c *Client) SetClient(client *http.Client) {
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
+	c.Lock()
+	defer c.Unlock()
 	c.httpClient.SetClient(client)
 }
 
@@ -134,8 +131,8 @@ func (c *Client) List(resource string, resp interface{}, options ...RequestOptio
 		return count, total, err
 	}
 
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
+	c.Lock()
+	defer c.Unlock()
 	return c.httpClient.Send(req).Read(resp).Call()
 }
 
@@ -150,8 +147,8 @@ func (c *Client) Get(mr *Request, resp interface{}, options ...RequestOptions) (
 		return err
 	}
 
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
+	c.Lock()
+	defer c.Unlock()
 	_, _, err = c.httpClient.Send(req).Read(resp).Call()
 	return err
 }
@@ -167,8 +164,8 @@ func (c *Client) Post(fmr *FullRequest, resp interface{}, options ...RequestOpti
 	}
 
 	headers := map[string]string{"Content-Type": "application/json"}
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
+	c.Lock()
+	defer c.Unlock()
 	_, _, err = c.httpClient.Send(req).With(headers).Read(resp).Call()
 	return err
 }
@@ -185,8 +182,8 @@ func (c *Client) Put(fmr *FullRequest, onlyFields []string, options ...RequestOp
 	}
 
 	headers := map[string]string{"Content-Type": "application/json"}
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
+	c.Lock()
+	defer c.Unlock()
 	_, _, err = c.httpClient.Send(req).With(headers).Call()
 	return err
 }
@@ -199,8 +196,8 @@ func (c *Client) Delete(mr *Request) (err error) {
 		return err
 	}
 
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
+	c.Lock()
+	defer c.Unlock()
 	_, _, err = c.httpClient.Send(req).Call()
 	return err
 }
@@ -215,8 +212,8 @@ func (c *Client) SendMail(data *InfoSendMail) (res *SentResult, err error) {
 
 	headers := map[string]string{"Content-Type": "application/json"}
 
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
+	c.Lock()
+	defer c.Unlock()
 	_, _, err = c.httpClient.Send(req).With(headers).Read(&res).Call()
 	return res, err
 }
@@ -251,7 +248,7 @@ func (c *Client) SendMailV31(data *MessagesV31) (*ResultsV31, error) {
 	req.Header.Set("Content-Type", "application/json")
 	req.SetBasicAuth(c.APIKeyPublic(), c.APIKeyPrivate())
 
-	r, err := c.httpClient.Client().Do(req)
+	r, err := c.httpClient.SendMailV31(req)
 	if err != nil {
 		return nil, err
 	}
