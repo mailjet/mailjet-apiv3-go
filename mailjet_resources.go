@@ -204,8 +204,8 @@ type AttachmentsV31 []AttachmentV31
 
 // InlinedAttachmentV31 struct represent the content of an inline attachement
 type InlinedAttachmentV31 struct {
-	AttachmentsV31 `json:",omitempty"`
-	ContentID      string `json:"ContentID,omitempty"`
+	AttachmentV31 `json:",omitempty"`
+	ContentID     string `json:"ContentID,omitempty"`
 }
 
 // InlinedAttachmentsV31 collection
@@ -234,8 +234,7 @@ type APIErrorDetailsV31 struct {
 
 // APIFeedbackErrorV31 struct is composed of an error definition and the payload associated
 type APIFeedbackErrorV31 struct {
-	Errors          []APIErrorDetailsV31
-	OriginalPayload map[string]interface{}
+	Errors []APIErrorDetailsV31
 }
 
 // APIFeedbackErrorsV31 defines the error when a validation error is being sent by the API
@@ -259,7 +258,7 @@ type GeneratedMessageV31 struct {
 // ResultV31 bundles the results of a sent email
 type ResultV31 struct {
 	Status   string
-	CustomID string
+	CustomID string `json:",omitempty"`
 	To       []GeneratedMessageV31
 	Cc       []GeneratedMessageV31
 	Bcc      []GeneratedMessageV31
@@ -268,43 +267,4 @@ type ResultV31 struct {
 // ResultsV31 bundles several results when several mails are sent
 type ResultsV31 struct {
 	ResultsV31 []ResultV31 `json:"Messages"`
-}
-
-// UnmarshalAPIFeedbackErrorsV31 function
-func UnmarshalAPIFeedbackErrorsV31(data []byte) *APIFeedbackErrorsV31 {
-	var unmarshalStruct struct {
-		Messages []map[string]interface{}
-	}
-	json.Unmarshal(data, &unmarshalStruct)
-
-	var feedbacksErrors APIFeedbackErrorsV31
-
-	for _, messagesMapData := range unmarshalStruct.Messages {
-		var singleFeedbackError APIFeedbackErrorV31
-		singleFeedbackError.OriginalPayload = make(map[string]interface{}, len(messagesMapData)-1)
-
-		for key, value := range messagesMapData {
-			if key == "Errors" {
-				dd := messagesMapData["Errors"].([]interface{})
-				for i := 0; i < len(dd); i++ {
-					dezf, ok := dd[i].(map[string]interface{})
-					if ok {
-						var errorInfo APIErrorDetailsV31
-						errorInfo.ErrorClass = dezf["ErrorClass"].(string)
-						errorInfo.ErrorMessage = dezf["ErrorMessage"].(string)
-						errorInfo.StatusCode = int(dezf["StatusCode"].(float64))
-						array := dezf["ErrorRelatedTo"].([]interface{})
-						for _, v := range array {
-							errorInfo.ErrorRelatedTo = append(errorInfo.ErrorRelatedTo, v.(string))
-						}
-						singleFeedbackError.Errors = append(singleFeedbackError.Errors, errorInfo)
-					}
-				}
-			} else {
-				singleFeedbackError.OriginalPayload[key] = value
-			}
-		}
-		feedbacksErrors.Messages = append(feedbacksErrors.Messages, singleFeedbackError)
-	}
-	return &feedbacksErrors
 }
