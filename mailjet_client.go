@@ -263,7 +263,7 @@ func (c *Client) SendMailV31(data *MessagesV31) (*ResultsV31, error) {
 		}
 		return &res, nil
 
-	case http.StatusBadRequest:
+	case http.StatusBadRequest, http.StatusForbidden:
 
 		var apiFeedbackErr APIFeedbackErrorsV31
 		if err := decoder.Decode(&apiFeedbackErr); err != nil {
