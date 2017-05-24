@@ -252,7 +252,6 @@ func (c *Client) SendMailV31(data *MessagesV31) (*ResultsV31, error) {
 		return nil, err
 	}
 
-	fmt.Println(r.StatusCode)
 	decoder := json.NewDecoder(r.Body)
 
 	switch r.StatusCode {
