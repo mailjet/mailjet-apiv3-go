@@ -9,14 +9,16 @@ import (
 
 // HTTPClientMock definition
 type HTTPClientMock struct {
-	client        *http.Client
-	apiKeyPublic  string
-	apiKeyPrivate string
-	headers       map[string]string
-	request       *http.Request
-	response      interface{}
-	validCreds    bool
-	fx            *fixtures.Fixtures
+	client          *http.Client
+	apiKeyPublic    string
+	apiKeyPrivate   string
+	headers         map[string]string
+	request         *http.Request
+	response        interface{}
+	validCreds      bool
+	fx              *fixtures.Fixtures
+	CallFunc        func() (int, int, error)
+	SendMailV31Func func(req *http.Request) (*http.Response, error)
 }
 
 // NewhttpClientMock instanciate new httpClientMock
@@ -28,6 +30,15 @@ func NewhttpClientMock(valid bool) *HTTPClientMock {
 		client:        http.DefaultClient,
 		validCreds:    valid,
 		fx:            fixtures.New(),
+		CallFunc: func() (int, int, error) {
+			if valid == true {
+				return 1, 1, nil
+			}
+			return 0, 0, errors.New("Unexpected error: Unexpected server response code: 401: EOF")
+		},
+		SendMailV31Func: func(req *http.Request) (*http.Response, error) {
+			return nil, nil
+		},
 	}
 }
 
@@ -69,10 +80,12 @@ func (c *HTTPClientMock) Read(response interface{}) HTTPClientInterface {
 	return c
 }
 
+// SendMailV31 mock function
+func (c *HTTPClientMock) SendMailV31(req *http.Request) (*http.Response, error) {
+	return c.SendMailV31Func(req)
+}
+
 // Call the mailjet API
 func (c *HTTPClientMock) Call() (int, int, error) {
-	if c.validCreds == true {
-		return 1, 1, nil
-	}
-	return 0, 0, errors.New("Unexpected error: Unexpected server response code: 401: EOF")
+	return c.CallFunc()
 }

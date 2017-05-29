@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"net/textproto"
 	"sync"
+
+	"encoding/json"
 )
 
 /*
@@ -16,7 +18,7 @@ type Client struct {
 	apiBase    string
 	httpClient HTTPClientInterface
 	smtpClient SMTPClientInterface
-	mutex      *sync.Mutex
+	sync.Mutex
 }
 
 // Request bundles data needed to build the URL.
@@ -65,6 +67,14 @@ type RequestError struct {
 	ErrorInfo    string
 	ErrorMessage string
 	StatusCode   int
+}
+
+// RequestErrorV31 is the error returned by the API.
+type RequestErrorV31 struct {
+	ErrorInfo       string
+	ErrorMessage    string
+	StatusCode      int
+	ErrorIdentifier string
 }
 
 /*
@@ -131,4 +141,130 @@ type InfoSMTP struct {
 	Recipients []string
 	Header     textproto.MIMEHeader
 	Content    []byte
+}
+
+/*
+** Send API v3.1 structures
+ */
+
+// MessagesV31 definition
+type MessagesV31 struct {
+	Info []InfoMessagesV31 `json:"Messages,omitempty"`
+}
+
+// InfoMessagesV31 represents the payload input taken by send API v3.1
+type InfoMessagesV31 struct {
+	From                     *RecipientV31          `json:",omitempty"`
+	ReplyTo                  *RecipientV31          `json:",omitempty"`
+	Sender                   *RecipientV31          `json:",omitempty"`
+	To                       *RecipientsV31         `json:",omitempty"`
+	Cc                       *RecipientsV31         `json:",omitempty"`
+	Bcc                      *RecipientsV31         `json:",omitempty"`
+	Attachments              *AttachmentsV31        `json:",omitempty"`
+	InlinedAttachments       *InlinedAttachmentsV31 `json:",omitempty"`
+	Subject                  string                 `json:",omitempty"`
+	TextPart                 string                 `json:",omitempty"`
+	HTMLPart                 string                 `json:",omitempty"`
+	Priority                 int                    `json:",omitempty"`
+	CustomCampaign           string                 `json:",omitempty"`
+	StatisticsContactsListID int                    `json:",omitempty"`
+	SandBoxMode              bool                   `json:",omitempty"`
+	MonitoringCategory       string                 `json:",omitempty"`
+	DeduplicateCampaign      bool                   `json:",omitempty"`
+	TrackClicks              string                 `json:",omitempty"`
+	TrackOpens               string                 `json:",omitempty"`
+	CustomID                 string                 `json:",omitempty"`
+	Variables                map[string]interface{} `json:",omitempty"`
+	EventPayload             string                 `json:",omitempty"`
+	TemplateID               interface{}            `json:",omitempty"`
+	TemplateLanguage         bool                   `json:",omitempty"`
+	TemplateErrorReporting   *RecipientV31          `json:",omitempty"`
+	TemplateErrorDeliver     bool                   `json:",omitempty"`
+	Headers                  map[string]interface{} `json:",omitempty"`
+}
+
+// RecipientV31 struct handle users input
+type RecipientV31 struct {
+	Email string `json:",omitempty"`
+	Name  string `json:",omitempty"`
+}
+
+// RecipientsV31 is a collection of emails
+type RecipientsV31 []RecipientV31
+
+// AttachmentV31 struct represent a content attachment
+type AttachmentV31 struct {
+	ContentType   string `json:"ContentType,omitempty"`
+	Base64Content string `json:"Base64Content,omitempty"`
+	Filename      string `json:"Filename,omitempty"`
+}
+
+// AttachmentsV31 collection
+type AttachmentsV31 []AttachmentV31
+
+// InlinedAttachmentV31 struct represent the content of an inline attachement
+type InlinedAttachmentV31 struct {
+	AttachmentV31 `json:",omitempty"`
+	ContentID     string `json:"ContentID,omitempty"`
+}
+
+// InlinedAttachmentsV31 collection
+type InlinedAttachmentsV31 []InlinedAttachmentV31
+
+// ErrorInfoV31 struct
+type ErrorInfoV31 struct {
+	Identifier string `json:"ErrorIdentifier,omitempty"`
+	Info       string `json:"ErrorInfo"`
+	Message    string `json:"ErrorMessage"`
+	StatusCode int    `json:"StatusCode"`
+}
+
+func (err *ErrorInfoV31) Error() string {
+	raw, _ := json.Marshal(err)
+	return string(raw)
+}
+
+// APIErrorDetailsV31 contains the information details describing a specific error
+type APIErrorDetailsV31 struct {
+	ErrorClass     string
+	ErrorMessage   string
+	ErrorRelatedTo []string
+	StatusCode     int
+}
+
+// APIFeedbackErrorV31 struct is composed of an error definition and the payload associated
+type APIFeedbackErrorV31 struct {
+	Errors []APIErrorDetailsV31
+}
+
+// APIFeedbackErrorsV31 defines the error when a validation error is being sent by the API
+type APIFeedbackErrorsV31 struct {
+	Messages []APIFeedbackErrorV31
+}
+
+func (api *APIFeedbackErrorsV31) Error() string {
+	raw, _ := json.Marshal(api)
+	return string(raw)
+}
+
+// GeneratedMessageV31 contains info to retrieve a generated email
+type GeneratedMessageV31 struct {
+	Email       string
+	MessageUUID string
+	MessageID   int64
+	MessageHref string
+}
+
+// ResultV31 bundles the results of a sent email
+type ResultV31 struct {
+	Status   string
+	CustomID string `json:",omitempty"`
+	To       []GeneratedMessageV31
+	Cc       []GeneratedMessageV31
+	Bcc      []GeneratedMessageV31
+}
+
+// ResultsV31 bundles several results when several mails are sent
+type ResultsV31 struct {
+	ResultsV31 []ResultV31 `json:"Messages"`
 }
