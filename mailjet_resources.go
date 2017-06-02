@@ -149,7 +149,8 @@ type InfoSMTP struct {
 
 // MessagesV31 definition
 type MessagesV31 struct {
-	Info []InfoMessagesV31 `json:"Messages,omitempty"`
+	Info        []InfoMessagesV31 `json:"Messages,omitempty"`
+	SandBoxMode bool              `json:",omitempty"`
 }
 
 // InfoMessagesV31 represents the payload input taken by send API v3.1
@@ -168,7 +169,6 @@ type InfoMessagesV31 struct {
 	Priority                 int                    `json:",omitempty"`
 	CustomCampaign           string                 `json:",omitempty"`
 	StatisticsContactsListID int                    `json:",omitempty"`
-	SandBoxMode              bool                   `json:",omitempty"`
 	MonitoringCategory       string                 `json:",omitempty"`
 	DeduplicateCampaign      bool                   `json:",omitempty"`
 	TrackClicks              string                 `json:",omitempty"`
