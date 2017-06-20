@@ -1,24 +1,20 @@
-[doc]: http://dev.mailjet.com/
-[api_credential]: https://app.mailjet.com/account/api_keys
-[issues]: https://github.com/mailjet/mailjet-apiv3-go/issues
-[go_documentation]:http://dev.mailjet.com/guides/?go
-[api_doc_repo]:https://github.com/mailjet/api-documentation
-
-![alt text](http://cdn.appstorm.net/web.appstorm.net/files/2012/02/mailjet_logo_200x200.png "Mailjet")
+![alt text](http://cdn.appstorm.net/web.appstorm.net/files/2012/02/mailjet_logo_200x200.png)
 
 [![Build Status](https://travis-ci.org/mailjet/mailjet-apiv3-go.svg?branch=master)](https://travis-ci.org/mailjet/mailjet-apiv3-go)
 [![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://godoc.org/github.com/mailjet/mailjet-apiv3-go)
 [![Go Report Card](https://goreportcard.com/badge/mailjet/mailjet-apiv3-go)](https://goreportcard.com/report/mailjet/mailjet-apiv3-go)
 
-# Mailjet Go Client
+Mailjet Go Client
 
-This GO library is a client for version 3 of the [Mailjet API][doc].
 
-## Getting Started
+This GO library is a client for version 3 of the [Mailjet API](http://dev.mailjet.com/).
 
-Every code examples can be find on the [Mailjet Documentation][go_documentation]
+Getting Started
+---------------
 
-(Please refer to the [Mailjet Documentation Repository][api_doc_repo] to contribute to the documentation examples)
+Every code examples can be find on the [Mailjet Documentation](http://dev.mailjet.com/guides/?go)
+
+(Please refer to the [Mailjet Documentation Repository](https://github.com/mailjet/api-documentation) to contribute to the documentation examples)
 
 ### Prerequisites
 
@@ -28,9 +24,10 @@ Make sure you have the following requirements:
 * A Mailjet API Secret Key
 * A Go installation (v. >= 1.3)
 
-Both API key and an API secret can be found [here][api_credential].
+Both API key and an API secret can be found [here](https://app.mailjet.com/account/api_keys).
 
 Get cosy with Mailjet and save your credentials in your environment:
+
 ```
 export MJ_APIKEY_PUBLIC='your api key'
 export MJ_APIKEY_PRIVATE='your api secret'
@@ -47,12 +44,14 @@ go run main.go
 ### Installation
 
 Get package:
+
 ```
 go get github.com/mailjet/mailjet-apiv3-go
 ```
 
 And create a new MailjetClient:
-``` go
+
+```go
 // Import the mailjet wrapper
 import (
 	"github.com/mailjet/mailjet-apiv3-go"
@@ -72,16 +71,18 @@ mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
 It's ready to use !
 
-## Examples
+Examples
+--------
 
 ### List resources
-``` go
+
+```go
 package main
 
 import (
+	"fmt"
 	"github.com/mailjet/mailjet-apiv3-go"
 	"github.com/mailjet/mailjet-apiv3-go/resources"
-	"fmt"
 	"os"
 )
 
@@ -107,13 +108,14 @@ func main() {
 ```
 
 ### Create a resource
-``` go
+
+```go
 package main
 
 import (
+	"fmt"
 	"github.com/mailjet/mailjet-apiv3-go"
 	"github.com/mailjet/mailjet-apiv3-go/resources"
-	"fmt"
 	"os"
 )
 
@@ -140,13 +142,14 @@ func main() {
 ```
 
 ### Update a resource
-``` go
+
+```go
 package main
 
 import (
+	"fmt"
 	"github.com/mailjet/mailjet-apiv3-go"
 	"github.com/mailjet/mailjet-apiv3-go/resources"
-	"fmt"
 	"os"
 )
 
@@ -171,13 +174,14 @@ func main() {
 ```
 
 ### View a resource
-``` go
+
+```go
 package main
 
 import (
+	"fmt"
 	"github.com/mailjet/mailjet-apiv3-go"
 	"github.com/mailjet/mailjet-apiv3-go/resources"
-	"fmt"
 	"os"
 )
 
@@ -188,7 +192,7 @@ func main() {
 	mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
 	var senders []resources.Sender
-	info := &Request {
+	info := &Request{
 		Resource: "sender",
 		AltID:    "qwe@qwe.com",
 	}
@@ -204,13 +208,14 @@ func main() {
 ```
 
 ### Delete a resource
-``` go
+
+```go
 package main
 
 import (
+	"fmt"
 	"github.com/mailjet/mailjet-apiv3-go"
 	"github.com/mailjet/mailjet-apiv3-go/resources"
-	"fmt"
 	"os"
 )
 
@@ -235,13 +240,14 @@ func main() {
 ```
 
 ### Send a mail
-``` go
+
+```go
 package main
 
 import (
+	"fmt"
 	"github.com/mailjet/mailjet-apiv3-go"
 	"github.com/mailjet/mailjet-apiv3-go/resources"
-	"fmt"
 	"os"
 )
 
@@ -253,13 +259,13 @@ func main() {
 
 	param := &mailjet.InfoSendMail{
 		FromEmail: "qwe@qwe.com",
-		FromName: "Bob Patrick",
+		FromName:  "Bob Patrick",
 		Recipients: []mailjet.Recipient{
 			mailjet.Recipient{
 				Email: "qwe@qwe.com",
 			},
 		},
-		Subject: "Hello World!",
+		Subject:  "Hello World!",
 		TextPart: "Hi there !",
 	}
 	res, err := mj.SendMail(param)
@@ -331,17 +337,62 @@ func main() {
 }
 ```
 
-## Contribute
+### Send a mail with send API v 3.1
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"os"
+
+	mailjet "github.com/mailjet/mailjet-apiv3-go"
+)
+
+func main() {
+	m := mailjet.NewMailjetClient(
+		os.Getenv("MJ_APIKEY_PUBLIC"),
+		os.Getenv("MJ_APIKEY_PRIVATE"))
+
+	messagesInfo := []mailjet.InfoMessagesV31{
+		mailjet.InfoMessagesV31{
+			From: &mailjet.RecipientV31{
+				Email: "qwe@qwe.com",
+				Name:  "Bob Patrick",
+			},
+			To: &mailjet.RecipientsV31{
+				mailjet.RecipientV31{
+					Email: "qwe@qwe.com",
+				},
+			},
+			Subject:  "Send API v 3.1 testing",
+			TextPart: "Hey, that's pretty good!",
+		},
+	}
+
+	messages := mailjet.MessagesV31{Info: messagesInfo}
+
+	res, err := m.SendMailV31(&messages)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Data: %+v\n", res)
+}
+```
+
+Contribute
+----------
 
 We welcome any contribution.
 
 Please make sure you follow this step-by-step guide before contributing :
 
-* Fork the project.
-* Create a topic branch.
-* Implement your feature or bug fix.
-* Add documentation for your feature or bug fix.
-* Commit and push your changes.
-* Submit a pull request
+-	Fork the project.
+-	Create a topic branch.
+-	Implement your feature or bug fix.
+-	Add documentation for your feature or bug fix.
+-	Commit and push your changes.
+-	Submit a pull request
 
-Submit your issues [here][issues].
+Submit your issues [here](https://github.com/mailjet/mailjet-apiv3-go/issues).
