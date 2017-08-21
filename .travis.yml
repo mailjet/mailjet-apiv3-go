@@ -1,5 +1,8 @@
 language: go
 go:
-  - 1.4
-  - 1.8
+- 1.4
+- 1.8
 script: go test -race
+notifications:
+  slack:
+    secure: mzaAtAfgOUIGP3GyI9bEXgDEREgoLLPS2Bg2hLq+55wgpN9GwrgQaiCFw2o8vYnE0OpuQ5WkzPGeGS/uCENSpAjK4qWXuXI9e/wBS1tROVjMFhWhVhliWjB3Q8g4Gqy0AxWEjxvtyUhkkYnN8AXyWk/pF319PO+tFu3tukRNS00ise5me9KWkTeHioKdtyLrK1Ee9eoU3b8f43D1E/cYMfEqDkKcw2Cec1UODXfKoUM5y5g+KQnH5LnE7q/RBPB7YpEvJgq9JJBNEVjqFLXeGEnoBP2NWuLDvBqeYkwqZUR5bNh+nQfqvawj2TsUIhVWkmWkCovXST67bs00Iwc6f2dLa3cgM3OLpsbL2zoQ6Zz++50dNxf+8xftDGdofRklO/82TWJQnTbwpTFXWQBpfhh+ZSrdY9Vds253HKiunN040KMJDpTQ5kSQZosoWNKEd/jSomqosFxtHANNX8afGNy25kaNngRTmmoRqsKjnrta8c4xfVXNgh11nKEGVPQQ3PTM0HyAXwTuSqBf/Mr9B1I1lUsq4w/OGjJ2CGAXeSnTzsbXxfqTQ90cvFpeKIqsloXNJTkYazuXa+cN4yrlsHaUWUYPk7Nd4BvEz/iaSAHu21hVWl41XqjLGSN8iKpSuJOvAeG6kNgVtXeSe4uvRDf8z/yr3l53n6M2/qQXI8E=
