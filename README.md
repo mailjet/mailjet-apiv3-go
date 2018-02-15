@@ -35,7 +35,7 @@ export MJ_APIKEY_PRIVATE='your api secret'
 
 ### Functional test
 
-Under the folder `tests` is located a small program using the wrapper which can be used to check if your Mailjet keys in your environment are working
+Under the folder `tests` is located a small program using the wrapper that can be used to check whether your Mailjet keys in your environment are working
 
 ```
 go run main.go
@@ -384,7 +384,7 @@ func main() {
 Contribute
 ----------
 
-We welcome any contribution.
+Feel free to bring any contribution.
 
 Please make sure you follow this step-by-step guide before contributing :
 
