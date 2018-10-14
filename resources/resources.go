@@ -992,8 +992,15 @@ type Template struct {
 type TemplateDetailcontent struct {
 	TextPart    string      `json:"Text-part,omitempty"`
 	HtmlPart    string      `json:"Html-part,omitempty"`
-	MJMLContent string      `json:",omitempty"`
+	MJMLContent MJMLContent `json:",omitempty"`
 	Headers     interface{} `json:",omitempty"`
+}
+
+// MJMLContent: Structure of Passport template.
+type MJMLContent struct {
+	tagName    string
+	attributes map[string]interface{}
+	id         string
 }
 
 // Toplinkclicked: Top links clicked historgram.
