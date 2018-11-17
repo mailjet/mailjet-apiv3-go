@@ -1,7 +1,7 @@
 ![alt text](http://cdn.appstorm.net/web.appstorm.net/files/2012/02/mailjet_logo_200x200.png)
 
 [![Build Status](https://travis-ci.org/mailjet/mailjet-apiv3-go.svg?branch=master)](https://travis-ci.org/mailjet/mailjet-apiv3-go)
-[![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://godoc.org/github.com/mailjet/mailjet-apiv3-go)
+[![GoDoc](https://godoc.org/github.com/lbryio/mailjet-apiv3-go?status.svg)](https://godoc.org/github.com/lbryio/mailjet-apiv3-go)
 [![Go Report Card](https://goreportcard.com/badge/mailjet/mailjet-apiv3-go)](https://goreportcard.com/report/mailjet/mailjet-apiv3-go)
 
 Mailjet Go Client
@@ -46,7 +46,7 @@ go run main.go
 Get package:
 
 ```
-go get github.com/mailjet/mailjet-apiv3-go
+go get github.com/lbryio/mailjet-apiv3-go
 ```
 
 And create a new MailjetClient:
@@ -54,8 +54,8 @@ And create a new MailjetClient:
 ```go
 // Import the mailjet wrapper
 import (
-	"github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	"github.com/lbryio/mailjet-apiv3-go"
+	"github.com/lbryio/mailjet-apiv3-go/resources"
 	"os"
 )
 
@@ -81,8 +81,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	"github.com/lbryio/mailjet-apiv3-go"
+	"github.com/lbryio/mailjet-apiv3-go/resources"
 	"os"
 )
 
@@ -114,8 +114,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	"github.com/lbryio/mailjet-apiv3-go"
+	"github.com/lbryio/mailjet-apiv3-go/resources"
 	"os"
 )
 
@@ -148,8 +148,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	"github.com/lbryio/mailjet-apiv3-go"
+	"github.com/lbryio/mailjet-apiv3-go/resources"
 	"os"
 )
 
@@ -180,8 +180,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	"github.com/lbryio/mailjet-apiv3-go"
+	"github.com/lbryio/mailjet-apiv3-go/resources"
 	"os"
 )
 
@@ -214,8 +214,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	"github.com/lbryio/mailjet-apiv3-go"
+	"github.com/lbryio/mailjet-apiv3-go/resources"
 	"os"
 )
 
@@ -246,8 +246,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	"github.com/lbryio/mailjet-apiv3-go"
+	"github.com/lbryio/mailjet-apiv3-go/resources"
 	"os"
 )
 
@@ -283,8 +283,8 @@ func main() {
 package main
 
 import (
-	"github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	"github.com/lbryio/mailjet-apiv3-go"
+	"github.com/lbryio/mailjet-apiv3-go/resources"
 
 	"fmt"
 	"log"
@@ -347,7 +347,7 @@ import (
 	"log"
 	"os"
 
-	mailjet "github.com/mailjet/mailjet-apiv3-go"
+	mailjet "github.com/lbryio/mailjet-apiv3-go"
 )
 
 func main() {
@@ -395,4 +395,4 @@ Please make sure you follow this step-by-step guide before contributing :
 -	Commit and push your changes.
 -	Submit a pull request
 
-Submit your issues [here](https://github.com/mailjet/mailjet-apiv3-go/issues).
+Submit your issues [here](https://github.com/lbryio/mailjet-apiv3-go/issues).
