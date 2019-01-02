@@ -1,16 +1,13 @@
-![alt text](http://cdn.appstorm.net/web.appstorm.net/files/2012/02/mailjet_logo_200x200.png)
+![alt text](https://www.mailjet.com/images/email/transac/logo_header.png "Mailjet")
 
 [![Build Status](https://travis-ci.org/mailjet/mailjet-apiv3-go.svg?branch=master)](https://travis-ci.org/mailjet/mailjet-apiv3-go)
 [![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://godoc.org/github.com/mailjet/mailjet-apiv3-go)
 [![Go Report Card](https://goreportcard.com/badge/mailjet/mailjet-apiv3-go)](https://goreportcard.com/report/mailjet/mailjet-apiv3-go)
 
-Mailjet Go Client
-
-
+# Official Mailjet Go Client
 This GO library is a client for version 3 of the [Mailjet API](http://dev.mailjet.com/).
 
-Getting Started
----------------
+## Getting Started
 
 Every code examples can be find on the [Mailjet Documentation](http://dev.mailjet.com/guides/?go)
 
@@ -71,8 +68,7 @@ mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
 It's ready to use !
 
-Examples
---------
+## Examples
 
 ### List resources
 
@@ -381,8 +377,7 @@ func main() {
 }
 ```
 
-Contribute
-----------
+## Contribute
 
 Feel free to bring any contribution.
 
