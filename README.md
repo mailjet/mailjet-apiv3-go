@@ -321,17 +321,24 @@ func main() {
 	client := setupProxy(proxyURL)
 	mj.SetClient(client)
 
-	param := &mailjet.InfoSendMail{
-		FromEmail: "qwe@qwe.com",
-		FromName: "Bob Patrick",
-		Recipients: []mailjet.Recipient{
-			mailjet.Recipient{
+	messagesInfo := []mailjet.InfoMessagesV31{
+		mailjet.InfoMessagesV31{
+			From: &mailjet.RecipientV31{
 				Email: "qwe@qwe.com",
+				Name:  "Bob Patrick",
 			},
+			To: &mailjet.RecipientsV31{
+				mailjet.RecipientV31{
+					Email: "qwe@qwe.com",
+				},
+			},
+			Subject:  "Hello World!",
+			TextPart: "Hi there !",
 		},
-		Subject: "Hello World!",
-		TextPart: "Hi there !",
 	}
+
+	messages := mailjet.MessagesV31{Info: messagesInfo}
+
 	res, err := mj.SendMail(param)
 	if err != nil {
 		fmt.Println(err)
