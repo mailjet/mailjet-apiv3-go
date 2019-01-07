@@ -1,13 +1,16 @@
-![alt text](https://www.mailjet.com/images/email/transac/logo_header.png "Mailjet")
+![alt text](http://cdn.appstorm.net/web.appstorm.net/files/2012/02/mailjet_logo_200x200.png)
 
 [![Build Status](https://travis-ci.org/mailjet/mailjet-apiv3-go.svg?branch=master)](https://travis-ci.org/mailjet/mailjet-apiv3-go)
 [![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://godoc.org/github.com/mailjet/mailjet-apiv3-go)
 [![Go Report Card](https://goreportcard.com/badge/mailjet/mailjet-apiv3-go)](https://goreportcard.com/report/mailjet/mailjet-apiv3-go)
 
-# Official Mailjet Go Client
+Mailjet Go Client
+
+
 This GO library is a client for version 3 of the [Mailjet API](http://dev.mailjet.com/).
 
-## Getting Started
+Getting Started
+---------------
 
 Every code examples can be find on the [Mailjet Documentation](http://dev.mailjet.com/guides/?go)
 
@@ -23,7 +26,7 @@ Make sure you have the following requirements:
 
 Both API key and an API secret can be found [here](https://app.mailjet.com/account/api_keys).
 
-Get cosy with Mailjet and save your credentials in your environment:
+Get cozy with Mailjet and save your credentials in your environment:
 
 ```
 export MJ_APIKEY_PUBLIC='your api key'
@@ -68,7 +71,8 @@ mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
 It's ready to use !
 
-## Examples
+Examples
+--------
 
 ### List resources
 
@@ -235,42 +239,47 @@ func main() {
 }
 ```
 
-### Send a mail
+### Send an email
 
 ```go
 package main
 
 import (
 	"fmt"
-	"github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	"log"
 	"os"
+
+	mailjet "github.com/mailjet/mailjet-apiv3-go"
 )
 
 func main() {
-	publicKey := os.Getenv("MJ_APIKEY_PUBLIC")
-	secretKey := os.Getenv("MJ_APIKEY_PRIVATE")
+	m := mailjet.NewMailjetClient(
+		os.Getenv("MJ_APIKEY_PUBLIC"),
+		os.Getenv("MJ_APIKEY_PRIVATE"))
 
-	mj := mailjet.NewMailjetClient(publicKey, secretKey)
-
-	param := &mailjet.InfoSendMail{
-		FromEmail: "qwe@qwe.com",
-		FromName:  "Bob Patrick",
-		Recipients: []mailjet.Recipient{
-			mailjet.Recipient{
+	messagesInfo := []mailjet.InfoMessagesV31{
+		mailjet.InfoMessagesV31{
+			From: &mailjet.RecipientV31{
 				Email: "qwe@qwe.com",
+				Name:  "Bob Patrick",
 			},
+			To: &mailjet.RecipientsV31{
+				mailjet.RecipientV31{
+					Email: "qwe@qwe.com",
+				},
+			},
+			Subject:  "Send API v 3.1 testing",
+			TextPart: "Hey, that's pretty good!",
 		},
-		Subject:  "Hello World!",
-		TextPart: "Hi there !",
 	}
-	res, err := mj.SendMail(param)
+
+	messages := mailjet.MessagesV31{Info: messagesInfo}
+
+	res, err := m.SendMailV31(&messages)
 	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println("Success")
-		fmt.Println(res)
+		log.Fatal(err)
 	}
+	fmt.Printf("Data: %+v\n", res)
 }
 ```
 
@@ -333,51 +342,8 @@ func main() {
 }
 ```
 
-### Send a mail with send API v 3.1
-
-```go
-package main
-
-import (
-	"fmt"
-	"log"
-	"os"
-
-	mailjet "github.com/mailjet/mailjet-apiv3-go"
-)
-
-func main() {
-	m := mailjet.NewMailjetClient(
-		os.Getenv("MJ_APIKEY_PUBLIC"),
-		os.Getenv("MJ_APIKEY_PRIVATE"))
-
-	messagesInfo := []mailjet.InfoMessagesV31{
-		mailjet.InfoMessagesV31{
-			From: &mailjet.RecipientV31{
-				Email: "qwe@qwe.com",
-				Name:  "Bob Patrick",
-			},
-			To: &mailjet.RecipientsV31{
-				mailjet.RecipientV31{
-					Email: "qwe@qwe.com",
-				},
-			},
-			Subject:  "Send API v 3.1 testing",
-			TextPart: "Hey, that's pretty good!",
-		},
-	}
-
-	messages := mailjet.MessagesV31{Info: messagesInfo}
-
-	res, err := m.SendMailV31(&messages)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Data: %+v\n", res)
-}
-```
-
-## Contribute
+Contribute
+----------
 
 Feel free to bring any contribution.
 
