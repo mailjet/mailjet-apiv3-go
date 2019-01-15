@@ -1,10 +1,10 @@
-![alt text](http://cdn.appstorm.net/web.appstorm.net/files/2012/02/mailjet_logo_200x200.png)
+![alt text](https://www.mailjet.com/images/email/transac/logo_header.png "Mailjet")
 
 [![Build Status](https://travis-ci.org/mailjet/mailjet-apiv3-go.svg?branch=master)](https://travis-ci.org/mailjet/mailjet-apiv3-go)
 [![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://godoc.org/github.com/mailjet/mailjet-apiv3-go)
 [![Go Report Card](https://goreportcard.com/badge/mailjet/mailjet-apiv3-go)](https://goreportcard.com/report/mailjet/mailjet-apiv3-go)
 
-Mailjet Go Client
+# Official Mailjet Go Client
 
 
 This GO library is a client for version 3 of the [Mailjet API](http://dev.mailjet.com/).
@@ -35,7 +35,7 @@ export MJ_APIKEY_PRIVATE='your api secret'
 
 ### Functional test
 
-Under the folder `tests` is located a small program using the wrapper that can be used to check whether your Mailjet keys in your environment are working
+In the `tests` folder you will find a small program using the wrapper. It can be used to check whether the Mailjet API keys in your environment are valid and active.
 
 ```
 go run main.go
@@ -283,7 +283,7 @@ func main() {
 }
 ```
 
-### Send a mail through a proxy
+### Send an email through proxy
 ``` go
 package main
 
@@ -352,7 +352,7 @@ func main() {
 Contribute
 ----------
 
-Feel free to bring any contribution.
+Feel free to contribute to this project.
 
 Please make sure you follow this step-by-step guide before contributing :
 
