@@ -126,8 +126,9 @@ type Attachment struct {
 // SentResult is the JSON result sent by the Send API.
 type SentResult struct {
 	Sent []struct {
-		Email     string
-		MessageID int64
+		Email       string `json:"Email"`
+		MessageID   int64  `json:"MessageID"`
+		MessageUUID string `json:"MessageUUID,omitempty"`
 	}
 }
 
