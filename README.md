@@ -71,6 +71,16 @@ mj := mailjet.NewMailjetClient(publicKey, secretKey)
 
 It's ready to use !
 
+### Base URL
+
+The default base domain name for the Mailjet API is `https://api.mailjet.com`. You can modify this base URL by adding a different URL in the client configuration for your call:
+
+```go
+mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"),"https://api.us.mailjet.com")
+```
+
+If your account has been moved to Mailjet's **US architecture**, the URL value you need to set is `https://api.us.mailjet.com`.
+
 Examples
 --------
 
