@@ -105,7 +105,7 @@ import (
     mailjet "github.com/mailjet/mailjet-apiv3-go"
 )
 func main () {
-    mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+    mailjetClient := mailjet.NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
     messagesInfo := []mailjet.InfoMessagesV31 {
       mailjet.InfoMessagesV31{
         From: &mailjet.RecipientV31{
@@ -124,7 +124,7 @@ func main () {
       },
     }
     messages := mailjet.MessagesV31{Info: messagesInfo }
-    res, err := m.SendMailV31(&messages)
+    res, err := mailjetClient.SendMailV31(&messages)
     if err != nil {
         log.Fatal(err)
     }
