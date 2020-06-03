@@ -233,7 +233,7 @@ type Campaigndraft struct {
 	Sender             string
 	SenderEmail        string
 	SenderName         string `json:",omitempty"`
-	Status             string `mailjet:"read_only"`
+	Status             int64  `mailjet:"read_only"`
 	Subject            string
 	TemplateID         int64  `json:",omitempty"`
 	TemplateALT        string `json:",omitempty"`
