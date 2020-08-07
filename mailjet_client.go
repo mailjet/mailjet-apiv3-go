@@ -96,6 +96,13 @@ func Filter(key, value string) RequestOptions {
 	}
 }
 
+// WithContext sets the request context
+func WithContext(ctx context.Context) RequestOptions {
+	return func(req *http.Request) {
+		*req = *(req.WithContext(ctx))
+	}
+}
+
 // SortOrder defines the order of the result.
 type SortOrder int
 
