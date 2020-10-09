@@ -10,7 +10,7 @@
 [![Build Status](https://travis-ci.org/mailjet/mailjet-apiv3-go.svg?branch=master)](https://travis-ci.org/mailjet/mailjet-apiv3-go)
 [![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://godoc.org/github.com/mailjet/mailjet-apiv3-go)
 [![Go Report Card](https://goreportcard.com/badge/mailjet/mailjet-apiv3-go)](https://goreportcard.com/report/mailjet/mailjet-apiv3-go)
-![Current Version](https://img.shields.io/badge/version-2.4.5-green.svg)
+![Current Version](https://img.shields.io/badge/version-2.5.0-green.svg)
 
 ## Overview
 
