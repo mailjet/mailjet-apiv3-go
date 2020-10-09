@@ -3,9 +3,11 @@ package mailjet_test
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
 
@@ -14,6 +16,22 @@ import (
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+var (
+	mux    *http.ServeMux
+	server *httptest.Server
+	client *mailjet.Client
+)
+
+func fakeServer() func() {
+	mux = http.NewServeMux()
+	server = httptest.NewServer(mux)
+	client = mailjet.NewMailjetClient("apiKeyPublic", "apiKeyPrivate", server.URL+"/v3")
+
+	return func() {
+		server.Close()
+	}
+}
 
 func randSeq(n int) string {
 	rand.Seed(time.Now().UnixNano())
@@ -31,6 +49,55 @@ func newMockedMailjetClient() *mailjet.Client {
 	client := mailjet.NewClient(httpClientMocked, smtpClientMocked)
 
 	return client
+}
+
+func TestCreateListrecipient(t *testing.T) {
+	teardown := fakeServer()
+	defer teardown()
+
+	mux.HandleFunc("/v3/REST/listrecipient", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "POST" {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+
+		b, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Fatal("Unexpected error:", err)
+		}
+
+		body := make(map[string]interface{})
+		if err = json.Unmarshal(b, &body); err != nil {
+			t.Fatal("Invalid body:", err)
+		}
+
+		_, id := body["ContactID"]
+		_, alt := body["ContactALT"]
+		_, listID := body["ListID"]
+		if !id && !alt || !listID {
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprint(w, `{"ErrorMessage": "Missing required parameters"}`)
+		}
+	})
+
+	req := &mailjet.Request{
+		Resource: "listrecipient",
+	}
+	fullRequest := &mailjet.FullRequest{
+		Info: req,
+		Payload: resources.Listrecipient{
+			IsUnsubscribed: true,
+			ContactID:      124409882,
+			ContactALT:     "joe.doe@mailjet.com",
+			ListID:         32964,
+		},
+	}
+
+	var resp []resources.Listrecipient
+	err := client.Post(fullRequest, &resp)
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestUnitList(t *testing.T) {

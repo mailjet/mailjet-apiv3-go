@@ -551,8 +551,8 @@ type Graphstatistics struct {
 
 // Listrecipient: Manage the relationship between a contact and a contactslists.
 type Listrecipient struct {
-	ContactID      int64            `mailjet:"read_only"`
-	ContactALT     string           `mailjet:"read_only"`
+	ContactID      int64            `json:",omitempty"`
+	ContactALT     string           `json:",omitempty"`
 	ID             int64            `mailjet:"read_only"`
 	IsActive       bool             `json:",omitempty"`
 	IsUnsubscribed bool             `json:",omitempty"`
