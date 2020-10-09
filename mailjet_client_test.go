@@ -80,24 +80,45 @@ func TestCreateListrecipient(t *testing.T) {
 		}
 	})
 
-	req := &mailjet.Request{
-		Resource: "listrecipient",
-	}
-	fullRequest := &mailjet.FullRequest{
-		Info: req,
-		Payload: resources.Listrecipient{
-			IsUnsubscribed: true,
-			ContactID:      124409882,
-			ContactALT:     "joe.doe@mailjet.com",
-			ListID:         32964,
-		},
-	}
+	t.Run("successfully create list", func(t *testing.T) {
+		req := &mailjet.Request{
+			Resource: "listrecipient",
+		}
+		fullRequest := &mailjet.FullRequest{
+			Info: req,
+			Payload: resources.Listrecipient{
+				IsUnsubscribed: true,
+				ContactID:      124409882,
+				ContactALT:     "joe.doe@mailjet.com",
+				ListID:         32964,
+			},
+		}
 
-	var resp []resources.Listrecipient
-	err := client.Post(fullRequest, &resp)
-	if err != nil {
-		t.Fatal(err)
-	}
+		var resp []resources.Listrecipient
+		err := client.Post(fullRequest, &resp)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("failure when required parameters missing", func(t *testing.T) {
+		req := &mailjet.Request{
+			Resource: "listrecipient",
+		}
+		fullRequest := &mailjet.FullRequest{
+			Info: req,
+			Payload: resources.Listrecipient{
+				IsUnsubscribed: true,
+				ListID:         32964,
+			},
+		}
+
+		var resp []resources.Listrecipient
+		err := client.Post(fullRequest, &resp)
+		if err == nil {
+			t.Fatal("Expected error")
+		}
+	})
 }
 
 func TestUnitList(t *testing.T) {
