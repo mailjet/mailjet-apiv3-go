@@ -179,6 +179,108 @@ func TestMessage(t *testing.T) {
 	}
 }
 
+func TestMessageinformation(t *testing.T) {
+	t.Run("empty SpamAssassinRules", func(t *testing.T) {
+		teardown := fakeServer()
+		defer teardown()
+
+		handle("/v3/REST/messageinformation", `
+		{
+			"Count": 1,
+			"Data": [
+				{
+					"CampaignID": 0,
+					"ClickTrackedCount": 0,
+					"ContactID": 124409882,
+					"CreatedAt": "2020-10-09T06:07:56Z",
+					"ID": 288230380871887400,
+					"MessageSize": 434,
+					"OpenTrackedCount": 0,
+					"QueuedCount": 0,
+					"SendEndAt": "2020-10-09T06:07:56Z",
+					"SentCount": 1602223677,
+					"SpamAssassinRules": {
+						"ALT": "",
+						"ID": -1
+					},
+					"SpamAssassinScore": 0
+				}
+			],
+			"Total": 1
+		}
+		`)
+
+		request := &mailjet.Request{
+			Resource: "messageinformation",
+		}
+
+		var data []resources.Messageinformation
+
+		err := client.Get(request, &data)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("not empty SpamAssassinRules", func(t *testing.T) {
+		teardown := fakeServer()
+		defer teardown()
+
+		handle("/v3/REST/messageinformation", `
+		{
+			"Count": 1,
+			"Data": [
+				{
+					"CampaignID": 0,
+					"ClickTrackedCount": 0,
+					"ContactID": 124409882,
+					"CreatedAt": "2020-10-09T06:07:56Z",
+					"ID": 288230380871887400,
+					"MessageSize": 434,
+					"OpenTrackedCount": 0,
+					"QueuedCount": 0,
+					"SendEndAt": "2020-10-09T06:07:56Z",
+					"SentCount": 1602223677,
+					"SpamAssassinRules": {
+						"ALT": "",
+						"ID": -1,
+						"Items": [
+							{
+								"ALT": "MISSING_DATE",
+								"HitCount": 81115,
+								"ID": 1,
+								"Name": "MISSING_DATE",
+								"Score": 2.739
+							},
+							{
+								"ALT": "MISSING_HEADERS",
+								"HitCount": 48433743,
+								"ID": 2,
+								"Name": "MISSING_HEADERS",
+								"Score": 0.915
+							}
+						]
+					},
+					"SpamAssassinScore": 0
+				}
+			],
+			"Total": 1
+		}
+		`)
+
+		request := &mailjet.Request{
+			Resource: "messageinformation",
+		}
+
+		var data []resources.Messageinformation
+
+		err := client.Get(request, &data)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+}
+
 func TestUnitList(t *testing.T) {
 	m := newMockedMailjetClient()
 
