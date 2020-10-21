@@ -10,7 +10,7 @@
 [![Build Status](https://travis-ci.org/mailjet/mailjet-apiv3-go.svg?branch=master)](https://travis-ci.org/mailjet/mailjet-apiv3-go)
 [![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://godoc.org/github.com/mailjet/mailjet-apiv3-go)
 [![Go Report Card](https://goreportcard.com/badge/mailjet/mailjet-apiv3-go)](https://goreportcard.com/report/mailjet/mailjet-apiv3-go)
-![Current Version](https://img.shields.io/badge/version-2.4.5-green.svg)
+![Current Version](https://img.shields.io/badge/version-3.0-green.svg)
 
 ## Overview
 
@@ -44,14 +44,18 @@ Check out all the resources and Go code examples in the [Offical Documentation][
 
 ## Compatibility
 
-Our library requires Go version 1.3 or higher.
+Our library requires Go version 1.13 or higher.
+
+**NOTE: Backward compatibility has been broken with the `v3.0` release which includes versioned paths required by go modules (See [Releasing Modules](https://github.com/golang/go/wiki/Modules#releasing-modules-v2-or-higher)).**
+
+**Pin your dependencies to the `2.4.5` tag if you are not ready for `v3.0`**
 
 ### Installation
 
 Get package:
 
 ```
-go get github.com/mailjet/mailjet-apiv3-go
+go get github.com/mailjet/mailjet-apiv3-go/v3
 ```
 
 And create a new MailjetClient:
@@ -59,8 +63,8 @@ And create a new MailjetClient:
 ```go
 // Import the Mailjet wrapper
 import (
-	"github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	"github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 	"os"
 )
 ```
@@ -102,7 +106,7 @@ import (
     "fmt"
     "log"
     "os"
-    mailjet "github.com/mailjet/mailjet-apiv3-go"
+    mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
 )
 func main () {
     mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
@@ -150,8 +154,8 @@ If your account has been moved to Mailjet's **US architecture**, the URL value y
 package main
 
 import (
-	"github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	"github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 
 	"fmt"
 	"log"
@@ -226,8 +230,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	mailjet "github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 func main () {
 	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
@@ -262,8 +266,8 @@ import (
     "fmt"
     "log"
     "os"
-    mailjet "github.com/mailjet/mailjet-apiv3-go"
-    "github.com/mailjet/mailjet-apiv3-go/resources"
+    mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+    "github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 func main () {
     mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
@@ -309,8 +313,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	mailjet "github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 func main () {
 	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
@@ -334,8 +338,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	mailjet "github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 func main () {
 	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
@@ -359,8 +363,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	mailjet "github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 func main () {
 	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
@@ -392,8 +396,8 @@ import (
     "fmt"
     "log"
     "os"
-    mailjet "github.com/mailjet/mailjet-apiv3-go"
-    "github.com/mailjet/mailjet-apiv3-go/resources"
+    mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+    "github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 func main () {
     mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
@@ -438,8 +442,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	mailjet "github.com/mailjet/mailjet-apiv3-go"
-	"github.com/mailjet/mailjet-apiv3-go/resources"
+	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 func main () {
 	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))

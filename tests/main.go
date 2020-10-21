@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	mailjet "github.com/bpatyi/mailjet-apiv3-go/v2"
-	"github.com/bpatyi/mailjet-apiv3-go/v2/resources"
+	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -123,7 +123,6 @@ func testPut() {
 	if err != nil {
 		log.Fatal("Unexpected error:", err)
 	}
-
 }
 
 func testDelete() {

@@ -3,8 +3,8 @@ package mailjet
 import (
 	"errors"
 	"net/http"
-
-	"github.com/bpatyi/mailjet-apiv3-go/v2/fixtures"
+  
+	"github.com/mailjet/mailjet-apiv3-go/v3/fixtures"
 )
 
 // HTTPClientMock definition
@@ -23,7 +23,6 @@ type HTTPClientMock struct {
 
 // NewhttpClientMock instanciate new httpClientMock
 func NewhttpClientMock(valid bool) *HTTPClientMock {
-
 	return &HTTPClientMock{
 		apiKeyPublic:  "apiKeyPublic",
 		apiKeyPrivate: "apiKeyPrivate",

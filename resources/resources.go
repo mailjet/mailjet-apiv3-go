@@ -938,7 +938,8 @@ type Preset struct {
 // In order to manage a sender available across multiple API keys, see the related MetaSender resource.
 type Sender struct {
 	CreatedAt       *RFC3339DateTime `mailjet:"read_only"`
-	DNS             string           `mailjet:"read_only"`
+	DNS             string           `mailjet:"read_only"` // deprecated
+	DNSID           int64            `mailjet:"read_only"`
 	Email           string
 	EmailType       string `json:",omitempty"`
 	Filename        string `mailjet:"read_only"`

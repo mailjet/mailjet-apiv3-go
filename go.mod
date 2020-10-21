@@ -1,3 +1,3 @@
-module github.com/bpatyi/mailjet-apiv3-go/v2
+module github.com/mailjet/mailjet-apiv3-go/v3
 
-go 1.15
+go 1.13
