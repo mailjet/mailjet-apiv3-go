@@ -636,20 +636,22 @@ type Messagehistory struct {
 
 // Messageinformation: API Key campaign/message information.
 type Messageinformation struct {
-	CampaignID        int64              `mailjet:"read_only"`
-	CampaignALT       string             `mailjet:"read_only"`
-	ClickTrackedCount int64              `mailjet:"read_only"`
-	ContactID         int64              `mailjet:"read_only"`
-	ContactALT        string             `mailjet:"read_only"`
-	CreatedAt         *RFC3339DateTime   `mailjet:"read_only"`
-	ID                int64              `mailjet:"read_only"`
-	MessageSize       int64              `mailjet:"read_only"`
-	OpenTrackedCount  int64              `mailjet:"read_only"`
-	QueuedCount       int64              `mailjet:"read_only"`
-	SendEndAt         *RFC3339DateTime   `mailjet:"read_only"`
-	SentCount         int64              `mailjet:"read_only"`
-	SpamAssassinRules []SpamAssassinRule `mailjet:"read_only"`
-	SpamAssassinScore float64            `mailjet:"read_only"`
+	CampaignID        int64            `mailjet:"read_only"`
+	CampaignALT       string           `mailjet:"read_only"`
+	ClickTrackedCount int64            `mailjet:"read_only"`
+	ContactID         int64            `mailjet:"read_only"`
+	ContactALT        string           `mailjet:"read_only"`
+	CreatedAt         *RFC3339DateTime `mailjet:"read_only"`
+	ID                int64            `mailjet:"read_only"`
+	MessageSize       int64            `mailjet:"read_only"`
+	OpenTrackedCount  int64            `mailjet:"read_only"`
+	QueuedCount       int64            `mailjet:"read_only"`
+	SendEndAt         *RFC3339DateTime `mailjet:"read_only"`
+	SentCount         int64            `mailjet:"read_only"`
+	SpamAssassinRules struct {
+		Items []SpamAssassinRule
+	} `mailjet:"read_only"`
+	SpamAssassinScore float64 `mailjet:"read_only"`
 }
 
 // Messagesentstatistics: API Key Statistical campaign/message data.
