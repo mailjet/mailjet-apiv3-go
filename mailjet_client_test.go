@@ -135,35 +135,35 @@ func TestMessage(t *testing.T) {
 
 	handle("/v3/REST/message", `
 	{
-	  "Count": 1,
-	  "Data": [
-	    {
-	      "ArrivedAt": "2020-10-08T06:36:35Z",
-	      "AttachmentCount": 0,
-	      "AttemptCount": 0,
-	      "CampaignID": 426400,
-	      "ContactAlt": "",
-	      "ContactID": 124409882,
-	      "Delay": 0,
-	      "DestinationID": 124879,
-	      "FilterTime": 0,
-	      "ID": 94294117474376580,
-	      "IsClickTracked": false,
-	      "IsHTMLPartIncluded": false,
-	      "IsOpenTracked": true,
-	      "IsTextPartIncluded": false,
-	      "IsUnsubTracked": false,
-	      "MessageSize": 810,
-	      "SenderID": 52387,
-	      "SpamassassinScore": 0,
-	      "SpamassRules": "",
-	      "StatePermanent": false,
-	      "Status": "sent",
-	      "Subject": "",
-	      "UUID": "6f66806a-c4d6-4a33-99dc-bedbc7c4217f"
-	    }
-	  ],
-	  "Total": 1
+		"Count": 1,
+		"Data": [
+			{
+				"ArrivedAt": "2020-10-08T06:36:35Z",
+				"AttachmentCount": 0,
+				"AttemptCount": 0,
+				"CampaignID": 426400,
+				"ContactAlt": "",
+				"ContactID": 124409882,
+				"Delay": 0,
+				"DestinationID": 124879,
+				"FilterTime": 0,
+				"ID": 94294117474376580,
+				"IsClickTracked": false,
+				"IsHTMLPartIncluded": false,
+				"IsOpenTracked": true,
+				"IsTextPartIncluded": false,
+				"IsUnsubTracked": false,
+				"MessageSize": 810,
+				"SenderID": 52387,
+				"SpamassassinScore": 0,
+				"SpamassRules": "",
+				"StatePermanent": false,
+				"Status": "sent",
+				"Subject": "",
+				"UUID": "6f66806a-c4d6-4a33-99dc-bedbc7c4217f"
+			}
+		],
+		"Total": 1
 	}
    `)
 
