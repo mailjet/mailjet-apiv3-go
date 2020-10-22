@@ -33,6 +33,14 @@ func fakeServer() func() {
 	}
 }
 
+func handle(path, response string) {
+	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, response)
+	})
+}
+
 func randSeq(n int) string {
 	rand.Seed(time.Now().UnixNano())
 	b := make([]rune, n)
@@ -117,6 +125,158 @@ func TestCreateListrecipient(t *testing.T) {
 		err := client.Post(fullRequest, &resp)
 		if err == nil {
 			t.Fatal("Expected error")
+		}
+	})
+}
+
+func TestMessage(t *testing.T) {
+	teardown := fakeServer()
+	defer teardown()
+
+	handle("/v3/REST/message", `
+	{
+		"Count": 1,
+		"Data": [
+			{
+				"ArrivedAt": "2020-10-08T06:36:35Z",
+				"AttachmentCount": 0,
+				"AttemptCount": 0,
+				"CampaignID": 426400,
+				"ContactAlt": "",
+				"ContactID": 124409882,
+				"Delay": 0,
+				"DestinationID": 124879,
+				"FilterTime": 0,
+				"ID": 94294117474376580,
+				"IsClickTracked": false,
+				"IsHTMLPartIncluded": false,
+				"IsOpenTracked": true,
+				"IsTextPartIncluded": false,
+				"IsUnsubTracked": false,
+				"MessageSize": 810,
+				"SenderID": 52387,
+				"SpamassassinScore": 0,
+				"SpamassRules": "",
+				"StatePermanent": false,
+				"Status": "sent",
+				"Subject": "",
+				"UUID": "6f66806a-c4d6-4a33-99dc-bedbc7c4217f"
+			}
+		],
+		"Total": 1
+	}
+   `)
+
+	request := &mailjet.Request{
+		Resource: "message",
+	}
+
+	var data []resources.Message
+
+	err := client.Get(request, &data)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestMessageinformation(t *testing.T) {
+	t.Run("empty SpamAssassinRules", func(t *testing.T) {
+		teardown := fakeServer()
+		defer teardown()
+
+		handle("/v3/REST/messageinformation", `
+		{
+			"Count": 1,
+			"Data": [
+				{
+					"CampaignID": 0,
+					"ClickTrackedCount": 0,
+					"ContactID": 124409882,
+					"CreatedAt": "2020-10-09T06:07:56Z",
+					"ID": 288230380871887400,
+					"MessageSize": 434,
+					"OpenTrackedCount": 0,
+					"QueuedCount": 0,
+					"SendEndAt": "2020-10-09T06:07:56Z",
+					"SentCount": 1602223677,
+					"SpamAssassinRules": {
+						"ALT": "",
+						"ID": -1
+					},
+					"SpamAssassinScore": 0
+				}
+			],
+			"Total": 1
+		}
+		`)
+
+		request := &mailjet.Request{
+			Resource: "messageinformation",
+		}
+
+		var data []resources.Messageinformation
+
+		err := client.Get(request, &data)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("not empty SpamAssassinRules", func(t *testing.T) {
+		teardown := fakeServer()
+		defer teardown()
+
+		handle("/v3/REST/messageinformation", `
+		{
+			"Count": 1,
+			"Data": [
+				{
+					"CampaignID": 0,
+					"ClickTrackedCount": 0,
+					"ContactID": 124409882,
+					"CreatedAt": "2020-10-09T06:07:56Z",
+					"ID": 288230380871887400,
+					"MessageSize": 434,
+					"OpenTrackedCount": 0,
+					"QueuedCount": 0,
+					"SendEndAt": "2020-10-09T06:07:56Z",
+					"SentCount": 1602223677,
+					"SpamAssassinRules": {
+						"ALT": "",
+						"ID": -1,
+						"Items": [
+							{
+								"ALT": "MISSING_DATE",
+								"HitCount": 81115,
+								"ID": 1,
+								"Name": "MISSING_DATE",
+								"Score": 2.739
+							},
+							{
+								"ALT": "MISSING_HEADERS",
+								"HitCount": 48433743,
+								"ID": 2,
+								"Name": "MISSING_HEADERS",
+								"Score": 0.915
+							}
+						]
+					},
+					"SpamAssassinScore": 0
+				}
+			],
+			"Total": 1
+		}
+		`)
+
+		request := &mailjet.Request{
+			Resource: "messageinformation",
+		}
+
+		var data []resources.Messageinformation
+
+		err := client.Get(request, &data)
+		if err != nil {
+			t.Fatal(err)
 		}
 	})
 }

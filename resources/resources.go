@@ -608,21 +608,21 @@ type Message struct {
 	ContactALT         string           `json:",omitempty"`
 	Delay              float64          `json:",omitempty"`
 	Destination        Destination
-	FilterTime         int                `json:",omitempty"`
-	FromID             int64              `json:",omitempty"`
-	FromALT            string             `json:",omitempty"`
-	ID                 int64              `mailjet:"read_only"`
-	IsClickTracked     bool               `json:",omitempty"`
-	IsHTMLPartIncluded bool               `json:",omitempty"`
-	IsOpenTracked      bool               `json:",omitempty"`
-	IsTextPartIncluded bool               `json:",omitempty"`
-	IsUnsubTracked     bool               `json:",omitempty"`
-	MessageSize        int64              `json:",omitempty"`
-	SpamassassinScore  float64            `json:",omitempty"`
-	SpamassRules       []SpamAssassinRule `json:",omitempty"`
-	StateID            int64              `json:",omitempty"`
-	StatePermanent     bool               `json:",omitempty"`
-	Status             string             `json:",omitempty"`
+	FilterTime         int     `json:",omitempty"`
+	FromID             int64   `json:",omitempty"`
+	FromALT            string  `json:",omitempty"`
+	ID                 int64   `mailjet:"read_only"`
+	IsClickTracked     bool    `json:",omitempty"`
+	IsHTMLPartIncluded bool    `json:",omitempty"`
+	IsOpenTracked      bool    `json:",omitempty"`
+	IsTextPartIncluded bool    `json:",omitempty"`
+	IsUnsubTracked     bool    `json:",omitempty"`
+	MessageSize        int64   `json:",omitempty"`
+	SpamassassinScore  float64 `json:",omitempty"`
+	SpamassRules       string  `json:",omitempty"`
+	StateID            int64   `json:",omitempty"`
+	StatePermanent     bool    `json:",omitempty"`
+	Status             string  `json:",omitempty"`
 }
 
 // Messagehistory: Event history of a message.
@@ -636,20 +636,22 @@ type Messagehistory struct {
 
 // Messageinformation: API Key campaign/message information.
 type Messageinformation struct {
-	CampaignID        int64              `mailjet:"read_only"`
-	CampaignALT       string             `mailjet:"read_only"`
-	ClickTrackedCount int64              `mailjet:"read_only"`
-	ContactID         int64              `mailjet:"read_only"`
-	ContactALT        string             `mailjet:"read_only"`
-	CreatedAt         *RFC3339DateTime   `mailjet:"read_only"`
-	ID                int64              `mailjet:"read_only"`
-	MessageSize       int64              `mailjet:"read_only"`
-	OpenTrackedCount  int64              `mailjet:"read_only"`
-	QueuedCount       int64              `mailjet:"read_only"`
-	SendEndAt         *RFC3339DateTime   `mailjet:"read_only"`
-	SentCount         int64              `mailjet:"read_only"`
-	SpamAssassinRules []SpamAssassinRule `mailjet:"read_only"`
-	SpamAssassinScore float64            `mailjet:"read_only"`
+	CampaignID        int64            `mailjet:"read_only"`
+	CampaignALT       string           `mailjet:"read_only"`
+	ClickTrackedCount int64            `mailjet:"read_only"`
+	ContactID         int64            `mailjet:"read_only"`
+	ContactALT        string           `mailjet:"read_only"`
+	CreatedAt         *RFC3339DateTime `mailjet:"read_only"`
+	ID                int64            `mailjet:"read_only"`
+	MessageSize       int64            `mailjet:"read_only"`
+	OpenTrackedCount  int64            `mailjet:"read_only"`
+	QueuedCount       int64            `mailjet:"read_only"`
+	SendEndAt         *RFC3339DateTime `mailjet:"read_only"`
+	SentCount         int64            `mailjet:"read_only"`
+	SpamAssassinRules struct {
+		Items []SpamAssassinRule
+	} `mailjet:"read_only"`
+	SpamAssassinScore float64 `mailjet:"read_only"`
 }
 
 // Messagesentstatistics: API Key Statistical campaign/message data.
