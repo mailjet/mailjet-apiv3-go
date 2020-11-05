@@ -3,7 +3,7 @@ package mailjet
 import (
 	"errors"
 	"net/http"
-
+  
 	"github.com/mailjet/mailjet-apiv3-go/v3/fixtures"
 )
 
