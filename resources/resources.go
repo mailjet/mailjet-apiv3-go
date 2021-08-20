@@ -456,6 +456,14 @@ type Contactstatistics struct {
 	UserMarketingContacts int64            `mailjet:"read_only"`
 }
 
+// ContactGetcontactslists: retrieve all contact lists for a specific contact
+type ContactGetcontactslists struct {
+	ListID       int64            `mailjet:"read_only"`
+	IsUnsub      bool             `mailjet:"read_only"`
+	IsActive     bool             `mailjet:"read_only"`
+	SubscribedAt *RFC3339DateTime `mailjet:"read_only"`
+}
+
 // Csvimport: A wrapper for the CSV importer
 type Csvimport struct {
 	AliveAt         *RFC3339DateTime `mailjet:"read_only"`
