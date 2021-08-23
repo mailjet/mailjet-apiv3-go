@@ -324,17 +324,18 @@ type Clickstatistics struct {
 
 // Contact: Manage the details of a Contact.
 type Contact struct {
-	CreatedAt         *RFC3339DateTime `mailjet:"read_only"`
-	DeliveredCount    int64            `mailjet:"read_only"`
-	Email             string
-	ID                int64            `mailjet:"read_only"`
-	IsOptInPending    bool             `mailjet:"read_only"`
-	IsSpamComplaining bool             `mailjet:"read_only"`
-	LastActivityAt    *RFC3339DateTime `mailjet:"read_only"`
-	LastUpdateAt      *RFC3339DateTime `mailjet:"read_only"`
-	Name              string           `json:",omitempty"`
-	UnsubscribedAt    *RFC3339DateTime `mailjet:"read_only"`
-	UnsubscribedBy    string           `mailjet:"read_only"`
+	CreatedAt               *RFC3339DateTime `mailjet:"read_only"`
+	DeliveredCount          int64            `mailjet:"read_only"`
+	Email                   string
+	ID                      int64 `mailjet:"read_only"`
+	IsOptInPending          bool  `mailjet:"read_only"`
+	IsSpamComplaining       bool  `mailjet:"read_only"`
+	IsExcludedFromCampaigns bool
+	LastActivityAt          *RFC3339DateTime `mailjet:"read_only"`
+	LastUpdateAt            *RFC3339DateTime `mailjet:"read_only"`
+	Name                    string           `json:",omitempty"`
+	UnsubscribedAt          *RFC3339DateTime `mailjet:"read_only"`
+	UnsubscribedBy          string           `mailjet:"read_only"`
 }
 
 // ContactManagecontactslists: Managing the lists for a single contact. POST is supported.
@@ -1168,9 +1169,10 @@ type ContactsListAction struct {
 }
 
 type AddContactAction struct {
-	Email      string
-	Name       string
-	Properties JSONObject
+	Email                   string
+	Name                    string
+	IsExcludedFromCampaigns bool
+	Properties              JSONObject
 }
 
 type Recipient struct {
