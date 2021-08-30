@@ -16,7 +16,7 @@
 
 This repository contains the official Go wrapper for the Mailjet API.
 
-Check out all the resources and Go code examples in the [Offical Documentation][doc].
+Check out all the resources and Go code examples in the [Official Documentation][doc].
 
 ## Table of contents
 
@@ -104,38 +104,38 @@ Here's an example on how to send an email:
 package main
 
 import (
-  "fmt"
-  "log"
-  "os"
-
-  mailjet "github.com/mailjet/mailjet-apiv3-go"
+	"fmt"
+	"log"
+    "os"
+  
+	"github.com/mailjet/mailjet-apiv3-go/v3"
 )
 
 func main() {
-  mailjetClient := mailjet.NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
-  messagesInfo := []mailjet.InfoMessagesV31{
-    {
-      From: &mailjet.RecipientV31{
-        Email: "pilot@mailjet.com",
-        Name:  "Mailjet Pilot",
-      },
-      To: &mailjet.RecipientsV31{
-        mailjet.RecipientV31{
-          Email: "passenger1@mailjet.com",
-          Name:  "passenger 1",
-        },
-      },
-      Subject:  "Your email flight plan!",
-      TextPart: "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
-      HTMLPart: "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!",
-    },
-  }
-  messages := mailjet.MessagesV31{Info: messagesInfo}
-  res, err := mailjetClient.SendMailV31(&messages)
-  if err != nil {
-    log.Fatal(err)
-  }
-  fmt.Printf("Data: %+v\n", res)
+	mailjetClient := mailjet.NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	messagesInfo := []mailjet.InfoMessagesV31{
+		{
+			From: &mailjet.RecipientV31{
+				Email: "pilot@mailjet.com",
+				Name:  "Mailjet Pilot",
+			},
+			To: &mailjet.RecipientsV31{
+				mailjet.RecipientV31{
+					Email: "passenger1@mailjet.com",
+					Name:  "passenger 1",
+				},
+			},
+			Subject:  "Your email flight plan!",
+			TextPart: "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+			HTMLPart: "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!",
+		},
+	}
+	messages := mailjet.MessagesV31{Info: messagesInfo}
+	res, err := mailjetClient.SendMailV31(&messages)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Data: %+v\n", res)
 }
 ```
 
@@ -146,29 +146,29 @@ func main() {
 The default base domain name for the Mailjet API is `https://api.mailjet.com`. You can modify this base URL by adding a different URL in the client configuration for your call:
 
 ```go
-mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"),"https://api.us.mailjet.com")
+mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"), "https://api.us.mailjet.com")
 ```
 
 If your account has been moved to Mailjet's **US architecture**, the URL value you need to set is `https://api.us.mailjet.com`.
 
 ### Send emails through proxy
 
-``` go
+```go
 package main
 
 import (
-	"github.com/mailjet/mailjet-apiv3-go/v3"
-	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
-
 	"fmt"
 	"log"
+	"net/http"
 	"net/url"
 	"os"
+
+	"github.com/mailjet/mailjet-apiv3-go/v3"
 )
 
 // Set the http client with the given proxy url
-func setupProxy(url string) *http.Client {
-	proxyURL, err := url.Parse(url)
+func setupProxy(proxyURLStr string) *http.Client {
+	proxyURL, err := url.Parse(proxyURLStr)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -191,7 +191,7 @@ func main() {
 	mj.SetClient(client)
 
 	messagesInfo := []mailjet.InfoMessagesV31{
-		mailjet.InfoMessagesV31{
+		{
 			From: &mailjet.RecipientV31{
 				Email: "qwe@qwe.com",
 				Name:  "Bob Patrick",
@@ -206,9 +206,9 @@ func main() {
 		},
 	}
 
-	messages := mailjet.MessagesV31{Info: messagesInfo}
+	messages := &mailjet.MessagesV31{Info: messagesInfo}
 
-	res, err := mj.SendMail(param)
+	res, err := mj.SendMailV31(messages)
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -232,29 +232,29 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
-	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+
+	"github.com/mailjet/mailjet-apiv3-go/v3"
 	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 
 func main() {
-	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	mailjetClient := mailjet.NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 	var data []resources.Contact
-	mr := &Request{
-	  Resource: "contact",
+	mr := &mailjet.Request{
+		Resource: "contact",
 	}
-	fmr := &FullRequest{
-	  Info: mr,
-	  Payload: &resources.Contact {
-      Email: "passenger@mailjet.com",
-      IsExcludedFromCampaigns: "true",
-      Name: "New Contact",
-    },
+	fmr := &mailjet.FullRequest{
+		Info: mr,
+		Payload: &resources.Contact{
+			Email:                   "passenger@mailjet.com",
+			IsExcludedFromCampaigns: true,
+			Name:                    "New Contact",
+		},
 	}
 	err := mailjetClient.Post(fmr, &data)
 	if err != nil {
-	  fmt.Println(err)
+		fmt.Println(err)
 	}
 	fmt.Printf("Data array: %+v\n", data)
 }
@@ -269,41 +269,41 @@ Create : Manage a contact subscription to a list
 package main
 
 import (
-    "fmt"
-    "log"
-    "os"
-    mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
-    "github.com/mailjet/mailjet-apiv3-go/v3/resources"
+	"fmt"
+	"os"
+
+	"github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 
 func main() {
-    mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
-    var data []resources.ContactManagecontactslists
-    mr := &Request{
-      Resource: "contact",
-      ID: RESOURCE_ID,
-      Action: "managecontactslists",
-    }
-    fmr := &FullRequest{
-      Info: mr,
-      Payload: &resources.ContactManagecontactslists {
-      ContactsLists: []MailjetContactsList {
-        MailjetContactsList {
-          ListID: "$ListID_1",
-          Action: "addnoforce",
-        },
-        MailjetContactsList {
-          ListID: "$ListID_2",
-          Action: "addforce",
-        },
-      },
-    },
-    }
-    err := mailjetClient.Post(fmr, &data)
-    if err != nil {
-      fmt.Println(err)
-    }
-    fmt.Printf("Data array: %+v\n", data)
+	mailjetClient := mailjet.NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	var data []resources.ContactManagecontactslists
+	mr := &mailjet.Request{
+		Resource: "contact",
+		ID:       423, // replace with your contact ID here
+		Action:   "managecontactslists",
+	}
+	fmr := &mailjet.FullRequest{
+		Info: mr,
+		Payload: &resources.ContactManagecontactslists{
+			ContactsLists: []resources.ContactsListAction{ // replace with your contact lists here
+				{
+					ListID: 432,
+					Action: "addnoforce",
+				},
+				{
+					ListID: 553,
+					Action: "addforce",
+				},
+			},
+		},
+	}
+	err := mailjetClient.Post(fmr, &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("Data array: %+v\n", data)
 }
 ```
 
@@ -319,18 +319,18 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
-	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+
+	"github.com/mailjet/mailjet-apiv3-go/v3"
 	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 
 func main() {
-	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	mailjetClient := mailjet.NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 	var data []resources.Contact
 	_, _, err := mailjetClient.List("contact", &data)
 	if err != nil {
-	  fmt.Println(err)
+		fmt.Println(err)
 	}
 	fmt.Printf("Data array: %+v\n", data)
 }
@@ -346,18 +346,18 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
-	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+
+	"github.com/mailjet/mailjet-apiv3-go/v3"
 	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 
 func main() {
-	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	mailjetClient := mailjet.NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 	var data []resources.Contact
-	_, _, err := mailjetClient.List("contact", &data, Filter("IsExcludedFromCampaigns", false))
+	_, _, err := mailjetClient.List("contact", &data, mailjet.Filter("IsExcludedFromCampaigns", "false"))
 	if err != nil {
-	  fmt.Println(err)
+		fmt.Println(err)
 	}
 	fmt.Printf("Data array: %+v\n", data)
 }
@@ -373,22 +373,22 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
-	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+
+	"github.com/mailjet/mailjet-apiv3-go/v3"
 	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 
 func main() {
-	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	mailjetClient := mailjet.NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 	var data []resources.Contact
-	mr := &Request{
-	  Resource: "contact",
-	  ID: RESOURCE_ID,
+	mr := &mailjet.Request{
+		Resource: "contact",
+		ID:       5234, // replace with your contact ID here
 	}
 	err := mailjetClient.Get(mr, &data)
 	if err != nil {
-	  fmt.Println(err)
+		fmt.Println(err)
 	}
 	fmt.Printf("Data array: %+v\n", data)
 }
@@ -407,38 +407,39 @@ Update the contact properties for a contact:
 package main
 
 import (
-    "fmt"
-    "log"
-    "os"
-    mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
-    "github.com/mailjet/mailjet-apiv3-go/v3/resources"
+	"fmt"
+	"os"
+
+	"github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 
 func main() {
-    mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
-    mr := &Request{
-      Resource: "contactdata",
-      ID: RESOURCE_ID,
-    }
-    fmr := &FullRequest{
-      Info: mr,
-      Payload: &resources.Contactdata {
-      Data: []MailjetDat {
-        MailjetDat {
-          Name: "first_name",
-          Value: "John",
-        },
-        MailjetDat {
-          Name: "last_name",
-          Value: "Smith",
-        },
-      },
-    },
-    }
-    err := mailjetClient.Put(fmr)
-    if err != nil {
-      fmt.Println(err)
-    }
+	mailjetClient := mailjet.NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+	mr := &mailjet.Request{
+		Resource: "contactdata",
+		ID:       325, // replace with your contact ID here
+		//AltID: "user1@example.com", // alternatively you can use contact's email
+	}
+	fmr := &mailjet.FullRequest{
+		Info: mr,
+		Payload: &resources.Contactdata{
+			Data: resources.KeyValueList{
+				{
+					"Name":  "name",
+					"Value": "John",
+				},
+				{
+					"Name":  "country",
+					"Value": "Canada",
+				},
+			},
+		},
+	}
+	err := mailjetClient.Put(fmr, nil)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 ```
 
@@ -456,21 +457,22 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
-	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
-	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
+
+	"github.com/mailjet/mailjet-apiv3-go/v3"
 )
 
 func main() {
-	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
-	mr := &Request{
-	  Resource: "template",
-	  ID: RESOURCE_ID,
+	mailjetClient := mailjet.NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+
+	mr := &mailjet.Request{
+		Resource: "template",
+		ID:       423, // replace with your template ID here
 	}
+
 	err := mailjetClient.Delete(mr)
 	if err != nil {
-	  fmt.Println(err)
+		fmt.Println(err)
 	}
 }
 ```
