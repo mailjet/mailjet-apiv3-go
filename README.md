@@ -102,37 +102,40 @@ Here's an example on how to send an email:
 
 ```go
 package main
+
 import (
-    "fmt"
-    "log"
-    "os"
-    mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
+  "fmt"
+  "log"
+  "os"
+
+  mailjet "github.com/mailjet/mailjet-apiv3-go"
 )
-func main () {
-    mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
-    messagesInfo := []mailjet.InfoMessagesV31 {
-      mailjet.InfoMessagesV31{
-        From: &mailjet.RecipientV31{
-          Email: "pilot@mailjet.com",
-          Name: "Mailjet Pilot",
-        },
-        To: &mailjet.RecipientsV31{
-          mailjet.RecipientV31 {
-            Email: "passenger1@mailjet.com",
-            Name: "passenger 1",
-          },
-        },
-        Subject: "Your email flight plan!",
-        TextPart: "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
-        HTMLPart: "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!",
+
+func main() {
+  mailjetClient := mailjet.NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
+  messagesInfo := []mailjet.InfoMessagesV31{
+    {
+      From: &mailjet.RecipientV31{
+        Email: "pilot@mailjet.com",
+        Name:  "Mailjet Pilot",
       },
-    }
-    messages := mailjet.MessagesV31{Info: messagesInfo }
-    res, err := m.SendMailV31(&messages)
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Printf("Data: %+v\n", res)
+      To: &mailjet.RecipientsV31{
+        mailjet.RecipientV31{
+          Email: "passenger1@mailjet.com",
+          Name:  "passenger 1",
+        },
+      },
+      Subject:  "Your email flight plan!",
+      TextPart: "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+      HTMLPart: "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!",
+    },
+  }
+  messages := mailjet.MessagesV31{Info: messagesInfo}
+  res, err := mailjetClient.SendMailV31(&messages)
+  if err != nil {
+    log.Fatal(err)
+  }
+  fmt.Printf("Data: %+v\n", res)
 }
 ```
 
@@ -226,6 +229,7 @@ func main() {
 Create a new contact.
 */
 package main
+
 import (
 	"fmt"
 	"log"
@@ -233,7 +237,8 @@ import (
 	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
 	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
-func main () {
+
+func main() {
 	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 	var data []resources.Contact
 	mr := &Request{
@@ -262,6 +267,7 @@ func main () {
 Create : Manage a contact subscription to a list
 */
 package main
+
 import (
     "fmt"
     "log"
@@ -269,7 +275,8 @@ import (
     mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
     "github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
-func main () {
+
+func main() {
     mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
     var data []resources.ContactManagecontactslists
     mr := &Request{
@@ -309,6 +316,7 @@ func main () {
 Retrieve all contacts:
 */
 package main
+
 import (
 	"fmt"
 	"log"
@@ -316,7 +324,8 @@ import (
 	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
 	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
-func main () {
+
+func main() {
 	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 	var data []resources.Contact
 	_, _, err := mailjetClient.List("contact", &data)
@@ -334,6 +343,7 @@ func main () {
 Retrieve all contacts that are not in the campaign exclusion list :
 */
 package main
+
 import (
 	"fmt"
 	"log"
@@ -341,7 +351,8 @@ import (
 	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
 	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
-func main () {
+
+func main() {
 	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 	var data []resources.Contact
 	_, _, err := mailjetClient.List("contact", &data, Filter("IsExcludedFromCampaigns", false))
@@ -359,6 +370,7 @@ func main () {
 Retrieve a specific contact ID :
 */
 package main
+
 import (
 	"fmt"
 	"log"
@@ -366,7 +378,8 @@ import (
 	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
 	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
-func main () {
+
+func main() {
 	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 	var data []resources.Contact
 	mr := &Request{
@@ -392,6 +405,7 @@ Here's an example of a `PUT` request:
 Update the contact properties for a contact:
 */
 package main
+
 import (
     "fmt"
     "log"
@@ -399,7 +413,8 @@ import (
     mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
     "github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
-func main () {
+
+func main() {
     mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
     mr := &Request{
       Resource: "contactdata",
@@ -438,6 +453,7 @@ Here's an example of a DELETE request:
 Delete an email template:
 */
 package main
+
 import (
 	"fmt"
 	"log"
@@ -445,7 +461,8 @@ import (
 	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
 	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
-func main () {
+
+func main() {
 	mailjetClient := NewMailjetClient(os.Getenv("MJ_APIKEY_PUBLIC"), os.Getenv("MJ_APIKEY_PRIVATE"))
 	mr := &Request{
 	  Resource: "template",
