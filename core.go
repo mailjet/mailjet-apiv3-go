@@ -249,14 +249,24 @@ func (c *HTTPClient) doRequest(req *http.Request) (resp *http.Response, err erro
 func checkResponseError(resp *http.Response) error {
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
 		var mailjetErr RequestError
-		err := json.NewDecoder(resp.Body).Decode(&mailjetErr)
+		mailjetErr.StatusCode = resp.StatusCode
 
+		b, err := io.ReadAll(resp.Body)
 		if err != nil {
-			return fmt.Errorf("Unexpected server response code: %d: %s", resp.StatusCode, err)
+			mailjetErr.ErrorMessage = "unable to read response body"
+			mailjetErr.ErrorInfo = err.Error()
+			return mailjetErr
 		}
-		return fmt.Errorf("Unexpected server response code: %d: %s (%s)",
-			resp.StatusCode, mailjetErr.ErrorMessage, mailjetErr.ErrorInfo)
+
+		err = json.Unmarshal(b, &mailjetErr)
+		if err != nil {
+			mailjetErr.ErrorMessage = "unexpected server response: %s" + string(b)
+			mailjetErr.ErrorInfo = "json unmarshal error: " + err.Error()
+			return mailjetErr
+		}
+		return mailjetErr
 	}
+
 	return nil
 }
 
