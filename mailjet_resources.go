@@ -1,6 +1,7 @@
 package mailjet
 
 import (
+	"fmt"
 	"net/http"
 	"net/textproto"
 	"sync"
@@ -67,6 +68,10 @@ type RequestError struct {
 	ErrorInfo    string
 	ErrorMessage string
 	StatusCode   int
+}
+
+func (e RequestError) Error() string {
+	return fmt.Sprintf("Unexpected server response code: %d: %s (%s)", e.StatusCode, e.ErrorMessage, e.ErrorInfo)
 }
 
 // RequestErrorV31 is the error returned by the API.
