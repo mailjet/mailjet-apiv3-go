@@ -36,7 +36,7 @@ func NewhttpClientMock(valid bool) *HTTPClientMock {
 			return 0, 0, errors.New("Unexpected error: Unexpected server response code: 401: EOF")
 		},
 		SendMailV31Func: func(req *http.Request) (*http.Response, error) {
-			return nil, nil
+			return nil, errors.New("mock send mail function not implemented yet")
 		},
 	}
 }
