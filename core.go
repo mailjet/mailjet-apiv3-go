@@ -27,7 +27,7 @@ const (
 // User-Agent is formated as "UserAgentBase/UserAgentVersion;runtime.Version()".
 const (
 	UserAgentBase    = "mailjet-api-v3-go"
-	UserAgentVersion = "3.0.0"
+	UserAgentVersion = "3.0.1"
 )
 
 const (
@@ -251,7 +251,7 @@ func checkResponseError(resp *http.Response) error {
 		var mailjetErr RequestError
 		mailjetErr.StatusCode = resp.StatusCode
 
-		b, err := io.ReadAll(resp.Body)
+		b, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			mailjetErr.ErrorMessage = "unable to read response body"
 			mailjetErr.ErrorInfo = err.Error()
