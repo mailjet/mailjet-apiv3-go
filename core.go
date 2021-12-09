@@ -251,7 +251,7 @@ func checkResponseError(resp *http.Response) error {
 		var mailjetErr RequestError
 		mailjetErr.StatusCode = resp.StatusCode
 
-		b, err := io.ReadAll(resp.Body)
+		b, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			mailjetErr.ErrorMessage = "unable to read response body"
 			mailjetErr.ErrorInfo = err.Error()
