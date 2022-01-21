@@ -181,7 +181,7 @@ type InfoMessagesV31 struct {
 	CustomID                 string                 `json:",omitempty"`
 	Variables                map[string]interface{} `json:",omitempty"`
 	EventPayload             string                 `json:",omitempty"`
-	TemplateID               interface{}            `json:",omitempty"`
+	TemplateID               int                    `json:",omitempty"`
 	TemplateLanguage         bool                   `json:",omitempty"`
 	TemplateErrorReporting   *RecipientV31          `json:",omitempty"`
 	TemplateErrorDeliver     bool                   `json:",omitempty"`
