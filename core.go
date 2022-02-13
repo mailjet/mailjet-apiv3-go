@@ -2,6 +2,7 @@ package mailjet
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -37,7 +38,7 @@ const (
 )
 
 // createRequest is the main core function.
-func createRequest(method string, url string,
+func createRequest(ctx context.Context, method string, url string,
 	payload interface{}, onlyFields []string,
 	options ...RequestOptions) (req *http.Request, err error) {
 
@@ -45,7 +46,7 @@ func createRequest(method string, url string,
 	if err != nil {
 		return req, fmt.Errorf("creating request: %s\n", err)
 	}
-	req, err = http.NewRequest(method, url, bytes.NewBuffer(body))
+	req, err = http.NewRequestWithContext(ctx, method, url, bytes.NewBuffer(body))
 	if err != nil {
 		return req, fmt.Errorf("creating request: %s\n", err)
 	}

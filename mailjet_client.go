@@ -6,6 +6,7 @@ package mailjet
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 
 	"encoding/json"
@@ -124,8 +125,17 @@ func Sort(value string, order SortOrder) RequestOptions {
 // and stores the result in the value pointed to by res.
 // Filters can be add via functional options.
 func (c *Client) List(resource string, resp interface{}, options ...RequestOptions) (count, total int, err error) {
+	return c.ListWithContext(context.Background(), resource, resp, options...)
+}
+
+// ListWithContext behaves like List, but allows the caller to supply a context.Context
+// for cancellation and deadlines.
+func (c *Client) ListWithContext(ctx context.Context, resource string, resp interface{}, options ...RequestOptions) (count, total int, err error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
 	url := buildURL(c.apiBase, &Request{Resource: resource})
-	req, err := createRequest("GET", url, nil, nil, options...)
+	req, err := createRequest(ctx, "GET", url, nil, nil, options...)
 	if err != nil {
 		return count, total, err
 	}
@@ -140,8 +150,17 @@ func (c *Client) List(resource string, resp interface{}, options ...RequestOptio
 // Filters can be add via functional options.
 // Without an specified ID in MailjetRequest, it is the same as List.
 func (c *Client) Get(mr *Request, resp interface{}, options ...RequestOptions) (err error) {
+	return c.GetWithContext(context.Background(), mr, resp, options...)
+}
+
+// GetWithContext behaves like Get, but allows the caller to supply a context.Context
+// for cancellation and deadlines.
+func (c *Client) GetWithContext(ctx context.Context, mr *Request, resp interface{}, options ...RequestOptions) (err error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
 	url := buildURL(c.apiBase, mr)
-	req, err := createRequest("GET", url, nil, nil, options...)
+	req, err := createRequest(ctx, "GET", url, nil, nil, options...)
 	if err != nil {
 		return err
 	}
@@ -156,8 +175,17 @@ func (c *Client) Get(mr *Request, resp interface{}, options ...RequestOptions) (
 // and stores the result in the value pointed to by res.
 // Filters can be add via functional options.
 func (c *Client) Post(fmr *FullRequest, resp interface{}, options ...RequestOptions) (err error) {
+	return c.PostWithContext(context.Background(), fmr, resp, options...)
+}
+
+// PostWithContext behaves like Post, but allows the caller to supply a context.Context
+// for cancellation and deadlines.
+func (c *Client) PostWithContext(ctx context.Context, fmr *FullRequest, resp interface{}, options ...RequestOptions) (err error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
 	url := buildURL(c.apiBase, fmr.Info)
-	req, err := createRequest("POST", url, fmr.Payload, nil, options...)
+	req, err := createRequest(ctx, "POST", url, fmr.Payload, nil, options...)
 	if err != nil {
 		return err
 	}
@@ -174,8 +202,17 @@ func (c *Client) Post(fmr *FullRequest, resp interface{}, options ...RequestOpti
 // If onlyFields is nil, all fields except these with the tag read_only, are updated.
 // Filters can be add via functional options.
 func (c *Client) Put(fmr *FullRequest, onlyFields []string, options ...RequestOptions) (err error) {
+	return c.PutWithContext(context.Background(), fmr, onlyFields, options...)
+}
+
+// PutWithContext behaves like Put, but allows the caller to supply a context.Context
+// for cancellation and deadlines.
+func (c *Client) PutWithContext(ctx context.Context, fmr *FullRequest, onlyFields []string, options ...RequestOptions) (err error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
 	url := buildURL(c.apiBase, fmr.Info)
-	req, err := createRequest("PUT", url, fmr.Payload, onlyFields, options...)
+	req, err := createRequest(ctx, "PUT", url, fmr.Payload, onlyFields, options...)
 	if err != nil {
 		return err
 	}
@@ -189,8 +226,17 @@ func (c *Client) Put(fmr *FullRequest, onlyFields []string, options ...RequestOp
 
 // Delete is used to delete a resource.
 func (c *Client) Delete(mr *Request) (err error) {
+	return c.DeleteWithContext(context.Background(), mr)
+}
+
+// DeleteWithContext behaves like Delete, but allows the caller to supply a context.Context
+// for cancellation and deadlines.
+func (c *Client) DeleteWithContext(ctx context.Context, mr *Request) (err error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
 	url := buildURL(c.apiBase, mr)
-	req, err := createRequest("DELETE", url, nil, nil)
+	req, err := createRequest(ctx, "DELETE", url, nil, nil)
 	if err != nil {
 		return err
 	}
@@ -203,8 +249,17 @@ func (c *Client) Delete(mr *Request) (err error) {
 
 // SendMail send mail via API.
 func (c *Client) SendMail(data *InfoSendMail) (res *SentResult, err error) {
+	return c.SendMailWithContext(context.Background(), data)
+}
+
+// SendMailWithContext behaves like SendMail, but allows the caller to supply a context.Context
+// for cancellation and deadlines.
+func (c *Client) SendMailWithContext(ctx context.Context, data *InfoSendMail) (res *SentResult, err error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
 	url := c.apiBase + "/send/message"
-	req, err := createRequest("POST", url, data, nil)
+	req, err := createRequest(ctx, "POST", url, data, nil)
 	if err != nil {
 		return res, err
 	}
@@ -238,8 +293,17 @@ func buildMessage(header textproto.MIMEHeader, content []byte) []byte {
 
 // SendMailV31 sends a mail to the send API v3.1
 func (c *Client) SendMailV31(data *MessagesV31) (*ResultsV31, error) {
+	return c.SendMailV31WithContext(context.Background(), data)
+}
+
+// SendMailV31WithContext behaves like SendMailV31, but allows the caller
+// to supply a context.Context for cancellation and deadlines.
+func (c *Client) SendMailV31WithContext(ctx context.Context, data *MessagesV31) (*ResultsV31, error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
 	url := c.apiBase + ".1/send"
-	req, err := createRequest("POST", url, data, nil)
+	req, err := createRequest(ctx, "POST", url, data, nil)
 	if err != nil {
 		return nil, err
 	}

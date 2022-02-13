@@ -2,6 +2,7 @@ package mailjet
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"runtime"
@@ -10,7 +11,7 @@ import (
 )
 
 func TestCreateRequest(t *testing.T) {
-	req, err := createRequest("GET", apiBase, nil, nil)
+	req, err := createRequest(context.Background(), "GET", apiBase, nil, nil)
 	if err != nil {
 		t.Fatal("Unexpected error:", err)
 	}
