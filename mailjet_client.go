@@ -6,6 +6,7 @@ package mailjet
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 
 	"encoding/json"
@@ -92,6 +93,13 @@ func Filter(key, value string) RequestOptions {
 		q := req.URL.Query()
 		q.Add(key, value)
 		req.URL.RawQuery = strings.Replace(q.Encode(), "%2B", "+", 1)
+	}
+}
+
+// WithContext sets the request context
+func WithContext(ctx context.Context) RequestOptions {
+	return func(req *http.Request) {
+		*req = *(req.WithContext(ctx))
 	}
 }
 
@@ -202,9 +210,9 @@ func (c *Client) Delete(mr *Request) (err error) {
 }
 
 // SendMail send mail via API.
-func (c *Client) SendMail(data *InfoSendMail) (res *SentResult, err error) {
+func (c *Client) SendMail(data *InfoSendMail, options ...RequestOptions) (res *SentResult, err error) {
 	url := c.apiBase + "/send/message"
-	req, err := createRequest("POST", url, data, nil)
+	req, err := createRequest("POST", url, data, nil, options...)
 	if err != nil {
 		return res, err
 	}
@@ -237,9 +245,9 @@ func buildMessage(header textproto.MIMEHeader, content []byte) []byte {
 }
 
 // SendMailV31 sends a mail to the send API v3.1
-func (c *Client) SendMailV31(data *MessagesV31) (*ResultsV31, error) {
+func (c *Client) SendMailV31(data *MessagesV31, options ...RequestOptions) (*ResultsV31, error) {
 	url := c.apiBase + ".1/send"
-	req, err := createRequest("POST", url, data, nil)
+	req, err := createRequest("POST", url, data, nil, options...)
 	if err != nil {
 		return nil, err
 	}
