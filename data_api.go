@@ -68,9 +68,9 @@ func (mj *Client) PutData(fmr *FullDataRequest, onlyFields []string, options ...
 }
 
 // DeleteData is used to delete a data resource.
-func (mj *Client) DeleteData(mdr *DataRequest) (err error) {
+func (mj *Client) DeleteData(mdr *DataRequest, options ...RequestOptions) (err error) {
 	url := buildDataURL(mj.apiBase, mdr)
-	req, err := createRequest("DELETE", url, nil, nil)
+	req, err := createRequest("DELETE", url, nil, nil, options...)
 	if err != nil {
 		return err
 	}
