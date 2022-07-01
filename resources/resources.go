@@ -1185,7 +1185,7 @@ type ContactsListAction struct {
 type AddContactAction struct {
 	Email                   string
 	Name                    string
-	IsExcludedFromCampaigns bool
+	IsExcludedFromCampaigns *bool `json:",omitempty"`
 	Properties              JSONObject
 }
 
