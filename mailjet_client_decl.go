@@ -6,7 +6,7 @@ package mailjet
 
 import "net/http"
 
-// ClientInterface defines all Clients fuctions.
+// ClientInterface defines all Client functions.
 type ClientInterface interface {
 	APIKeyPublic() string
 	APIKeyPrivate() string
@@ -19,4 +19,10 @@ type ClientInterface interface {
 	Delete(mr *Request, options ...RequestOptions) error
 	SendMail(data *InfoSendMail) (*SentResult, error)
 	SendMailSMTP(info *InfoSMTP) (err error)
+}
+
+// ClientInterfaceV31 defines the Client functions, including SendMailV31
+type ClientInterfaceV31 interface {
+	ClientInterface
+	SendMailV31(data *MessagesV31) (*ResultsV31, error)
 }
