@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 	"time"
 
@@ -15,7 +16,28 @@ import (
 	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
 )
 
-var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+var (
+	letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	// defaultMessages is the default message passed to the server when an email
+	// is sent.
+	defaultMessages = mailjet.MessagesV31{
+		Info: []mailjet.InfoMessagesV31{
+			{
+				From: &mailjet.RecipientV31{
+					Email: "passenger@mailjet.com",
+					Name:  "passenger",
+				},
+				To: &mailjet.RecipientsV31{
+					mailjet.RecipientV31{
+						Email: "recipient@company.com",
+					},
+				},
+				Subject:  "Send API testing",
+				TextPart: "SendMail is working!",
+			},
+		},
+	}
+)
 
 var (
 	mux    *http.ServeMux
@@ -432,55 +454,185 @@ func TestUnitSendMail(t *testing.T) {
 }
 
 func TestSendMailV31(t *testing.T) {
-	// Here we set the behavior of the http mock
-	httpClientMocked := mailjet.NewhttpClientMock(true)
-	httpClientMocked.SendMailV31Func = func(req *http.Request) (*http.Response, error) {
-		data := mailjet.ResultsV31{
-			ResultsV31: []mailjet.ResultV31{
-				{
-					To: []mailjet.GeneratedMessageV31{
-						{
-							Email:       "recipient@company.com",
-							MessageUUID: "ac93d194-1432-4e25-a215-2cb450d4a818",
-							MessageID:   87,
+	tests := []struct {
+		name           string
+		messages       mailjet.MessagesV31
+		mockResponse   interface{}
+		mockStatusCode int
+		wantResponse   *mailjet.ResultsV31
+		wantErr        interface{}
+	}{
+		{
+			name:     "sending successful",
+			messages: defaultMessages,
+			mockResponse: mailjet.ResultsV31{
+				ResultsV31: []mailjet.ResultV31{
+					{
+						To: []mailjet.GeneratedMessageV31{
+							{
+								Email:       "recipient@company.com",
+								MessageUUID: "ac93d194-1432-4e25-a215-2cb450d4a818",
+								MessageID:   87,
+							},
 						},
 					},
 				},
 			},
-		}
-		rawBytes, _ := json.Marshal(data)
-		return &http.Response{
-			Body:       ioutil.NopCloser(bytes.NewBuffer(rawBytes)),
-			StatusCode: http.StatusOK,
-		}, nil
-	}
-
-	m := mailjet.NewClient(httpClientMocked, mailjet.NewSMTPClientMock(true))
-
-	// We define parameters here to pass to SendMailV31
-	param := []mailjet.InfoMessagesV31{
-		mailjet.InfoMessagesV31{
-			From: &mailjet.RecipientV31{
-				Email: "passenger@mailjet.com",
-				Name:  "passenger",
-			},
-			To: &mailjet.RecipientsV31{
-				mailjet.RecipientV31{
-					Email: "recipient@company.com",
+			mockStatusCode: 200,
+			wantResponse: &mailjet.ResultsV31{
+				ResultsV31: []mailjet.ResultV31{
+					{
+						To: []mailjet.GeneratedMessageV31{
+							{
+								Email:       "recipient@company.com",
+								MessageUUID: "ac93d194-1432-4e25-a215-2cb450d4a818",
+								MessageID:   87,
+							},
+						},
+					},
 				},
 			},
-			Subject:  "Send API testing",
-			TextPart: "SendMail is working !",
+			wantErr: nil,
+		},
+		{
+			name:     "authorization failed",
+			messages: defaultMessages,
+			mockResponse: mailjet.ErrorInfoV31{
+				Identifier: "ac93d194-1432-4e25-a215-2cb450d4a818",
+				StatusCode: 401,
+				Message:    "API key authentication/authorization failure. You may be unauthorized to access the API or your API key may be expired. Visit API keys management section to check your keys.",
+			},
+			mockStatusCode: 401,
+			wantResponse:   nil,
+			wantErr: &mailjet.ErrorInfoV31{
+				Identifier: "ac93d194-1432-4e25-a215-2cb450d4a818",
+				StatusCode: 401,
+				Message:    "API key authentication/authorization failure. You may be unauthorized to access the API or your API key may be expired. Visit API keys management section to check your keys.",
+			},
+		},
+		{
+			name:     "simple errors in request",
+			messages: messagesWithAdvancedErrorHandling(),
+			mockResponse: mailjet.APIFeedbackErrorsV31{
+				Messages: []mailjet.APIFeedbackErrorV31{
+					{
+						Errors: []mailjet.APIErrorDetailsV31{
+							{
+								ErrorCode:       "mj-0013",
+								ErrorIdentifier: "ac93d194-1432-4e25-a215-2cb450d4a818",
+								StatusCode:      400,
+								// It is not, but let's suppose it is.
+								ErrorMessage:   "\"recipient@company.com\" is an invalid email address.",
+								ErrorRelatedTo: []string{"To[0].Email"},
+							},
+						},
+					},
+				},
+			},
+			mockStatusCode: 400,
+			wantResponse:   nil,
+			wantErr: &mailjet.APIFeedbackErrorsV31{
+				Messages: []mailjet.APIFeedbackErrorV31{
+					{
+						Errors: []mailjet.APIErrorDetailsV31{
+							{
+								ErrorCode:       "mj-0013",
+								ErrorIdentifier: "ac93d194-1432-4e25-a215-2cb450d4a818",
+								StatusCode:      400,
+								// It is not, but let's suppose it is.
+								ErrorMessage:   "\"recipient@company.com\" is an invalid email address.",
+								ErrorRelatedTo: []string{"To[0].Email"},
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			name:     "advanced error handling failed",
+			messages: messagesWithAdvancedErrorHandling(),
+			mockResponse: mailjet.APIFeedbackErrorsV31{
+				Messages: []mailjet.APIFeedbackErrorV31{
+					{
+						Errors: []mailjet.APIErrorDetailsV31{
+							{
+								ErrorCode:       "send-0008",
+								ErrorIdentifier: "ac93d194-1432-4e25-a215-2cb450d4a818",
+								StatusCode:      403,
+								ErrorMessage:    "\"passenger@mailjet.com\" is not an authorized sender email address for your account.",
+								ErrorRelatedTo:  []string{"From"},
+							},
+						},
+					},
+				},
+			},
+			mockStatusCode: 403,
+			wantResponse:   nil,
+			wantErr: &mailjet.APIFeedbackErrorsV31{
+				Messages: []mailjet.APIFeedbackErrorV31{
+					{
+						Errors: []mailjet.APIErrorDetailsV31{
+							{
+								ErrorCode:       "send-0008",
+								ErrorIdentifier: "ac93d194-1432-4e25-a215-2cb450d4a818",
+								StatusCode:      403,
+								ErrorMessage:    "\"passenger@mailjet.com\" is not an authorized sender email address for your account.",
+								ErrorRelatedTo:  []string{"From"},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 
-	messages := mailjet.MessagesV31{Info: param}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			httpClientMocked := mailjet.NewhttpClientMock(true)
+			httpClientMocked.SendMailV31Func = func(req *http.Request) (*http.Response, error) {
+				if req.Header.Get("Content-Type") != "application/json" {
+					t.Errorf("Wanted request content-type header to be: application/json, got: %s", req.Header.Get("Content-Type"))
+				}
 
-	res, err := m.SendMailV31(&messages)
-	if err != nil {
-		t.Fatal("Unexpected error:", err)
+				user, pass, ok := req.BasicAuth()
+				if !ok || user != httpClientMocked.APIKeyPublic() || pass != httpClientMocked.APIKeyPrivate() {
+					t.Errorf("Wanted HTTP basic auth to be: %s/%s, got %s/%s", user, pass,
+						httpClientMocked.APIKeyPublic(), httpClientMocked.APIKeyPrivate())
+				}
+
+				var msgs mailjet.MessagesV31
+				err := json.NewDecoder(req.Body).Decode(&msgs)
+				if err != nil {
+					t.Fatalf("Could not decode request body and read message information: %v", err)
+				}
+
+				if !reflect.DeepEqual(test.messages, msgs) {
+					t.Errorf("Wanted request messages: %+v, got: %+v", test.messages, msgs)
+				}
+
+				rawBytes, _ := json.Marshal(test.mockResponse)
+				return &http.Response{
+					Body:       ioutil.NopCloser(bytes.NewBuffer(rawBytes)),
+					StatusCode: test.mockStatusCode,
+				}, nil
+			}
+
+			m := mailjet.NewClient(httpClientMocked, mailjet.NewSMTPClientMock(true))
+
+			res, err := m.SendMailV31(&test.messages)
+			if !reflect.DeepEqual(err, test.wantErr) {
+				t.Fatalf("Wanted error: %+v, got: %+v", err, test.wantErr)
+			}
+
+			if !reflect.DeepEqual(test.wantResponse, res) {
+				t.Fatalf("Wanted response: %+v, got %+v", test.wantResponse, res)
+			}
+		})
 	}
-	if res != nil {
-		t.Logf("Data: %+v\n", res)
-	}
+}
+
+func messagesWithAdvancedErrorHandling() mailjet.MessagesV31 {
+	withAdvancedErrorChecking := defaultMessages
+	withAdvancedErrorChecking.AdvanceErrorHandling = true
+	return withAdvancedErrorChecking
 }

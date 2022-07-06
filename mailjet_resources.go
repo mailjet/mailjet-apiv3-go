@@ -154,8 +154,9 @@ type InfoSMTP struct {
 
 // MessagesV31 definition
 type MessagesV31 struct {
-	Info        []InfoMessagesV31 `json:"Messages,omitempty"`
-	SandBoxMode bool              `json:",omitempty"`
+	Info                 []InfoMessagesV31 `json:"Messages,omitempty"`
+	AdvanceErrorHandling bool              `json:"AdvanceErrorHandling,omitempty"`
+	SandBoxMode          bool              `json:",omitempty"`
 }
 
 // InfoMessagesV31 represents the payload input taken by send API v3.1
@@ -231,10 +232,14 @@ func (err *ErrorInfoV31) Error() string {
 
 // APIErrorDetailsV31 contains the information details describing a specific error
 type APIErrorDetailsV31 struct {
-	ErrorClass     string
-	ErrorMessage   string
-	ErrorRelatedTo []string
-	StatusCode     int
+	// Deprecated: ErrorClass is no longer populated. Use the ErrorCode to
+	// classify the issue.
+	ErrorClass      string
+	ErrorCode       string
+	ErrorIdentifier string
+	ErrorMessage    string
+	ErrorRelatedTo  []string
+	StatusCode      int
 }
 
 // APIFeedbackErrorV31 struct is composed of an error definition and the payload associated
