@@ -27,7 +27,7 @@ const (
 // User-Agent is formated as "UserAgentBase/UserAgentVersion;runtime.Version()".
 const (
 	UserAgentBase    = "mailjet-api-v3-go"
-	UserAgentVersion = "3.1.1"
+	UserAgentVersion = "4.0.1"
 )
 
 const (
