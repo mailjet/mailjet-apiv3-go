@@ -5,8 +5,8 @@ import (
 	"net/textproto"
 	"os"
 
-	mailjet "github.com/mailjet/mailjet-apiv3-go/v3"
-	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
+	mailjet "github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 
 var (

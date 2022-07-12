@@ -55,7 +55,7 @@ Our library requires Go version 1.13 or higher.
 Get package:
 
 ```
-go get github.com/mailjet/mailjet-apiv3-go/v3
+go get github.com/mailjet/mailjet-apiv3-go/v4
 ```
 
 And create a new MailjetClient:
@@ -63,8 +63,8 @@ And create a new MailjetClient:
 ```go
 // Import the Mailjet wrapper
 import (
-	"github.com/mailjet/mailjet-apiv3-go/v3"
-	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 	"os"
 )
 ```
@@ -108,7 +108,7 @@ import (
 	"log"
     "os"
   
-	"github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
 )
 
 func main() {
@@ -163,7 +163,7 @@ import (
 	"net/url"
 	"os"
 
-	"github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
 )
 
 // Set the http client with the given proxy url
@@ -234,8 +234,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mailjet/mailjet-apiv3-go/v3"
-	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 
 func main() {
@@ -272,8 +272,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mailjet/mailjet-apiv3-go/v3"
-	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 
 func main() {
@@ -321,8 +321,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mailjet/mailjet-apiv3-go/v3"
-	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 
 func main() {
@@ -348,8 +348,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mailjet/mailjet-apiv3-go/v3"
-	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 
 func main() {
@@ -375,8 +375,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mailjet/mailjet-apiv3-go/v3"
-	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 
 func main() {
@@ -410,8 +410,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mailjet/mailjet-apiv3-go/v3"
-	"github.com/mailjet/mailjet-apiv3-go/v3/resources"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 
 func main() {
@@ -459,7 +459,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mailjet/mailjet-apiv3-go/v3"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
 )
 
 func main() {

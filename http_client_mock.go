@@ -3,8 +3,8 @@ package mailjet
 import (
 	"errors"
 	"net/http"
-  
-	"github.com/mailjet/mailjet-apiv3-go/v3/fixtures"
+
+	"github.com/mailjet/mailjet-apiv3-go/v4/fixtures"
 )
 
 // HTTPClientMock definition
