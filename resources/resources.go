@@ -196,7 +196,7 @@ type Campaign struct {
 	SendEndAt               *RFC3339DateTime `mailjet:"read_only"`
 	SendStartAt             *RFC3339DateTime `mailjet:"read_only"`
 	SpamassScore            float64          `mailjet:"read_only"`
-	Status                  string           `mailjet:"read_only"`
+	Status                  int64            `mailjet:"read_only"`
 	Subject                 string           `mailjet:"read_only"`
 	UnsubscribeTrackedCount int64            `mailjet:"read_only"`
 }
