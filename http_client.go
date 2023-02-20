@@ -22,7 +22,7 @@ func NewHTTPClient(apiKeyPublic, apiKeyPrivate string) *HTTPClient {
 	return &HTTPClient{
 		apiKeyPublic:  apiKeyPublic,
 		apiKeyPrivate: apiKeyPrivate,
-		client:        http.DefaultClient,
+		client:        &http.Client{},
 	}
 }
 
