@@ -624,28 +624,28 @@ type Message struct {
 	ArrivedAt          *RFC3339DateTime `json:",omitempty"`
 	AttachmentCount    int              `json:",omitempty"`
 	AttemptCount       int              `json:",omitempty"`
-	CampaignID         int64            `json:",omitempty"`
 	CampaignALT        string           `json:",omitempty"`
-	ContactID          int64            `json:",omitempty"`
+	CampaignID         int64            `json:",omitempty"`
 	ContactALT         string           `json:",omitempty"`
+	ContactID          int64            `json:",omitempty"`
+	CustomID           string           `json:",omitempty"`
 	Delay              float64          `json:",omitempty"`
-	Destination        Destination
-	FilterTime         int     `json:",omitempty"`
-	FromID             int64   `json:",omitempty"`
-	FromALT            string  `json:",omitempty"`
-	ID                 int64   `mailjet:"read_only"`
-	IsClickTracked     bool    `json:",omitempty"`
-	IsHTMLPartIncluded bool    `json:",omitempty"`
-	IsOpenTracked      bool    `json:",omitempty"`
-	IsTextPartIncluded bool    `json:",omitempty"`
-	IsUnsubTracked     bool    `json:",omitempty"`
-	MessageSize        int64   `json:",omitempty"`
-	SpamassassinScore  float64 `json:",omitempty"`
-	SpamassRules       string  `json:",omitempty"`
-	Subject            string  `json:",omitempty"`
-	StateID            int64   `json:",omitempty"`
-	StatePermanent     bool    `json:",omitempty"`
-	Status             string  `json:",omitempty"`
+	DestinationID      int64            `json:",omitempty"`
+	FilterTime         int              `json:",omitempty"`
+	ID                 int64            `mailjet:"read_only"`
+	IsClickTracked     bool             `json:",omitempty"`
+	IsHTMLPartIncluded bool             `json:",omitempty"`
+	IsOpenTracked      bool             `json:",omitempty"`
+	IsTextPartIncluded bool             `json:",omitempty"`
+	IsUnsubTracked     bool             `json:",omitempty"`
+	MessageSize        int64            `json:",omitempty"`
+	SenderID           int64            `json:",omitempty"`
+	SpamassassinScore  float64          `json:",omitempty"`
+	SpamassRules       string           `json:",omitempty"`
+	StatePermanent     bool             `json:",omitempty"`
+	Status             string           `json:",omitempty"`
+	Subject            string           `json:",omitempty"`
+	UUID               string           `json:",omitempty"`
 }
 
 // Messagehistory: Event history of a message.
