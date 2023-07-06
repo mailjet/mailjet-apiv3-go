@@ -642,6 +642,7 @@ type Message struct {
 	SenderID           int64            `json:",omitempty"`
 	SpamassassinScore  float64          `json:",omitempty"`
 	SpamassRules       string           `json:",omitempty"`
+	StateID            int              `json:",omitempty"`
 	StatePermanent     bool             `json:",omitempty"`
 	Status             string           `json:",omitempty"`
 	Subject            string           `json:",omitempty"`
