@@ -7,10 +7,8 @@ package mailjet
 import (
 	"bytes"
 	"context"
-	"fmt"
-
 	"encoding/json"
-
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -70,8 +68,6 @@ func (c *Client) APIKeyPrivate() string {
 
 // SetURL function to set the base url of the wrapper instance
 func (c *Client) SetURL(baseURL string) {
-	c.Lock()
-	defer c.Unlock()
 	c.apiBase = baseURL
 }
 
@@ -82,8 +78,6 @@ func (c *Client) Client() *http.Client {
 
 // SetClient allows to customize http client.
 func (c *Client) SetClient(client *http.Client) {
-	c.Lock()
-	defer c.Unlock()
 	c.httpClient.SetClient(client)
 }
 
@@ -138,8 +132,6 @@ func (c *Client) List(resource string, resp interface{}, options ...RequestOptio
 		return count, total, err
 	}
 
-	c.Lock()
-	defer c.Unlock()
 	return c.httpClient.Send(req).Read(resp).Call()
 }
 
@@ -154,8 +146,6 @@ func (c *Client) Get(mr *Request, resp interface{}, options ...RequestOptions) (
 		return err
 	}
 
-	c.Lock()
-	defer c.Unlock()
 	_, _, err = c.httpClient.Send(req).Read(resp).Call()
 	return err
 }
@@ -171,8 +161,6 @@ func (c *Client) Post(fmr *FullRequest, resp interface{}, options ...RequestOpti
 	}
 
 	headers := map[string]string{"Content-Type": "application/json"}
-	c.Lock()
-	defer c.Unlock()
 	_, _, err = c.httpClient.Send(req).With(headers).Read(resp).Call()
 	return err
 }
@@ -189,8 +177,6 @@ func (c *Client) Put(fmr *FullRequest, onlyFields []string, options ...RequestOp
 	}
 
 	headers := map[string]string{"Content-Type": "application/json"}
-	c.Lock()
-	defer c.Unlock()
 	_, _, err = c.httpClient.Send(req).With(headers).Call()
 	return err
 }
@@ -203,8 +189,6 @@ func (c *Client) Delete(mr *Request) (err error) {
 		return err
 	}
 
-	c.Lock()
-	defer c.Unlock()
 	_, _, err = c.httpClient.Send(req).Call()
 	return err
 }
@@ -219,8 +203,6 @@ func (c *Client) SendMail(data *InfoSendMail, options ...RequestOptions) (res *S
 
 	headers := map[string]string{"Content-Type": "application/json"}
 
-	c.Lock()
-	defer c.Unlock()
 	_, _, err = c.httpClient.Send(req).With(headers).Read(&res).Call()
 	return res, err
 }

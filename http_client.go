@@ -49,13 +49,15 @@ func (c *HTTPClient) SetClient(client *http.Client) {
 // Send binds the request to the underlying http client
 func (c *HTTPClient) Send(req *http.Request) HTTPClientInterface {
 	c.request = req
-	return c
+	client := c
+	return client
 }
 
 // With binds the header to the underlying http client
 func (c *HTTPClient) With(headers map[string]string) HTTPClientInterface {
 	c.headers = headers
-	return c
+	client := c
+	return client
 }
 
 // SendMailV31 simply calls the underlying http client.Do function
@@ -67,7 +69,8 @@ func (c *HTTPClient) SendMailV31(req *http.Request) (*http.Response, error) {
 // Read binds the response to the underlying http client
 func (c *HTTPClient) Read(response interface{}) HTTPClientInterface {
 	c.response = response
-	return c
+	client := c
+	return client
 }
 
 // Call execute the HTTP call to the API

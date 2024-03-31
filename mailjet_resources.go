@@ -1,12 +1,10 @@
 package mailjet
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/textproto"
-	"sync"
-
-	"encoding/json"
 )
 
 /*
@@ -19,7 +17,6 @@ type Client struct {
 	apiBase    string
 	httpClient HTTPClientInterface
 	smtpClient SMTPClientInterface
-	sync.Mutex
 }
 
 // Request bundles data needed to build the URL.
