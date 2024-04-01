@@ -209,6 +209,20 @@ func (c *Client) Delete(mr *Request) (err error) {
 	return err
 }
 
+// Special case of Delete for API v4 (e.g. delete contacts in case of GDPR requests)
+func (c *Client) DeleteV4(mr *Request) (err error) {
+	url := buildURLV4(c.apiBase, mr)
+	req, err := createRequest("DELETE", url, nil, nil)
+	if err != nil {
+		return err
+	}
+
+	c.Lock()
+	defer c.Unlock()
+	_, _, err = c.httpClient.Send(req).Call()
+	return err
+}
+
 // SendMail send mail via API.
 func (c *Client) SendMail(data *InfoSendMail, options ...RequestOptions) (res *SentResult, err error) {
 	url := c.apiBase + "/send/message"
