@@ -1,8 +1,8 @@
 ---
-name: Bug report
+name: Bug
 about: Create a report to help us improve
 title: ''
-labels: ''
+labels: 'bug'
 assignees: ''
 
 ---
@@ -11,28 +11,18 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+Code snippet(preferably) or steps to reproduce the behavior:
+1. Do this
+2. Then do that
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Go version**
+Since the [Go release is supported until there are two newer major releases](https://go.dev/doc/devel/release#policy), there is no guarantee that the bug will be fixed for older Go versions.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**mailjet-apiv3-go release**
+It should be the latest from https://github.com/mailjet/mailjet-apiv3-go/releases. If not, update to the latest and try to reproduce the bug.
 
 **Additional context**
-Add any other context about the problem here.
+Please feel free to add any other context about the problem here.
