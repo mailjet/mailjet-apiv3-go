@@ -144,6 +144,8 @@ func Test_checkResponseError(t *testing.T) {
 			if mailjetErr.StatusCode != statusCode {
 				t.Fatalf("Status code: exptected(%d) but got(%d)", statusCode, mailjetErr.StatusCode)
 			}
+		} else {
+			t.Fatalf("err(%v) must be a RequestError type", err)
 		}
 	})
 }
