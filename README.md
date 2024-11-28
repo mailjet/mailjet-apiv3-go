@@ -36,7 +36,6 @@ Check out all the resources and in the [Official Documentation][doc].
     - [Retrieve a single object](#retrieve-a-single-object)
   - [PUT request](#put-request)
   - [DELETE request](#delete-request)
-  - [Response](#response)
 - [Contribute](#contribute)
 
 ## Compatibility
