@@ -241,6 +241,7 @@ func (c *Client) SendMailV31(data *MessagesV31, options ...RequestOptions) (*Res
 	if err != nil {
 		return nil, err
 	}
+	defer r.Body.Close()
 
 	decoder := json.NewDecoder(r.Body)
 
