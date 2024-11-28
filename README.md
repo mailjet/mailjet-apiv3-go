@@ -27,7 +27,7 @@ Check out all the resources and in the [Official Documentation][doc].
 - [Make your first call](#make-your-first-call)
 - [Client / Call configuration specifics](#client--call-configuration-specifics)
   - [API versioning](#api-versioning)
-	- [Send emails through proxy](#send-email-through-proxy)
+	- [Send emails through proxy](#send-emails-through-proxy)
 - [Request examples](#request-examples)
   - [POST request](#post-request)
     - [Simple POST request](#simple-post-request)
@@ -39,7 +39,6 @@ Check out all the resources and in the [Official Documentation][doc].
   - [PUT request](#put-request)
   - [DELETE request](#delete-request)
   - [Response](#response)
-  - [API resources helpers](#api-resources-helpers)
 - [Contribute](#contribute)
 
 ## Compatibility
