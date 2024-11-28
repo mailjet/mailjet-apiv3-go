@@ -7,16 +7,16 @@
 
 # Official Mailjet Go Client
 
-[![Build Status](https://travis-ci.org/mailjet/mailjet-apiv3-go.svg?branch=master)](https://travis-ci.org/mailjet/mailjet-apiv3-go)
-[![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://godoc.org/github.com/mailjet/mailjet-apiv3-go)
+[![CI](https://github.com/mailjet/mailjet-apiv3-go/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/mailjet/mailjet-apiv3-go/actions/workflows/main.yml)
+[![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://pkg.go.dev/github.com/mailjet/mailjet-apiv3-go/v4)
 [![Go Report Card](https://goreportcard.com/badge/mailjet/mailjet-apiv3-go)](https://goreportcard.com/report/mailjet/mailjet-apiv3-go)
-![Current Version](https://img.shields.io/badge/version-3.0-green.svg)
+![Current Version](https://img.shields.io/badge/version-4.0-green.svg)
 
 ## Overview
 
 This repository contains the official Go wrapper for the Mailjet API.
 
-Check out all the resources and Go code examples in the [Official Documentation][doc].
+Check out all the resources and in the [Official Documentation][doc].
 
 ## Table of contents
 
@@ -27,7 +27,7 @@ Check out all the resources and Go code examples in the [Official Documentation]
 - [Make your first call](#make-your-first-call)
 - [Client / Call configuration specifics](#client--call-configuration-specifics)
   - [API versioning](#api-versioning)
-	- [Send emails through proxy](#send-email-through-proxy)
+	- [Send emails through proxy](#send-emails-through-proxy)
 - [Request examples](#request-examples)
   - [POST request](#post-request)
     - [Simple POST request](#simple-post-request)
@@ -39,16 +39,14 @@ Check out all the resources and Go code examples in the [Official Documentation]
   - [PUT request](#put-request)
   - [DELETE request](#delete-request)
   - [Response](#response)
-  - [API resources helpers](#api-resources-helpers)
 - [Contribute](#contribute)
 
 ## Compatibility
 
-Our library requires Go version 1.13 or higher.
+Our library requires Go version 1.13 or higher. 
+But since [each major Go release is supported until there are two newer major releases](https://go.dev/doc/devel/release#policy), there is no guarantee that it will be working on unsupported Go versions.
 
 **NOTE: Backward compatibility has been broken with the `v3.0` release which includes versioned paths required by go modules (See [Releasing Modules](https://github.com/golang/go/wiki/Modules#releasing-modules-v2-or-higher)).**
-
-**Pin your dependencies to the `2.4.5` tag if you are not ready for `v3.0`**
 
 ### Installation
 
@@ -65,7 +63,6 @@ And create a new MailjetClient:
 import (
 	"github.com/mailjet/mailjet-apiv3-go/v4"
 	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
-	"os"
 )
 ```
 
@@ -106,8 +103,8 @@ package main
 import (
 	"fmt"
 	"log"
-    "os"
-  
+	"os"
+
 	"github.com/mailjet/mailjet-apiv3-go/v4"
 )
 
@@ -225,9 +222,7 @@ func main() {
 #### Simple POST request
 
 ```go
-/*
-Create a new contact.
-*/
+// Create a new contact.
 package main
 
 import (
@@ -263,9 +258,7 @@ func main() {
 #### Using actions
 
 ```go
-/*
-Create : Manage a contact subscription to a list
-*/
+// Create : Manage a contact subscription to a list
 package main
 
 import (
@@ -312,9 +305,7 @@ func main() {
 #### Retrieve all objects
 
 ```go
-/*
-Retrieve all contacts:
-*/
+// Retrieve all contacts:
 package main
 
 import (
@@ -339,9 +330,7 @@ func main() {
 #### Use filtering
 
 ```go
-/*
-Retrieve all contacts that are not in the campaign exclusion list :
-*/
+// Retrieve all contacts that are not in the campaign exclusion list:
 package main
 
 import (
@@ -366,9 +355,7 @@ func main() {
 #### Retrieve a single object
 
 ```go
-/*
-Retrieve a specific contact ID :
-*/
+// Retrieve a specific contact ID:
 package main
 
 import (
@@ -401,9 +388,7 @@ A `PUT` request in the Mailjet API will work as a `PATCH` request - the update w
 Here's an example of a `PUT` request:
 
 ```go
-/*
-Update the contact properties for a contact:
-*/
+// Update the contact properties for a contact:
 package main
 
 import (
@@ -450,9 +435,7 @@ Upon a successful DELETE request the response will not include a response body, 
 Here's an example of a DELETE request:
 
 ```go
-/*
-Delete an email template:
-*/
+// Delete an email template:
 package main
 
 import (
@@ -489,6 +472,6 @@ Feel free to ask anything, and contribute:
 - Create a new branch.
 - Implement your feature or bug fix.
 - Add documentation to it.
-- Commit, push, open a pull request and voila.
+- Commit, push, open a pull request and voilà.
 
 If you have suggestions on how to improve the guides, please submit an issue in our [Official API Documentation repo](https://github.com/mailjet/api-documentation).
