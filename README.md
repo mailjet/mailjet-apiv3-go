@@ -16,7 +16,7 @@
 
 This repository contains the official Go wrapper for the Mailjet API.
 
-Check out all the resources and Go code examples in the [Official Documentation][doc].
+Check out all the resources and in the [Official Documentation][doc].
 
 ## Table of contents
 
