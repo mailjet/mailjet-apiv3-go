@@ -48,8 +48,6 @@ Our library requires Go version 1.13 or higher.
 
 **NOTE: Backward compatibility has been broken with the `v3.0` release which includes versioned paths required by go modules (See [Releasing Modules](https://github.com/golang/go/wiki/Modules#releasing-modules-v2-or-higher)).**
 
-**Pin your dependencies to the `2.4.5` tag if you are not ready for `v3.0`**
-
 ### Installation
 
 Get package:
