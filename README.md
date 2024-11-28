@@ -44,7 +44,8 @@ Check out all the resources and in the [Official Documentation][doc].
 
 ## Compatibility
 
-Our library requires Go version 1.13 or higher.
+Our library requires Go version 1.13 or higher. 
+But since [each major Go release is supported until there are two newer major releases](https://go.dev/doc/devel/release#policy), there is no guarantee that it will be working on unsupported Go versions.
 
 **NOTE: Backward compatibility has been broken with the `v3.0` release which includes versioned paths required by go modules (See [Releasing Modules](https://github.com/golang/go/wiki/Modules#releasing-modules-v2-or-higher)).**
 
