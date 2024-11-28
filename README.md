@@ -10,7 +10,6 @@
 [![CI](https://github.com/mailjet/mailjet-apiv3-go/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/mailjet/mailjet-apiv3-go/actions/workflows/main.yml)
 [![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://pkg.go.dev/github.com/mailjet/mailjet-apiv3-go/v4)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mailjet/mailjet-apiv3-go/v4)](https://goreportcard.com/report/github.com/mailjet/mailjet-apiv3-go/v4)
-![Current Version](https://img.shields.io/badge/version-4.0-green.svg)
 
 ## Overview
 
@@ -26,8 +25,7 @@ Check out all the resources and in the [Official Documentation][doc].
 	- [Functional test](#functional-test)
 - [Make your first call](#make-your-first-call)
 - [Client / Call configuration specifics](#client--call-configuration-specifics)
-  - [API versioning](#api-versioning)
-	- [Send emails through proxy](#send-emails-through-proxy)
+  - [Send emails through proxy](#send-emails-through-proxy)
 - [Request examples](#request-examples)
   - [POST request](#post-request)
     - [Simple POST request](#simple-post-request)
@@ -38,7 +36,6 @@ Check out all the resources and in the [Official Documentation][doc].
     - [Retrieve a single object](#retrieve-a-single-object)
   - [PUT request](#put-request)
   - [DELETE request](#delete-request)
-  - [Response](#response)
 - [Contribute](#contribute)
 
 ## Compatibility
@@ -56,10 +53,9 @@ Get package:
 go get github.com/mailjet/mailjet-apiv3-go/v4
 ```
 
-And create a new MailjetClient:
+And import the Mailjet wrapper:
 
 ```go
-// Import the Mailjet wrapper
 import (
 	"github.com/mailjet/mailjet-apiv3-go/v4"
 	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
