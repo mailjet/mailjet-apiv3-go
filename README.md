@@ -222,9 +222,7 @@ func main() {
 #### Simple POST request
 
 ```go
-/*
-Create a new contact.
-*/
+// Create a new contact.
 package main
 
 import (
@@ -260,9 +258,7 @@ func main() {
 #### Using actions
 
 ```go
-/*
-Create : Manage a contact subscription to a list
-*/
+// Create : Manage a contact subscription to a list
 package main
 
 import (
@@ -309,9 +305,7 @@ func main() {
 #### Retrieve all objects
 
 ```go
-/*
-Retrieve all contacts:
-*/
+// Retrieve all contacts:
 package main
 
 import (
@@ -336,9 +330,7 @@ func main() {
 #### Use filtering
 
 ```go
-/*
-Retrieve all contacts that are not in the campaign exclusion list :
-*/
+// Retrieve all contacts that are not in the campaign exclusion list:
 package main
 
 import (
@@ -363,9 +355,7 @@ func main() {
 #### Retrieve a single object
 
 ```go
-/*
-Retrieve a specific contact ID :
-*/
+// Retrieve a specific contact ID:
 package main
 
 import (
@@ -398,9 +388,7 @@ A `PUT` request in the Mailjet API will work as a `PATCH` request - the update w
 Here's an example of a `PUT` request:
 
 ```go
-/*
-Update the contact properties for a contact:
-*/
+// Update the contact properties for a contact:
 package main
 
 import (
@@ -447,9 +435,7 @@ Upon a successful DELETE request the response will not include a response body, 
 Here's an example of a DELETE request:
 
 ```go
-/*
-Delete an email template:
-*/
+// Delete an email template:
 package main
 
 import (
