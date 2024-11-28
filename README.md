@@ -103,8 +103,8 @@ package main
 import (
 	"fmt"
 	"log"
-    "os"
-  
+	"os"
+
 	"github.com/mailjet/mailjet-apiv3-go/v4"
 )
 
