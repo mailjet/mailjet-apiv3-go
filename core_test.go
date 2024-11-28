@@ -3,7 +3,10 @@ package mailjet
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
+	"net/http"
 	"runtime"
 	"strings"
 	"testing"
@@ -120,4 +123,29 @@ func TestReadJsonResult(t *testing.T) {
 	} else {
 		t.Fatal("Fail to unmarshal JSON: empty res")
 	}
+}
+
+func Test_checkResponseError(t *testing.T) {
+	t.Run("4xx", func(t *testing.T) {
+		const statusCode = 404
+
+		resp := &http.Response{
+			StatusCode: statusCode,
+			Body:       io.NopCloser(strings.NewReader(`{"ErrorMessage":"foo not found"}`)),
+		}
+
+		err := checkResponseError(resp)
+		if err == nil {
+			t.Fatal("Expected error")
+		}
+
+		var mailjetErr RequestError
+		if errors.As(err, &mailjetErr) {
+			if mailjetErr.StatusCode != statusCode {
+				t.Fatalf("Status code: exptected(%d) but got(%d)", statusCode, mailjetErr.StatusCode)
+			}
+		} else {
+			t.Fatalf("err(%v) must be a RequestError type", err)
+		}
+	})
 }
