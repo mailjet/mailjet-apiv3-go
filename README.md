@@ -63,7 +63,6 @@ And create a new MailjetClient:
 import (
 	"github.com/mailjet/mailjet-apiv3-go/v4"
 	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
-	"os"
 )
 ```
 
