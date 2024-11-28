@@ -486,6 +486,6 @@ Feel free to ask anything, and contribute:
 - Create a new branch.
 - Implement your feature or bug fix.
 - Add documentation to it.
-- Commit, push, open a pull request and voila.
+- Commit, push, open a pull request and voilà.
 
 If you have suggestions on how to improve the guides, please submit an issue in our [Official API Documentation repo](https://github.com/mailjet/api-documentation).
