@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	mailjet "github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
 	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 
