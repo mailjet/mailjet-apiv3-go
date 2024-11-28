@@ -53,10 +53,9 @@ Get package:
 go get github.com/mailjet/mailjet-apiv3-go/v4
 ```
 
-And create a new MailjetClient:
+And import the Mailjet wrapper:
 
 ```go
-// Import the Mailjet wrapper
 import (
 	"github.com/mailjet/mailjet-apiv3-go/v4"
 	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
