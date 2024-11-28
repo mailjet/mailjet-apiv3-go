@@ -10,7 +10,6 @@
 [![CI](https://github.com/mailjet/mailjet-apiv3-go/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/mailjet/mailjet-apiv3-go/actions/workflows/main.yml)
 [![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://pkg.go.dev/github.com/mailjet/mailjet-apiv3-go/v4)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mailjet/mailjet-apiv3-go/v4)](https://goreportcard.com/report/github.com/mailjet/mailjet-apiv3-go/v4)
-![Current Version](https://img.shields.io/badge/version-4.0-green.svg)
 
 ## Overview
 
