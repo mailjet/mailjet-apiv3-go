@@ -251,6 +251,10 @@ func (c *HTTPClient) doRequest(req *http.Request) (resp *http.Response, err erro
 
 // checkResponseError returns response error if the statuscode is < 200 or >= 400.
 func checkResponseError(resp *http.Response) error {
+	if resp == nil {
+		return fmt.Errorf("resp is nil")
+	}
+
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
 		var mailjetErr RequestError
 		mailjetErr.StatusCode = resp.StatusCode
