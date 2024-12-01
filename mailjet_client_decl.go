@@ -17,6 +17,7 @@ type ClientInterface interface {
 	Post(fmr *FullRequest, resp interface{}, options ...RequestOptions) error
 	Put(fmr *FullRequest, onlyFields []string, options ...RequestOptions) error
 	Delete(mr *Request, options ...RequestOptions) error
+	DeleteV4(mr *Request, options ...RequestOptions) error
 	SendMail(data *InfoSendMail) (*SentResult, error)
 	SendMailSMTP(info *InfoSMTP) (err error)
 }
