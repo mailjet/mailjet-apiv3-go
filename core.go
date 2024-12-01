@@ -244,7 +244,11 @@ var NbAttempt = 5
 // doRequest is called to execute the request. Authentification is set
 // with the public key and the secret key specified in MailjetClient.
 func (c *HTTPClient) doRequest(req *http.Request) (resp *http.Response, err error) {
-	debugRequest(req) //DEBUG
+	if req == nil {
+		return nil, fmt.Errorf("req is nil")
+	}
+
+	debugRequest(req) // DEBUG
 	req.SetBasicAuth(c.apiKeyPublic, c.apiKeyPrivate)
 	for attempt := 0; attempt < NbAttempt; attempt++ {
 		if resp != nil {
@@ -255,7 +259,7 @@ func (c *HTTPClient) doRequest(req *http.Request) (resp *http.Response, err erro
 			break
 		}
 	}
-	defer debugResponse(resp) //DEBUG
+	defer debugResponse(resp) // DEBUG
 	if err != nil {
 		return resp, fmt.Errorf("Error getting %s: %s", req.URL, err)
 	}
@@ -265,6 +269,10 @@ func (c *HTTPClient) doRequest(req *http.Request) (resp *http.Response, err erro
 
 // checkResponseError returns response error if the statuscode is < 200 or >= 400.
 func checkResponseError(resp *http.Response) error {
+	if resp == nil {
+		return fmt.Errorf("resp is nil")
+	}
+
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
 		var mailjetErr RequestError
 		mailjetErr.StatusCode = resp.StatusCode
