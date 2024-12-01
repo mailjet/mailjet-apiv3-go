@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-// HTTPClient is a wrapper arround http.Client
+// HTTPClient is a wrapper around http.Client
 type HTTPClient struct {
 	client        *http.Client
 	apiKeyPublic  string
