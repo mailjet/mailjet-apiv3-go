@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"sync"
 )
 
-// HTTPClient is a wrapper arround http.Client
+// HTTPClient is a wrapper around http.Client
 type HTTPClient struct {
 	client        *http.Client
 	apiKeyPublic  string
@@ -15,6 +16,7 @@ type HTTPClient struct {
 	headers       map[string]string
 	request       *http.Request
 	response      interface{}
+	mu            sync.RWMutex
 }
 
 // NewHTTPClient returns a new httpClient
@@ -22,7 +24,7 @@ func NewHTTPClient(apiKeyPublic, apiKeyPrivate string) *HTTPClient {
 	return &HTTPClient{
 		apiKeyPublic:  apiKeyPublic,
 		apiKeyPrivate: apiKeyPrivate,
-		client:        http.DefaultClient,
+		client:        &http.Client{},
 	}
 }
 
@@ -38,22 +40,34 @@ func (c *HTTPClient) APIKeyPrivate() string {
 
 // Client returns the underlying http client
 func (c *HTTPClient) Client() *http.Client {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
 	return c.client
 }
 
 // SetClient sets the underlying http client
 func (c *HTTPClient) SetClient(client *http.Client) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
 	c.client = client
 }
 
 // Send binds the request to the underlying http client
 func (c *HTTPClient) Send(req *http.Request) HTTPClientInterface {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
 	c.request = req
 	return c
 }
 
 // With binds the header to the underlying http client
 func (c *HTTPClient) With(headers map[string]string) HTTPClientInterface {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
 	c.headers = headers
 	return c
 }
@@ -66,12 +80,22 @@ func (c *HTTPClient) SendMailV31(req *http.Request) (*http.Response, error) {
 
 // Read binds the response to the underlying http client
 func (c *HTTPClient) Read(response interface{}) HTTPClientInterface {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
 	c.response = response
 	return c
 }
 
 // Call execute the HTTP call to the API
 func (c *HTTPClient) Call() (count, total int, err error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.request == nil {
+		return 0, 0, fmt.Errorf("request is nil")
+	}
+
 	defer c.reset()
 	for key, value := range c.headers {
 		c.request.Header.Add(key, value)

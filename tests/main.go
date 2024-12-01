@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	mailjet "github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
 	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 
@@ -167,7 +167,7 @@ func testSendMail() {
 		FromEmail: data[0].Email,
 		FromName:  data[0].Name,
 		Recipients: []mailjet.Recipient{
-			mailjet.Recipient{
+			{
 				Email: data[0].Email,
 			},
 		},
