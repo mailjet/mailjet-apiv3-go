@@ -33,9 +33,8 @@ jobs:
       - name: Install deps
         run: go mod download
 
-# TODO(vtopc):
-#      - name: nilaway
-#        run: make nilaway
+      - name: nilaway
+        run: make nilaway
 
 # TODO(vtopc):
 #      - name: lint

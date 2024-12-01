@@ -92,6 +92,10 @@ func (c *HTTPClient) Call() (count, total int, err error) {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
+	if c.request == nil {
+		return 0, 0, fmt.Errorf("request is nil")
+	}
+
 	defer c.reset()
 	for key, value := range c.headers {
 		c.request.Header.Add(key, value)
