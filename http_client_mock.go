@@ -31,7 +31,7 @@ func NewhttpClientMock(valid bool) *HTTPClientMock {
 		validCreds:    valid,
 		fx:            fixtures.New(),
 		CallFunc: func() (int, int, error) {
-			if valid == true {
+			if valid {
 				return 1, 1, nil
 			}
 			return 0, 0, errors.New("Unexpected error: Unexpected server response code: 401: EOF")
