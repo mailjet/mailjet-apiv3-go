@@ -589,6 +589,9 @@ func TestSendMailV31(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
+			// TODO(Go1.22+): remove:
+			messages := test.messages // https://go.dev/wiki/CommonMistakes
+
 			httpClientMocked := mailjet.NewhttpClientMock(true)
 			httpClientMocked.SendMailV31Func = func(req *http.Request) (*http.Response, error) {
 				if req.Header.Get("Content-Type") != "application/json" {
@@ -620,7 +623,7 @@ func TestSendMailV31(t *testing.T) {
 
 			m := mailjet.NewClient(httpClientMocked, mailjet.NewSMTPClientMock(true))
 
-			res, err := m.SendMailV31(&test.messages)
+			res, err := m.SendMailV31(&messages)
 			if !reflect.DeepEqual(err, test.wantErr) {
 				t.Fatalf("Wanted error: %+v, got: %+v", err, test.wantErr)
 			}
