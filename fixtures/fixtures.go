@@ -33,8 +33,7 @@ func New() *Fixtures {
 func (f *Fixtures) Read(v interface{}) error {
 	for t, val := range f.data {
 		if reflect.ValueOf(v).Type().String() == reflect.ValueOf(t).Type().String() {
-			json.Unmarshal(val, v)
-			return nil
+			return json.Unmarshal(val, v)
 		}
 	}
 	return errors.New("not found")
