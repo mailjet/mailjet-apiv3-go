@@ -36,9 +36,8 @@ jobs:
       - name: nilaway
         run: make nilaway
 
-# TODO(vtopc):
-#      - name: lint
-#        run: make lint
+      - name: lint
+        run: make lint
 
       - name: Test
         run: go test ./... -race -count=1

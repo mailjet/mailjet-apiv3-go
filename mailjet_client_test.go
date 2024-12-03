@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	mailjet "github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
 	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 
@@ -59,7 +59,7 @@ func handle(path, response string) {
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, response)
+		fmt.Fprint(w, response)
 	})
 }
 
@@ -67,6 +67,7 @@ func randSeq(n int) string {
 	rand.Seed(time.Now().UnixNano())
 	b := make([]rune, n)
 	for i := range b {
+		//nolint:gosec // G404 crypto random is not required here
 		b[i] = letters[rand.Intn(len(letters))]
 	}
 	return string(b)
@@ -588,6 +589,9 @@ func TestSendMailV31(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
+			// TODO(Go1.22+): remove:
+			messages := test.messages // https://go.dev/wiki/CommonMistakes
+
 			httpClientMocked := mailjet.NewhttpClientMock(true)
 			httpClientMocked.SendMailV31Func = func(req *http.Request) (*http.Response, error) {
 				if req.Header.Get("Content-Type") != "application/json" {
@@ -619,7 +623,7 @@ func TestSendMailV31(t *testing.T) {
 
 			m := mailjet.NewClient(httpClientMocked, mailjet.NewSMTPClientMock(true))
 
-			res, err := m.SendMailV31(&test.messages)
+			res, err := m.SendMailV31(&messages)
 			if !reflect.DeepEqual(err, test.wantErr) {
 				t.Fatalf("Wanted error: %+v, got: %+v", err, test.wantErr)
 			}
