@@ -17,10 +17,12 @@ linters:
 
 # TODO:
 #    - gocritic
-#    - noctx
 #    - stylecheck
 #    - typecheck
 #    - unused
+
+# TODO(v5): enable
+#    - noctx
 
 linters-settings:
   errcheck:
