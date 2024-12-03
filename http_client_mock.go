@@ -3,6 +3,7 @@ package mailjet
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/mailjet/mailjet-apiv3-go/v4/fixtures"
@@ -78,7 +79,7 @@ func (c *HTTPClientMock) With(headers map[string]string) HTTPClientInterface {
 func (c *HTTPClientMock) Read(response interface{}) HTTPClientInterface {
 	err := c.fx.Read(response)
 	if err != nil {
-		panic(fmt.Errorf("c.fx.Read: %w", err))
+		log.Println(fmt.Errorf("c.fx.Read: %w", err))
 	}
 
 	return c
