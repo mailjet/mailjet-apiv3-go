@@ -59,7 +59,7 @@ func handle(path, response string) {
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, response)
+		fmt.Fprint(w, response)
 	})
 }
 
