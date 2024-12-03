@@ -10,12 +10,12 @@ linters:
     - gosimple
     - gosec
     - bodyclose # https://github.com/timakin/bodyclose
+    - goimports
     - gomodguard
     - nolintlint
 
 # TODO:
 #    - gocritic
-#    - goimports
 #    - gosimple
 #    - govet
 #    - noctx
