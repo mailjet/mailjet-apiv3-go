@@ -2,6 +2,8 @@ package mailjet
 
 import (
 	"errors"
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/mailjet/mailjet-apiv3-go/v4/fixtures"
@@ -30,7 +32,7 @@ func NewhttpClientMock(valid bool) *HTTPClientMock {
 		validCreds:    valid,
 		fx:            fixtures.New(),
 		CallFunc: func() (int, int, error) {
-			if valid == true {
+			if valid {
 				return 1, 1, nil
 			}
 			return 0, 0, errors.New("Unexpected error: Unexpected server response code: 401: EOF")
@@ -75,7 +77,11 @@ func (c *HTTPClientMock) With(headers map[string]string) HTTPClientInterface {
 
 // Read allow you to bind the response received through the underlying http client
 func (c *HTTPClientMock) Read(response interface{}) HTTPClientInterface {
-	c.fx.Read(response)
+	err := c.fx.Read(response)
+	if err != nil {
+		log.Println(fmt.Errorf("c.fx.Read: %w", err))
+	}
+
 	return c
 }
 

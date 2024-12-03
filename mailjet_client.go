@@ -7,10 +7,8 @@ package mailjet
 import (
 	"bytes"
 	"context"
-	"fmt"
-
 	"encoding/json"
-
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -123,7 +121,7 @@ func SetDebugOutput(w io.Writer) {
 // Sort applies the Sort filter to the request.
 func Sort(value string, order SortOrder) RequestOptions {
 	if order == SortDesc {
-		value = value + "+DESC"
+		value += "+DESC"
 	}
 	return Filter("Sort", value)
 }

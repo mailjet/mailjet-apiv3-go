@@ -1,0 +1,76 @@
+linters:
+  # Please, do not use `enable-all`: it's deprecated and will be removed soon.
+  # Inverted configuration with `enable-all` and `disable` is not scalable during updates of golangci-lint.
+  # Full list of linters - https://golangci-lint.run/usage/linters
+  disable-all: true
+  enable:
+    - typecheck
+    - errcheck # Mandatory. Do not disable.
+    - ineffassign # Mandatory. Do not disable.
+    - staticcheck # Mandatory. Do not disable.
+    - govet
+    - gosimple
+    - gosec
+    - bodyclose # https://github.com/timakin/bodyclose
+    - goimports
+    - stylecheck
+    - gocritic
+    - gomodguard
+    - nolintlint
+
+# TODO:
+#    - unused
+
+# TODO(v5): enable
+#    - noctx
+
+linters-settings:
+  errcheck:
+    # List of functions to exclude from checking, where each entry is a single function to exclude.
+    # See https://github.com/kisielk/errcheck#excluding-functions for details.
+    exclude-functions:
+      - (io.Closer).Close
+      - (io.ReadCloser).Close
+
+  govet:
+    enable-all: true
+    disable:
+     - shadow
+     - fieldalignment
+
+  staticcheck:
+    # SAxxxx checks in https://staticcheck.dev/docs/configuration/options/#checks
+    # Example (to disable some checks): [ "all", "-SA1000", "-SA1001"]
+    # Default: ["*"]
+    # TODO(Go1.20+): enable SA1019
+    checks: ["all", "-SA1019"]
+
+  stylecheck:
+    # https://staticcheck.io/docs/options#checks
+    # TODO(v5): enable all:
+    checks: ["all", "-ST1003", "-ST1005"]
+
+  gomodguard:
+    blocked:
+      # List of blocked modules.
+      modules:
+        - github.com/pkg/errors:
+            recommendations:
+              - errors
+              - github.com/mailgun/errors
+            reason: "Deprecated"
+
+issues:
+  # Maximum issues count per one linter. Set to 0 to disable. Default is 50.
+  max-issues-per-linter: 0
+
+  # Maximum count of issues with the same text. Set to 0 to disable. Default is 3.
+  max-same-issues: 50
+
+run:
+  # include test files or not, default is true
+  tests: true
+
+  # Timeout for analysis, e.g. 30s, 5m.
+  # Default: 1m
+  timeout: 5m

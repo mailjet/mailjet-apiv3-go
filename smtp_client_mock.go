@@ -18,7 +18,7 @@ func NewSMTPClientMock(valid bool) *SMTPClientMock {
 
 // SendMail wraps smtp.SendMail
 func (s SMTPClientMock) SendMail(from string, to []string, msg []byte) error {
-	if s.valid == true {
+	if s.valid {
 		return nil
 	}
 	return errors.New("smtp send error")

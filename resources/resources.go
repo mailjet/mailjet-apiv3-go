@@ -1033,7 +1033,7 @@ type MJMLContent struct {
 type Toplinkclicked struct {
 	ClickedCount int64  `mailjet:"read_only"`
 	ID           int64  `mailjet:"read_only"`
-	LinkID       int64  `json:"LinkId"mailjet:"read_only"`
+	LinkID       int64  `json:"LinkId" mailjet:"read_only"`
 	URL          string `json:"Url" mailjet:"read_only"`
 }
 

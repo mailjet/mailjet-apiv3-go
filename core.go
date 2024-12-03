@@ -186,7 +186,7 @@ func buildDataURL(baseURL string, info *DataRequest) string {
 	if info.DataTypeID != 0 {
 		DataTypeID := strconv.FormatInt(info.DataTypeID, 10)
 		tokens = append(tokens, DataTypeID)
-	} else if info.LastID == true {
+	} else if info.LastID {
 		tokens = append(tokens, "LAST")
 	}
 	return strings.Join(tokens, "/")
