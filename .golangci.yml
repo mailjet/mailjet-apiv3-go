@@ -14,10 +14,10 @@ linters:
     - goimports
     - gomodguard
     - nolintlint
+    - stylecheck
 
 # TODO:
 #    - gocritic
-    - stylecheck
 #    - typecheck
 #    - unused
 
