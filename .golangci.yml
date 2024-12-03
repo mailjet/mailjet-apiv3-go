@@ -17,7 +17,7 @@ linters:
 
 # TODO:
 #    - gocritic
-#    - stylecheck
+    - stylecheck
 #    - typecheck
 #    - unused
 
@@ -44,6 +44,11 @@ linters-settings:
     # Default: ["*"]
     # TODO(Go1.20+): enable SA1019
     checks: ["all", "-SA1019"]
+
+  stylecheck:
+    # https://staticcheck.io/docs/options#checks
+    # TODO(v5): enable all:
+    checks: ["all", "-ST1003", "-ST1005"]
 
   gomodguard:
     blocked:
