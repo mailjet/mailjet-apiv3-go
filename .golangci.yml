@@ -12,12 +12,12 @@ linters:
     - gosec
     - bodyclose # https://github.com/timakin/bodyclose
     - goimports
+    - stylecheck
+    - gocritic
     - gomodguard
     - nolintlint
-    - stylecheck
 
 # TODO:
-#    - gocritic
 #    - typecheck
 #    - unused
 
