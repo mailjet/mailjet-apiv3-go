@@ -171,6 +171,24 @@ func buildURL(baseURL string, info *Request) string {
 	return strings.Join(tokens, "/")
 }
 
+func buildURLV4(baseURL string, info *Request) string {
+	tokens := []string{baseURL, info.Resource}
+	if info.ID != 0 {
+		id := strconv.FormatInt(info.ID, 10)
+		tokens = append(tokens, id)
+	} else if info.AltID != "" {
+		tokens = append(tokens, string(info.AltID))
+	}
+	if info.Action != "" {
+		tokens = append(tokens, info.Action)
+	}
+	if info.ActionID != 0 {
+		actionID := strconv.FormatInt(info.ActionID, 10)
+		tokens = append(tokens, actionID)
+	}
+	return strings.Join(tokens, "/")
+}
+
 func buildDataURL(baseURL string, info *DataRequest) string {
 	tokens := []string{baseURL, dataPath, info.SourceType}
 	if info.SourceTypeID != 0 {
