@@ -194,9 +194,9 @@ func (c *Client) Put(fmr *FullRequest, onlyFields []string, options ...RequestOp
 }
 
 // Delete is used to delete a resource.
-func (c *Client) Delete(mr *Request) (err error) {
+func (c *Client) Delete(mr *Request, options ...RequestOptions) (err error) {
 	url := buildURL(c.apiBase, mr)
-	req, err := createRequest("DELETE", url, nil, nil)
+	req, err := createRequest("DELETE", url, nil, nil, options...)
 	if err != nil {
 		return err
 	}

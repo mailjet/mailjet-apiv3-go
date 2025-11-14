@@ -17,12 +17,12 @@ type ClientInterface interface {
 	Post(fmr *FullRequest, resp interface{}, options ...RequestOptions) error
 	Put(fmr *FullRequest, onlyFields []string, options ...RequestOptions) error
 	Delete(mr *Request, options ...RequestOptions) error
-	SendMail(data *InfoSendMail) (*SentResult, error)
+	SendMail(data *InfoSendMail, options ...RequestOptions) (*SentResult, error)
 	SendMailSMTP(info *InfoSMTP) (err error)
 }
 
 // ClientInterfaceV31 defines the Client functions, including SendMailV31
 type ClientInterfaceV31 interface {
 	ClientInterface
-	SendMailV31(data *MessagesV31) (*ResultsV31, error)
+	SendMailV31(data *MessagesV31, options ...RequestOptions) (*ResultsV31, error)
 }

@@ -16,6 +16,8 @@ import (
 	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 
+var _ mailjet.ClientInterfaceV31 = (*mailjet.Client)(nil)
+
 var (
 	letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	// defaultMessages is the default message passed to the server when an email
