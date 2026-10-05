@@ -885,7 +885,7 @@ type NewsletterTest struct {
 	Recipients []Recipient
 }
 
-// Newslettertemplate: Manages a Newsletter Template Properties.
+// Newslettertemplate Manages a Newsletter Template Properties.
 type Newslettertemplate struct {
 	CategoryID           int64            `json:",omitempty"`
 	CreatedAt            *RFC3339DateTime `json:",omitempty"`
