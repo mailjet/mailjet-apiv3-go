@@ -65,7 +65,8 @@ type Apikeyaccess struct {
 	UserALT        string           `json:",omitempty"`
 }
 
-// Apikeytotals: Global counts for an API Key, since its creation.
+// Apikeytotals Global counts for an API Key, since its creation.
+// Deprecated: We advise using /statcounters to retrieve aggregated stats grouped by API Key.
 type Apikeytotals struct {
 	BlockedCount       int64 `mailjet:"read_only"`
 	BouncedCount       int64 `mailjet:"read_only"`
@@ -269,7 +270,8 @@ type CampaigndraftDetailcontent struct {
 	Headers     interface{} `json:",omitempty"`
 }
 
-// Campaigngraphstatistics: API Campaign statistics grouped over intervals
+// Campaigngraphstatistics API Campaign statistics grouped over intervals
+// Deprecated
 type Campaigngraphstatistics struct {
 	Clickcount int64 `mailjet:"read_only"`
 	ID         int64 `mailjet:"read_only"`
@@ -521,7 +523,8 @@ type DnsCheck struct {
 	SPFStatus              string   `mailjet:"read_only"`
 }
 
-// Domainstatistics: View Campaign/Message/Click statistics grouped per domain.
+// Domainstatistics View Campaign/Message/Click statistics grouped per domain.
+// Deprecated: We advise using /statistics/recipient-esp to retrieve aggregated domain stats.
 type Domainstatistics struct {
 	BlockedCount       int64  `mailjet:"read_only"`
 	BouncedCount       int64  `mailjet:"read_only"`
@@ -556,7 +559,8 @@ type Geostatistics struct {
 	OpenedCount  int64  `mailjet:"read_only"`
 }
 
-// Graphstatistics: API Campaign/message/click statistics grouped over intervals.
+// Graphstatistics API Campaign/message/click statistics grouped over intervals.
+// Deprecated: We advise using /statcounters to retrieve information on the evolution of statistics.
 type Graphstatistics struct {
 	BlockedCount       int64  `mailjet:"read_only"`
 	BouncedCount       int64  `mailjet:"read_only"`
@@ -599,7 +603,8 @@ type Listrecipientstatistics struct {
 	UnsubscribedCount  int64            `mailjet:"read_only"`
 }
 
-// Liststatistics: View Campaign/message/click statistics grouped by ContactsList.
+// Liststatistics View Campaign/message/click statistics grouped by ContactsList.
+// Deprecated: We advise using /statcounters to retrieve aggregated statistics for contact lists.
 type Liststatistics struct {
 	ActiveCount             int64            `mailjet:"read_only"`
 	ActiveUnsubscribedCount int64            `mailjet:"read_only"`
@@ -712,7 +717,8 @@ type Messagestate struct {
 	State     string
 }
 
-// MessageStatistics: API key Campaign/Message statistics.
+// MessageStatistics API key Campaign/Message statistics.
+// Deprecated: We advise using /statcounters to retrieve message-based aggregated stats.
 type MessageStatistics struct {
 	AverageClickDelay   float64 `mailjet:"read_only"`
 	AverageClickedCount float64 `mailjet:"read_only"`
@@ -813,7 +819,8 @@ type Myprofile struct {
 	Website               string           `json:",omitempty"`
 }
 
-// Newsletter: Newsletter data.
+// Newsletter Newsletter data.
+// Deprecated
 type Newsletter struct {
 	AXFraction           float64          `json:",omitempty"`
 	AXFractionName       string           `json:",omitempty"`
@@ -859,18 +866,21 @@ type Newsletter struct {
 	URL                  string `json:"Url,omitempty"`
 }
 
-// NewsletterDetailcontent: An action to upload the content of the newsletter
+// NewsletterDetailcontent An action to upload the content of the newsletter
+// Deprecated
 type NewsletterDetailcontent struct {
 	TextPart string `json:"Text-part,omitempty"`
 	HtmlPart string `json:"Html-part,omitempty"`
 }
 
-// NewsletterSchedule: An action to schedule a newsletters.
+// NewsLetterSchedule An action to schedule a newsletters.
+// Deprecated
 type NewsLetterSchedule struct {
 	Date *RFC3339DateTime
 }
 
-// NewsletterTest: An action to test a newsletter.
+// NewsletterTest An action to test a newsletter.
+// Deprecated
 type NewsletterTest struct {
 	Recipients []Recipient
 }
@@ -919,7 +929,8 @@ type Openinformation struct {
 	UserAgentFull string           `mailjet:"read_only"`
 }
 
-// Openstatistics: Retrieve statistics on e-mails opened at least once by their recipients.
+// Openstatistics Retrieve statistics on e-mails opened at least once by their recipients.
+// Deprecated: We advise using /statcounters to retrieve message-based aggregated stats.
 type Openstatistics struct {
 	OpenedCount    int64   `mailjet:"read_only"`
 	OpenedDelay    float64 `mailjet:"read_only"`
@@ -974,7 +985,8 @@ type Sender struct {
 	Status          string `mailjet:"read_only"`
 }
 
-// Senderstatistics: API Key sender email address message/open/click statistical information.
+// Senderstatistics API Key sender email address message/open/click statistical information.
+// Deprecated: We advise using /statcounters to retrieve aggregated statistics for senders.
 type Senderstatistics struct {
 	BlockedCount       int64            `mailjet:"read_only"`
 	BouncedCount       int64            `mailjet:"read_only"`
