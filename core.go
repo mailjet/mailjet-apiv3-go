@@ -282,9 +282,9 @@ func checkResponseError(resp *http.Response) error {
 // Method used, final URl called, and Header content are logged.
 func debugRequest(req *http.Request) {
 	if DebugLevel > LevelNone && req != nil {
-		log.Printf("Method used is: %s\n", req.Method)
-		log.Printf("Final URL is: %s\n", req.URL)
-		log.Printf("Header is: %s\n", req.Header)
+		log.Printf("Method used is: %s\n", strconv.Quote(req.Method))
+		log.Printf("Final URL is: %s\n", strconv.Quote(req.URL.String()))
+		log.Printf("Header is: %s\n", strconv.Quote(fmt.Sprint(req.Header)))
 	}
 }
 
