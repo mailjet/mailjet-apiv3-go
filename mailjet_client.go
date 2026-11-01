@@ -234,7 +234,8 @@ func (c *Client) SendMailSMTP(info *InfoSMTP) error {
 func buildMessage(header textproto.MIMEHeader, content []byte) []byte {
 	buff := bytes.NewBuffer(nil)
 	for key, values := range header {
-		buff.WriteString(fmt.Sprintf("%s: %s\r\n", key, strings.Join(values, ", ")))
+		// TODO(vtopc): handle and expose(?) error
+		_, _ = fmt.Fprintf(buff, "%s: %s\r\n", key, strings.Join(values, ", "))
 	}
 	buff.WriteString("\r\n")
 	buff.Write(content)
