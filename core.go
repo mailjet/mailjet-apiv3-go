@@ -283,7 +283,13 @@ func checkResponseError(resp *http.Response) error {
 func debugRequest(req *http.Request) {
 	if DebugLevel > LevelNone && req != nil {
 		log.Printf("Method used is: %s\n", strconv.Quote(req.Method))
-		log.Printf("Final URL is: %s\n", strconv.Quote(fmt.Sprint(req.URL)))
+
+		uri := "nil"
+		if req.URL != nil {
+			uri = req.URL.String()
+		}
+		log.Printf("Final URL is: %s\n", strconv.Quote(uri))
+
 		log.Printf("Header is: %s\n", strconv.Quote(fmt.Sprint(req.Header)))
 	}
 }
