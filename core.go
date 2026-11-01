@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"reflect"
@@ -68,7 +67,7 @@ func convertPayload(payload interface{}, onlyFields []string) (body []byte, err 
 			body = t
 		default:
 			v := reflect.Indirect(reflect.ValueOf(payload))
-			if v.Kind() == reflect.Ptr {
+			if v.Kind() == reflect.Pointer {
 				return convertPayload(v.Interface(), onlyFields)
 			} else if v.Kind() == reflect.Struct {
 				body, err = json.Marshal(buildMap(v, onlyFields))
@@ -137,7 +136,7 @@ func isEmptyValue(v reflect.Value) bool {
 		return v.Uint() == 0
 	case reflect.Float32, reflect.Float64:
 		return v.Float() == 0
-	case reflect.Interface, reflect.Ptr:
+	case reflect.Interface, reflect.Pointer:
 		return v.IsNil()
 	}
 	return false
@@ -198,7 +197,7 @@ func readJSONResult(r io.Reader, data interface{}) (int, int, error) {
 	var res RequestResult
 	res.Data = data
 
-	jsonBlob, err := ioutil.ReadAll(r) // ReadAll and store in jsonBlob (mandatory if we want to unmarshal two times)
+	jsonBlob, err := io.ReadAll(r) // ReadAll and store in jsonBlob (mandatory if we want to unmarshal two times)
 	if err != nil {
 		return 0, 0, fmt.Errorf("Error reading API response: %s", err)
 	}
@@ -259,7 +258,7 @@ func checkResponseError(resp *http.Response) error {
 		var mailjetErr RequestError
 		mailjetErr.StatusCode = resp.StatusCode
 
-		b, err := ioutil.ReadAll(resp.Body)
+		b, err := io.ReadAll(resp.Body)
 		if err != nil {
 			mailjetErr.ErrorMessage = "unable to read response body"
 			mailjetErr.ErrorInfo = err.Error()

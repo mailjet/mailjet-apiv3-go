@@ -7,9 +7,8 @@
 
 # Official Mailjet Go Client
 
-[![CI](https://github.com/mailjet/mailjet-apiv3-go/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/mailjet/mailjet-apiv3-go/actions/workflows/main.yml)
+[![CI](https://github.com/mailjet/mailjet-apiv3-go/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/mailjet/mailjet-apiv3-go/actions/workflows/main.yml)
 [![GoDoc](https://godoc.org/github.com/mailjet/mailjet-apiv3-go?status.svg)](https://pkg.go.dev/github.com/mailjet/mailjet-apiv3-go/v4)
-[![Go Report Card](https://goreportcard.com/badge/github.com/mailjet/mailjet-apiv3-go/v4)](https://goreportcard.com/report/github.com/mailjet/mailjet-apiv3-go/v4)
 
 ## Overview
 
@@ -40,7 +39,7 @@ Check out all the resources and in the [Official Documentation][doc].
 
 ## Compatibility
 
-Our library requires Go version 1.13 or higher. 
+Our library requires Go version 1.18 or higher. 
 But since [each major Go release is supported until there are two newer major releases](https://go.dev/doc/devel/release#policy), there is no guarantee that it will be working on unsupported Go versions.
 
 **NOTE: Backward compatibility has been broken with the `v3.0` release which includes versioned paths required by go modules (See [Releasing Modules](https://github.com/golang/go/wiki/Modules#releasing-modules-v2-or-higher)).**
@@ -48,19 +47,19 @@ But since [each major Go release is supported until there are two newer major re
 ### Installation
 
 Get package:
-
 ```
 go get github.com/mailjet/mailjet-apiv3-go/v4
 ```
 
 And import the Mailjet wrapper:
-
 ```go
 import (
 	"github.com/mailjet/mailjet-apiv3-go/v4"
 	"github.com/mailjet/mailjet-apiv3-go/v4/resources"
 )
 ```
+
+Pay attention to the `/v4` suffix in the import path.
 
 ## Authentication
 

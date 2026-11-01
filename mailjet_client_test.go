@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"math/rand"
 	"net/http"
 	"net/http/httptest"
@@ -94,7 +94,7 @@ func TestCreateListrecipient(t *testing.T) {
 			return
 		}
 
-		b, err := ioutil.ReadAll(r.Body)
+		b, err := io.ReadAll(r.Body)
 		if err != nil {
 			t.Fatal("Unexpected error:", err)
 		}
@@ -618,7 +618,7 @@ func TestSendMailV31(t *testing.T) {
 
 				rawBytes, _ := json.Marshal(test.mockResponse)
 				return &http.Response{
-					Body:       ioutil.NopCloser(bytes.NewBuffer(rawBytes)),
+					Body:       io.NopCloser(bytes.NewBuffer(rawBytes)),
 					StatusCode: test.mockStatusCode,
 				}, nil
 			}
