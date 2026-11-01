@@ -3,7 +3,7 @@
 PACKAGE := github.com/mailjet/mailjet-apiv3-go
 GOPATH = $(shell go env GOPATH)
 
-GOLANGCI_LINT_PATH = $(PWD)/bin/golangci-lint
+GOLANGCI_LINT_PATH = $(CURDIR)/bin/golangci-lint
 GOLANGCI_LINT_VERSION = v2.14.0
 
 NILAWAY_PATH = $(GOPATH)/bin/nilaway
