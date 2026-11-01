@@ -68,7 +68,7 @@ func convertPayload(payload interface{}, onlyFields []string) (body []byte, err 
 			body = t
 		default:
 			v := reflect.Indirect(reflect.ValueOf(payload))
-			if v.Kind() == reflect.Ptr {
+			if v.Kind() == reflect.Pointer {
 				return convertPayload(v.Interface(), onlyFields)
 			} else if v.Kind() == reflect.Struct {
 				body, err = json.Marshal(buildMap(v, onlyFields))
