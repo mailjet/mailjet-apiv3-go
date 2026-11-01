@@ -43,11 +43,11 @@ func createRequest(method string, url string,
 
 	body, err := convertPayload(payload, onlyFields)
 	if err != nil {
-		return req, fmt.Errorf("creating request: %s\n", err)
+		return req, fmt.Errorf("creating request: %s", err)
 	}
 	req, err = http.NewRequest(method, url, bytes.NewBuffer(body))
 	if err != nil {
-		return req, fmt.Errorf("creating request: %s\n", err)
+		return req, fmt.Errorf("creating request: %s", err)
 	}
 	for _, option := range options {
 		option(req)
@@ -282,9 +282,15 @@ func checkResponseError(resp *http.Response) error {
 // Method used, final URl called, and Header content are logged.
 func debugRequest(req *http.Request) {
 	if DebugLevel > LevelNone && req != nil {
-		log.Printf("Method used is: %s\n", req.Method)
-		log.Printf("Final URL is: %s\n", req.URL)
-		log.Printf("Header is: %s\n", req.Header)
+		log.Printf("Method used is: %s\n", strconv.Quote(req.Method))
+
+		uri := "nil"
+		if req.URL != nil {
+			uri = req.URL.String()
+		}
+		log.Printf("Final URL is: %s\n", strconv.Quote(uri))
+
+		log.Printf("Header is: %s\n", strconv.Quote(fmt.Sprint(req.Header)))
 	}
 }
 

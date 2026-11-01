@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"net/textproto"
 	"os"
+	"strconv"
 	"sync"
 	"time"
 
@@ -31,11 +32,11 @@ func testNewMailjetClient() {
 	m := mailjet.NewMailjetClient(ak, sk)
 
 	if ak != m.APIKeyPublic() {
-		log.Fatal("Wrong public key:", m.APIKeyPublic())
+		log.Fatal("Wrong public key:", strconv.Quote(m.APIKeyPublic()))
 	}
 
 	if sk != m.APIKeyPrivate() {
-		log.Fatal("Wrong secret key:", m.APIKeyPrivate())
+		log.Fatal("Wrong secret key:", strconv.Quote(m.APIKeyPrivate()))
 	}
 }
 

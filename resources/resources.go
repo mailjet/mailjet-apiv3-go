@@ -66,6 +66,7 @@ type Apikeyaccess struct {
 }
 
 // Apikeytotals Global counts for an API Key, since its creation.
+//
 // Deprecated: We advise using /statcounters to retrieve aggregated stats grouped by API Key.
 type Apikeytotals struct {
 	BlockedCount       int64 `mailjet:"read_only"`
@@ -524,6 +525,7 @@ type DnsCheck struct {
 }
 
 // Domainstatistics View Campaign/Message/Click statistics grouped per domain.
+//
 // Deprecated: We advise using /statistics/recipient-esp to retrieve aggregated domain stats.
 type Domainstatistics struct {
 	BlockedCount       int64  `mailjet:"read_only"`
@@ -560,6 +562,7 @@ type Geostatistics struct {
 }
 
 // Graphstatistics API Campaign/message/click statistics grouped over intervals.
+//
 // Deprecated: We advise using /statcounters to retrieve information on the evolution of statistics.
 type Graphstatistics struct {
 	BlockedCount       int64  `mailjet:"read_only"`
@@ -604,6 +607,7 @@ type Listrecipientstatistics struct {
 }
 
 // Liststatistics View Campaign/message/click statistics grouped by ContactsList.
+//
 // Deprecated: We advise using /statcounters to retrieve aggregated statistics for contact lists.
 type Liststatistics struct {
 	ActiveCount             int64            `mailjet:"read_only"`
@@ -718,6 +722,7 @@ type Messagestate struct {
 }
 
 // MessageStatistics API key Campaign/Message statistics.
+//
 // Deprecated: We advise using /statcounters to retrieve message-based aggregated stats.
 type MessageStatistics struct {
 	AverageClickDelay   float64 `mailjet:"read_only"`
@@ -930,6 +935,7 @@ type Openinformation struct {
 }
 
 // Openstatistics Retrieve statistics on e-mails opened at least once by their recipients.
+//
 // Deprecated: We advise using /statcounters to retrieve message-based aggregated stats.
 type Openstatistics struct {
 	OpenedCount    int64   `mailjet:"read_only"`
@@ -986,6 +992,7 @@ type Sender struct {
 }
 
 // Senderstatistics API Key sender email address message/open/click statistical information.
+//
 // Deprecated: We advise using /statcounters to retrieve aggregated statistics for senders.
 type Senderstatistics struct {
 	BlockedCount       int64            `mailjet:"read_only"`
