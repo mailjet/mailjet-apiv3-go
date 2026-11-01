@@ -10,3 +10,5 @@
 
 # MacOS
 /.DS_Store
+
+/bin/
