@@ -35,6 +35,9 @@ func NewhttpClientMock(valid bool) *HTTPClientMock {
 			if valid {
 				return 1, 1, nil
 			}
+
+			// TODO(v5): error strings should not be capitalized:
+			//nolint:staticcheck // ST1005: error strings should not be capitalized
 			return 0, 0, errors.New("Unexpected error: Unexpected server response code: 401: EOF")
 		},
 		SendMailV31Func: func(req *http.Request) (*http.Response, error) {
