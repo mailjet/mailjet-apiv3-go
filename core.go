@@ -43,11 +43,11 @@ func createRequest(method string, url string,
 
 	body, err := convertPayload(payload, onlyFields)
 	if err != nil {
-		return req, fmt.Errorf("creating request: %s\n", err)
+		return req, fmt.Errorf("creating request: %s", err)
 	}
 	req, err = http.NewRequest(method, url, bytes.NewBuffer(body))
 	if err != nil {
-		return req, fmt.Errorf("creating request: %s\n", err)
+		return req, fmt.Errorf("creating request: %s", err)
 	}
 	for _, option := range options {
 		option(req)

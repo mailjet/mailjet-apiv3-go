@@ -43,7 +43,6 @@ linters:
         - all
         - -SA1019 # TODO(Go1.20+): enable SA1019 (https://staticcheck.dev/docs/checks/#SA1019)
         - -ST1003 # TODO(v5): add JSON tags and enable (https://staticcheck.dev/docs/checks/#ST1003)
-        - -ST1005 # TODO(v5): enable (https://staticcheck.dev/docs/checks/#ST1005)
 
     gosec:
       # To specify a set of rules to explicitly exclude.
